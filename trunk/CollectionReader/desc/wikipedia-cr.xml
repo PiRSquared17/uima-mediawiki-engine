@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <implementationName>uima.wikipedia.MWCollectionReader</implementationName>
+  <processingResourceMetaData>
+    <name>Wikipedia Collection Reader</name>
+    <description>This collection reader is able to load, one article per CAS, the content of a Wikipedia XML dump. 
+
+If the dump is compressed using gzip or bzip, there is no need to uncompress it, it will be done on the fly to save disk space.</description>
+    <version>0.1</version>
+    <vendor/>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>InputXmlDump</name>
+        <description>The path to the XML dump of Wikipedia to load into the cpe through the collection reader.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>LatestRevisionOnly</name>
+        <description>If this parameter is set to True, then only the latest revision of the pages are loaded.</description>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>IgnoreTalks</name>
+        <description>If this parameter is set to True, then the talks are ignored when loading the data.</description>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>ConfigNamespacesFilter</name>
+        <description>This is the input parameter to configure the namespace filter. You should specify here what namespaces you would wish to keep, or to ignore if you start with '!'.
+The namespaces vary from 0 to 8.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>ConfigTitleMatch</name>
+        <description>The regexp the TitleMatch filter will apply to select pages.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>ConfigListFilter</name>
+        <description>The path to the file containing the list of pages to be loaded.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>ConfigExactListFilter</name>
+        <description>The path to the file containing the list of pages to load.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>ConfigRevisionListFilter</name>
+        <description>The path to the file with the list of revisions to be loaded.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>ConfigBeforeTimestampFilter</name>
+        <description>Specify the Timestamp corresponding to date up to which the data will be loaded.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>ConfigAfterTimestampFilter</name>
+        <description>Timestamp before which the data must have been produced to be loaded.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>LatestRevisionOnly</name>
+        <value>
+          <boolean>false</boolean>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>IgnoreTalks</name>
+        <value>
+          <boolean>false</boolean>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <typeSystemDescription>
+      <imports>
+        <import name="wikipedia-ts"/>
+      </imports>
+    </typeSystemDescription>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">uima.wikipedia.types.Revision</type>
+          <type allAnnotatorFeatures="true">uima.wikipedia.types.Article</type>
+        </outputs>
+        <languagesSupported/>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>false</multipleDeploymentAllowed>
+      <outputsNewCASes>true</outputsNewCASes>
+    </operationalProperties>
+  </processingResourceMetaData>
+  <resourceManagerConfiguration/>
+</collectionReaderDescription>
