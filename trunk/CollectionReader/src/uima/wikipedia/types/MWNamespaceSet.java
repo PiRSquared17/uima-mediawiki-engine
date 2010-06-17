@@ -31,7 +31,7 @@ public class MWNamespaceSet {
 	}
 
 	public int getIndex(String prefix) {
-		for (int index : namespaces.keySet())
+		for (final int index : namespaces.keySet())
 			if (namespaces.get(index).equals(prefix))
 				return index;
 		return 0;
@@ -43,9 +43,10 @@ public class MWNamespaceSet {
 
 	@Override
 	public String toString() {
-		StringBuilder result = new StringBuilder();
-		for (String name : namespaces.values())
+		final StringBuilder result = new StringBuilder();
+		for (final String name : namespaces.values()) {
 			result.append(name).append('\n');
+		}
 		return result.toString();
 	}
 }

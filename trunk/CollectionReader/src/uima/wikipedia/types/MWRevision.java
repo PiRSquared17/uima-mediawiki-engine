@@ -21,7 +21,7 @@ public class MWRevision implements Comparable<MWRevision> {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		builder.append("[Id = ");
 		builder.append(id);
 		builder.append(" | Timestamp = ");

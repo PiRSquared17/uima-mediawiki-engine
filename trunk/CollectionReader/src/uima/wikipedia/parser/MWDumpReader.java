@@ -34,15 +34,16 @@ public class MWDumpReader {
 			streamReader = reader;
 			// Skip the <mediawiki> tag
 			nextStartElement(2);
-		} catch (XMLStreamException e) {
+		} catch (final XMLStreamException e) {
 			throw new MWParseException("An unexpected error occured while starting the parser");
 		}
 		// Initialise data factory
 		// Process website info
 		// Check if the <siteinfo> tag is there (it's optional)
 		hasSiteInfo = streamReader.getLocalName().toLowerCase().equals("siteinfo");
-		if (hasSiteInfo)
+		if (hasSiteInfo) {
 			computeSiteInfo();
+		}
 		// Initialise Article and Revision factorys
 		thePage = new MWArticleFactory(theInfo);
 		theRevision = new MWRevisionFactory();
@@ -77,9 +78,10 @@ public class MWDumpReader {
 		// Try to compute a page
 		pageComputed = false;
 		try {
-			while (!pageComputed && !endOfDocumentReached)
+			while (!pageComputed && !endOfDocumentReached) {
 				pageComputed = computePage();
-		} catch (MWParseException e) {
+			}
+		} catch (final MWParseException e) {
 			endOfDocumentReached = true;
 			pageComputed = false;
 		}
@@ -113,12 +115,13 @@ public class MWDumpReader {
 					default:
 						endPage = true;
 				}
-				if (!endPage)
+				if (!endPage) {
 					nextStartElement(1);
+				}
 			}
-		} catch (NoSuchElementException e) {
+		} catch (final NoSuchElementException e) {
 			endOfDocumentReached = true;
-		} catch (XMLStreamException e) {
+		} catch (final XMLStreamException e) {
 			endOfDocumentReached = true;
 			throw new MWParseException("The parser encountered a malformation in the input file");
 		}
@@ -141,8 +144,9 @@ public class MWDumpReader {
 					break;
 				case CONTRIBUTOR:
 					nextStartElement(1);
-					if (streamReader.getLocalName().equals("username"))
+					if (streamReader.getLocalName().equals("username")) {
 						theRevision.hasContributor(getTagText());
+					}
 					break;
 				case MINOR:
 					streamReader.next();
@@ -153,9 +157,9 @@ public class MWDumpReader {
 					break;
 				case TEXT:
 					textBuilder = new StringBuilder();
-					do
+					do {
 						textBuilder.append(getTagText());
-					while (streamReader.getEventType() == CHARACTERS);
+					} while (streamReader.getEventType() == CHARACTERS);
 					textBuilder.trimToSize();
 					theRevision.hasText(textBuilder.toString());
 					endRevision = true;
@@ -165,8 +169,9 @@ public class MWDumpReader {
 				default:
 					endRevision = true;
 			}
-			if (!endRevision)
+			if (!endRevision) {
 				nextStartElement(1);
+			}
 		}
 		thePage.hasRevision(theRevision.newInstance());
 	}
@@ -177,7 +182,7 @@ public class MWDumpReader {
 		String base = "";
 		String generator = "";
 		String thecase = "";
-		MWNamespaceSet namespaces = new MWNamespaceSet();
+		final MWNamespaceSet namespaces = new MWNamespaceSet();
 		// A flag
 		boolean endSiteInfo = false;
 
@@ -217,13 +222,14 @@ public class MWDumpReader {
 					default:
 						endSiteInfo = true;
 				}
-				if (!endSiteInfo)
+				if (!endSiteInfo) {
 					nextStartElement(1);
+				}
 			}
-		} catch (NoSuchElementException e) {
+		} catch (final NoSuchElementException e) {
 			endOfDocumentReached = true;
 			throw new MWParseException("The parser unexpectedly reached end of document");
-		} catch (XMLStreamException e) {
+		} catch (final XMLStreamException e) {
 			endOfDocumentReached = true;
 			throw new MWParseException("The parser encountered a malformation in the input file");
 		}
@@ -244,8 +250,9 @@ public class MWDumpReader {
 		int i = 0;
 		while (i < n) {
 			streamReader.next();
-			if (streamReader.isStartElement())
+			if (streamReader.isStartElement()) {
 				++i;
+			}
 		}
 	}
 
@@ -255,12 +262,13 @@ public class MWDumpReader {
 	 * @throws XMLStreamException
 	 */
 	private final void skipThisTag() throws XMLStreamException {
-		String name = streamReader.getLocalName();
+		final String name = streamReader.getLocalName();
 		boolean endOfTag = false;
 		while (!endOfTag) {
 			streamReader.next();
-			if (streamReader.getEventType() == END_ELEMENT && streamReader.getLocalName().equals(name))
+			if (streamReader.getEventType() == END_ELEMENT && streamReader.getLocalName().equals(name)) {
 				endOfTag = true;
+			}
 		}
 	}
 

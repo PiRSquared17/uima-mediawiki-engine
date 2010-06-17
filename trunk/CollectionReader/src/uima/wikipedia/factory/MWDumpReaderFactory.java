@@ -60,9 +60,9 @@ public class MWDumpReaderFactory {
 			inputstream = Tools.openInputFile(theXMLDump);
 			factory = XMLInputFactory.newInstance();
 			streamReader = factory.createXMLStreamReader(inputstream);
-		} catch (XMLStreamException e) {
+		} catch (final XMLStreamException e) {
 			throw new FactoryConfigurationError(e);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new FactoryConfigurationError(e);
 		}
 		latestOnly = false;
@@ -104,15 +104,16 @@ public class MWDumpReaderFactory {
 
 	public void addTitleListFilter(String cfgList, boolean exact) throws IOException, XMLStreamException {
 		String line, title;
-		List<String> myList = new ArrayList<String>();
-		BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(cfgList), "utf-8"));
+		final List<String> myList = new ArrayList<String>();
+		final BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(cfgList), "utf-8"));
 
 		line = input.readLine();
 		while (line != null) {
 			if (!line.startsWith("#")) {
 				title = line.replace("_", " ").trim();
-				if (!title.isEmpty())
+				if (!title.isEmpty()) {
 					myList.add(title);
+				}
 			}
 			line = input.readLine();
 		}
@@ -139,57 +140,60 @@ public class MWDumpReaderFactory {
 	public void addNamespaceFilter(MWSiteInfo theSiteInfo, String cfgNamespaces) throws XMLStreamException {
 		int nskey;
 		boolean exclude = false;
-		List<String> myList = new ArrayList<String>();
-		Set<Integer> keyList = new HashSet<Integer>();
+		final List<String> myList = new ArrayList<String>();
+		final Set<Integer> keyList = new HashSet<Integer>();
 
 		if (cfgNamespaces.startsWith("!")) {
 			cfgNamespaces = cfgNamespaces.substring(1);
 			exclude = true;
 		}
-		String[] namespaces = cfgNamespaces.split(",");
-		for (String ns : namespaces) {
+		final String[] namespaces = cfgNamespaces.split(",");
+		for (final String ns : namespaces) {
 			ns.trim();
 			try {
 				nskey = Integer.parseInt(ns);
-			} catch (NumberFormatException e) {
+			} catch (final NumberFormatException e) {
 				nskey = 0;
 			}
 			keyList.add(nskey);
 		}
-		for (int key : keyList)
-			if (theSiteInfo.namespaces.hasIndex(key))
+		for (final int key : keyList)
+			if (theSiteInfo.namespaces.hasIndex(key)) {
 				myList.add(theSiteInfo.namespaces.getPrefix(key));
+			}
 
 		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(myList, exclude));
 	}
 
 	public void addExcludeTalkFilter(MWSiteInfo theSiteInfo) throws XMLStreamException {
 		// A list of discussion namespace to ignore
-		ArrayList<String> excludedNS = new ArrayList<String>();
+		final ArrayList<String> excludedNS = new ArrayList<String>();
 		// Iterator over the namespace object
-		Iterator<Entry<Integer, String>> it = theSiteInfo.namespaces.orderedEntries();
+		final Iterator<Entry<Integer, String>> it = theSiteInfo.namespaces.orderedEntries();
 		// A variable to store each couple (key, stringvalue)
 		Entry<Integer, String> ns;
 
 		while (it.hasNext()) {
 			ns = it.next();
 			// Talk namespaces have a odd key
-			if (ns.getKey() > 0 && ns.getKey() % 2 == 1)
+			if (ns.getKey() > 0 && ns.getKey() % 2 == 1) {
 				excludedNS.add(ns.getValue());
+			}
 		}
 		// We add the concerned namespaces to the exclude list
 		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(excludedNS, true));
 	}
 
 	public void addRevisionFilter(String cfgRevisionList) throws IOException, XMLStreamException {
-		ArrayList<Integer> myList = new ArrayList<Integer>();
-		BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(cfgRevisionList), "utf-8"));
+		final ArrayList<Integer> myList = new ArrayList<Integer>();
+		final BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(cfgRevisionList), "utf-8"));
 		String line = input.readLine();
 
 		while (line != null) {
 			line = line.trim();
-			if (line.length() > 0 && !line.startsWith("#"))
+			if (line.length() > 0 && !line.startsWith("#")) {
 				myList.add(Integer.parseInt(line));
+			}
 			line = input.readLine();
 		}
 		input.close();
@@ -202,19 +206,19 @@ public class MWDumpReaderFactory {
 	}
 
 	public void addBeforeTimestampFilter(String cfgBeforeTimestamp) throws ParseException, XMLStreamException {
-		Calendar reference = Calendar.getInstance();
+		final Calendar reference = Calendar.getInstance();
 		reference.setTime(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(cfgBeforeTimestamp));
 		streamReader = factory.createFilteredReader(streamReader, new BeforeTimestampFilter(reference));
 	}
 
 	public void addAfterTimestampFilter(String cfgAfterTimestamp) throws ParseException, XMLStreamException {
-		Calendar reference = Calendar.getInstance();
+		final Calendar reference = Calendar.getInstance();
 		reference.setTime(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(cfgAfterTimestamp));
 		streamReader = factory.createFilteredReader(streamReader, new AfterTimestampFilter(reference));
 	}
 
 	public class TitleRegexFilter extends MWTitleFilter {
-		private Pattern	myPattern;
+		private final Pattern	myPattern;
 
 		public TitleRegexFilter(String regex) {
 			myPattern = Pattern.compile(regex);
@@ -227,8 +231,8 @@ public class MWDumpReaderFactory {
 	}
 
 	public class TitleListFilter extends MWTitleFilter {
-		private List<String>	listOfTitles;
-		private boolean			exact;
+		private final List<String>	listOfTitles;
+		private final boolean		exact;
 
 		public TitleListFilter(List<String> myList, boolean exact) {
 			listOfTitles = myList;
@@ -237,8 +241,8 @@ public class MWDumpReaderFactory {
 
 		@Override
 		protected final boolean titleMatch(String title) {
-			for (String match : listOfTitles) {
-				int pos = title.indexOf(':');
+			for (final String match : listOfTitles) {
+				final int pos = title.indexOf(':');
 				if (pos != -1 && !exact) {
 					title = title.substring(pos);
 					if (title.equals(match))
@@ -264,7 +268,7 @@ public class MWDumpReaderFactory {
 
 		@Override
 		protected boolean titleMatch(String title) {
-			int pos = title.indexOf(':');
+			final int pos = title.indexOf(':');
 			namespace = pos != -1 ? title.substring(0, pos) : "";
 			found = listOfNamespaces.contains(namespace.trim());
 			if (exclude)
@@ -274,8 +278,8 @@ public class MWDumpReaderFactory {
 	}
 
 	public class AfterTimestampFilter extends MWTimeStampFilter {
-		private Calendar	reference;
-		private Calendar	temp;
+		private final Calendar	reference;
+		private final Calendar	temp;
 
 		public AfterTimestampFilter(Calendar reference) {
 			this.reference = reference;
@@ -287,15 +291,15 @@ public class MWDumpReaderFactory {
 			try {
 				temp.setTime(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(timestamp));
 				return temp.after(reference);
-			} catch (ParseException e) {
+			} catch (final ParseException e) {
 				return true;
 			}
 		}
 	}
 
 	public class BeforeTimestampFilter extends MWTimeStampFilter {
-		private Calendar	reference;
-		private Calendar	temp;
+		private final Calendar	reference;
+		private final Calendar	temp;
 
 		public BeforeTimestampFilter(Calendar reference) {
 			this.reference = reference;
@@ -307,7 +311,7 @@ public class MWDumpReaderFactory {
 			try {
 				temp.setTime(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(timestamp));
 				return temp.before(reference);
-			} catch (ParseException e) {
+			} catch (final ParseException e) {
 				return true;
 			}
 		}

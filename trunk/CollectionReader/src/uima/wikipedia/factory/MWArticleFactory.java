@@ -14,7 +14,7 @@ public class MWArticleFactory {
 	private ArrayList<MWRevision>	a_revisions;
 
 	// Website info
-	private MWSiteInfo				a_siteinfo;
+	private final MWSiteInfo		a_siteinfo;
 
 	/**
 	 * Default initialisation of the fields. The title is set to the empty string, the namespace is set to 0 (default
@@ -48,10 +48,10 @@ public class MWArticleFactory {
 	 */
 	public final void hasTitle(String prefixedTitle) {
 		// We look for a colon
-		int pos = prefixedTitle.indexOf(':');
+		final int pos = prefixedTitle.indexOf(':');
 		// If we find one, we process the title and namespace
 		if (pos > 0) {
-			String prefix = prefixedTitle.substring(0, pos);
+			final String prefix = prefixedTitle.substring(0, pos);
 			if (a_siteinfo.namespaces.hasPrefix(prefix)) {
 				a_namespace = a_siteinfo.namespaces.getIndex(prefix);
 				a_title = prefixedTitle.substring(pos + 1);
@@ -73,7 +73,7 @@ public class MWArticleFactory {
 	public final void hasId(String id) {
 		try {
 			a_id = Integer.parseInt(id);
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			a_id = -1;
 		}
 	}
@@ -93,9 +93,10 @@ public class MWArticleFactory {
 	 */
 	public final void latestOnly() {
 		MWRevision latest = a_revisions.get(0);
-		for (MWRevision rev : a_revisions)
-			if (rev.compareTo(latest) > 0)
+		for (final MWRevision rev : a_revisions)
+			if (rev.compareTo(latest) > 0) {
 				latest = rev;
+			}
 		a_revisions.clear();
 		a_revisions.add(latest);
 	}

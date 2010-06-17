@@ -10,9 +10,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 public class MWRevisionFilter implements StreamFilter {
-	private List<Integer>	matchList;
-	private boolean			foundRevision	= false;
-	private boolean			foundId			= false;
+	private final List<Integer>	matchList;
+	private boolean				foundRevision	= false;
+	private boolean				foundId			= false;
 
 	public MWRevisionFilter(List<Integer> myList) {
 		matchList = myList;
@@ -21,26 +21,30 @@ public class MWRevisionFilter implements StreamFilter {
 	@Override
 	public final boolean accept(XMLStreamReader reader) {
 		if (!foundRevision) {
-			if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("revision"))
+			if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("revision")) {
 				// If we encounter an opening <revision> tag
 				foundRevision = true;
+			}
 		} else if (foundRevision && !foundId) {
-			if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("id"))
+			if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("id")) {
 				// If we encounter and <id> tag nested in a revision tag
 				foundId = true;
+			}
 		} else if (reader.getEventType() == CHARACTERS && !revisionMatch(reader.getText())) {
 			// If it doesn't match, we iterate to the next <revision> tag
 			boolean revisionSkipped = false;
-			while (!revisionSkipped)
+			while (!revisionSkipped) {
 				try {
 					reader.next();
-					if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("revision"))
+					if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("revision")) {
 						revisionSkipped = true;
-				} catch (XMLStreamException e) {
+					}
+				} catch (final XMLStreamException e) {
 					// We do nothing, this should not happen.
 					// If it does, the next call to next() in the main
 					// parser will raise it again anyway.
 				}
+			}
 			foundRevision = false;
 			foundId = false;
 		} else {
@@ -51,7 +55,7 @@ public class MWRevisionFilter implements StreamFilter {
 	}
 
 	protected boolean revisionMatch(String id) {
-		int intId = Integer.parseInt(id);
+		final int intId = Integer.parseInt(id);
 		return matchList.contains(intId);
 	}
 }

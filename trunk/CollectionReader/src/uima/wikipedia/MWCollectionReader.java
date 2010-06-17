@@ -11,7 +11,6 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader_ImplBase;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
@@ -82,13 +81,13 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 				// Get a new parser that takes in account those filters.
 				parser = factory.getParser();
 
-			} catch (FactoryConfigurationError e) {
+			} catch (final FactoryConfigurationError e) {
 				throw new ResourceInitializationException("There was an error initializing the XML parser", null);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				throw new ResourceInitializationException("The path to the XML dump file (?) is invalid", null);
-			} catch (MWParseException e) {
+			} catch (final MWParseException e) {
 				throw new ResourceInitializationException("The underlying XML document appears to be malformed", null);
-			} catch (XMLStreamException e) {
+			} catch (final XMLStreamException e) {
 				throw new ResourceInitializationException("The underlying XML document appears to be malformed", null);
 			}
 		// Initialize the progress counter.
@@ -97,14 +96,14 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 
 	@Override
 	public void getNext(CAS newCas) throws IOException, CollectionException {
-		CAS RawWikiTextView = newCas.createView("RawWikiText");
+		final CAS RawWikiTextView = newCas.createView("RawWikiText");
 		JCas newJCas;
 		try {
 			newJCas = RawWikiTextView.getJCas();
 			populateJCas(newJCas, parser.getPage());
 			// We are done with the CAS production
 			cCasProduced++;
-		} catch (CASException e) {
+		} catch (final CASException e) {
 			theLogger.log(Level.SEVERE, "Error while creating the CAS");
 			throw new CollectionException("There was an error while creating the CAS", null);
 		}
@@ -126,7 +125,7 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 	public void close() throws IOException {
 		try {
 			parser.close();
-		} catch (XMLStreamException e) {
+		} catch (final XMLStreamException e) {
 			// Too bad, the liberation of the parser's ressource failed.
 			// The GC will have to handle it himself.
 		}
@@ -135,59 +134,59 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 	private void configureFilters() throws ResourceInitializationException {
 		try {
 			// Filter to ignore the talks pages
-			Boolean enIgnoreTalks = (Boolean) getConfigParameterValue(PARAM_FLG_IGNORETALKS);
+			final Boolean enIgnoreTalks = (Boolean) getConfigParameterValue(PARAM_FLG_IGNORETALKS);
 			if (enIgnoreTalks != null && enIgnoreTalks) {
 				factory.addExcludeTalkFilter(theSiteInfo);
 				theLogger.log(Level.INFO, "Added 'notalk' filter");
 			}
 			// Filter to consider only some namespaces
-			String cfgNamespaces = (String) getConfigParameterValue(PARAM_INP_NAMESPACE);
+			final String cfgNamespaces = (String) getConfigParameterValue(PARAM_INP_NAMESPACE);
 			if (cfgNamespaces != null) {
 				factory.addNamespaceFilter(theSiteInfo, cfgNamespaces);
 				theLogger.log(Level.INFO, "Added 'namespace' filter with configuration : '" + cfgNamespaces + "'");
 			}
 			// Select only latest revisions
-			Boolean enLastRevision = (Boolean) getConfigParameterValue(PARAM_FLG_LATESTREVISION);
+			final Boolean enLastRevision = (Boolean) getConfigParameterValue(PARAM_FLG_LATESTREVISION);
 			if (enLastRevision != null && enLastRevision) {
 				factory.addLatestOnlyFilter();
 				theLogger.log(Level.INFO, "Added 'latest' filter");
 			}
 			// Select only some pages depending on a regexp on name
-			String cfgTitleMatch = (String) getConfigParameterValue(PARAM_INP_TITLEMATCH);
+			final String cfgTitleMatch = (String) getConfigParameterValue(PARAM_INP_TITLEMATCH);
 			if (cfgTitleMatch != null) {
 				factory.addTitleRegexFilter(cfgTitleMatch);
 				theLogger.log(Level.INFO, "Added 'titlematch' filter with configuration : '" + cfgTitleMatch + "'");
 			}
 			// Select only some pages specified in a list in a file
-			String cfgList = (String) getConfigParameterValue(PARAM_INP_LIST);
+			final String cfgList = (String) getConfigParameterValue(PARAM_INP_LIST);
 			if (cfgList != null) {
 				factory.addTitleListFilter(cfgList, false);
 				theLogger.log(Level.INFO, "Added 'list' filter with configuration : '" + cfgList + "'");
 			}
-			String cfgExactList = (String) getConfigParameterValue(PARAM_INP_EXACTLIST);
+			final String cfgExactList = (String) getConfigParameterValue(PARAM_INP_EXACTLIST);
 			if (cfgExactList != null) {
 				factory.addTitleListFilter(cfgExactList, true);
 				theLogger.log(Level.INFO, "Added 'exactlist' filter with configuration : '" + cfgList + "'");
 			}
 			// Select only some revisions specified in a file
-			String cfgRevisionList = (String) getConfigParameterValue(PARAM_INP_REVISIONLIST);
+			final String cfgRevisionList = (String) getConfigParameterValue(PARAM_INP_REVISIONLIST);
 			if (cfgRevisionList != null) {
 				factory.addRevisionFilter(cfgRevisionList);
 				theLogger.log(Level.INFO, "Added 'revlist' filter with configuration : '" + cfgList + "'");
 			}
 			// Select only some data that have been produced before some time
-			String cfgBeforeTimestamp = (String) getConfigParameterValue(PARAM_INP_BEFORETM);
+			final String cfgBeforeTimestamp = (String) getConfigParameterValue(PARAM_INP_BEFORETM);
 			if (cfgBeforeTimestamp != null) {
 				factory.addBeforeTimestampFilter(cfgBeforeTimestamp);
 				theLogger.log(Level.INFO, "Added 'before' filter with configuration : '" + cfgList + "'");
 			}
 			// Select only some data that have been produced after some time
-			String cfgAfterTimestamp = (String) getConfigParameterValue(PARAM_INP_AFTERTM);
+			final String cfgAfterTimestamp = (String) getConfigParameterValue(PARAM_INP_AFTERTM);
 			if (cfgAfterTimestamp != null) {
 				factory.addAfterTimestampFilter(cfgAfterTimestamp);
 				theLogger.log(Level.INFO, "Added 'after' filter with configuration : '" + cfgList + "'");
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			theLogger.log(Level.SEVERE, "Failed to initialize one of the filters");
 			throw new ResourceInitializationException(e);
 		}
@@ -196,9 +195,9 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 	private void populateJCas(JCas newJCas, MWArticle page) throws CASException {
 		int start, end;
 		// Initialize the buffer where the text will be stored
-		StringBuilder casContent = new StringBuilder();
+		final StringBuilder casContent = new StringBuilder();
 		// Create all the revision annotations
-		for (MWRevision myRevision : page.revisions) {
+		for (final MWRevision myRevision : page.revisions) {
 			// Set text
 			start = casContent.length();
 			casContent.append(myRevision.text);
@@ -210,7 +209,7 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 		newJCas.setDocumentText(casContent.toString());
 		// We can add the Article and DocumentAnnotation annotations...
 		addArticleAnnotation(newJCas, page, 0, casContent.length());
-		addDocumentAnnotation(newJCas, 0, casContent.length());
+		// addDocumentAnnotation(newJCas, 0, casContent.length());
 	}
 
 	/**
@@ -223,13 +222,13 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 	 * @param end
 	 *            the index of the annotation ending
 	 */
-	private void addDocumentAnnotation(JCas cas, int start, int end) {
-		DocumentAnnotation myDocument = new DocumentAnnotation(cas);
-		myDocument.setLanguage("unknown");
-		myDocument.setBegin(start);
-		myDocument.setEnd(end);
-		myDocument.addToIndexes();
-	}
+	// private void addDocumentAnnotation(JCas cas, int start, int end) {
+	// DocumentAnnotation myDocument = new DocumentAnnotation(cas);
+	// myDocument.setLanguage("unknown");
+	// myDocument.setBegin(start);
+	// myDocument.setEnd(end);
+	// myDocument.addToIndexes();
+	// }
 
 	/**
 	 * This method add an article annotation over the JCas based on the information retrieve from the Page instance.
@@ -244,7 +243,7 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 	 *            the index of the annotation ending
 	 */
 	private void addArticleAnnotation(JCas cas, MWArticle thePage, int start, int end) {
-		Article myArticle = new Article(cas);
+		final Article myArticle = new Article(cas);
 		myArticle.setId(thePage.id);
 		if (parser.hasSiteInfo()) {
 			myArticle.setNamespace(thePage.namespace);
@@ -270,7 +269,7 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 	 *            the index of the annotation ending
 	 */
 	private void addRevisionAnnotation(JCas cas, MWRevision rev, Integer start, Integer end) {
-		Revision myRevision = new Revision(cas);
+		final Revision myRevision = new Revision(cas);
 		myRevision.setComment(rev.comment);
 		myRevision.setId(rev.id);
 		myRevision.setIsMinor(rev.minor);

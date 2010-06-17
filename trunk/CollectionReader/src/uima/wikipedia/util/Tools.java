@@ -25,7 +25,7 @@ public class Tools {
 	public static InputStream openInputFile(String arg) throws IOException {
 		if (arg.equals("-"))
 			return openStandardInput();
-		InputStream infile = new BufferedInputStream(new FileInputStream(arg), IN_BUF_SZ);
+		final InputStream infile = new BufferedInputStream(new FileInputStream(arg), IN_BUF_SZ);
 		if (arg.endsWith(".gz"))
 			return new GZIPInputStream(infile);
 		else if (arg.endsWith(".bz2"))
@@ -39,8 +39,8 @@ public class Tools {
 	}
 
 	static InputStream openBZip2Stream(InputStream infile) throws IOException {
-		int first = infile.read();
-		int second = infile.read();
+		final int first = infile.read();
+		final int second = infile.read();
 		if (first != 'B' || second != 'Z')
 			throw new IOException("Didn't find BZ file signature in .bz2 file");
 		return new CBZip2InputStream(infile);
@@ -51,7 +51,7 @@ public class Tools {
 	}
 
 	static OutputStream createBZip2File(String param) throws IOException, FileNotFoundException {
-		OutputStream outfile = createOutputFile(param);
+		final OutputStream outfile = createOutputFile(param);
 		// bzip2 expects a two-byte 'BZ' signature header
 		outfile.write('B');
 		outfile.write('Z');
@@ -59,7 +59,7 @@ public class Tools {
 	}
 
 	static OutputStream createOutputFile(String param) throws IOException, FileNotFoundException {
-		File file = new File(param);
+		final File file = new File(param);
 		file.createNewFile();
 		return new BufferedOutputStream(new FileOutputStream(file), OUT_BUF_SZ);
 	}

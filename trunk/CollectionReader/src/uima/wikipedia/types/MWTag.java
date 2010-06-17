@@ -15,7 +15,7 @@ public enum MWTag {
 	public static MWTag toTag(String tagname) {
 		try {
 			return valueOf(tagname.toUpperCase());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			return INVALID_TAG;
 		}
 	}

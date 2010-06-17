@@ -14,27 +14,31 @@ public abstract class MWTimeStampFilter implements StreamFilter {
 	@Override
 	public final boolean accept(XMLStreamReader reader) {
 		if (!foundTimestamp) {
-			if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("timestamp"))
+			if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("timestamp")) {
 				// If we encounter an opening <timestamp> tag
 				foundTimestamp = true;
-			// We found a timestamp tag at the previous iteration
-			// We check if it matches the filter
+				// We found a timestamp tag at the previous iteration
+				// We check if it matches the filter
+			}
 		} else if (reader.getEventType() == CHARACTERS && !timeStampMatch(reader.getText())) {
 			// If it doesn't, we iterate to the next <revision> tag
 			boolean revisionSkipped = false;
-			while (!revisionSkipped)
+			while (!revisionSkipped) {
 				try {
 					reader.next();
-					if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("revision"))
+					if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("revision")) {
 						revisionSkipped = true;
-				} catch (XMLStreamException e) {
+					}
+				} catch (final XMLStreamException e) {
 					// We do nothing, this should not happen.
 					// If it does, the next call to next() in the main
 					// parser will raise it again anyway.
 				}
+			}
 			foundTimestamp = false;
-		} else
+		} else {
 			foundTimestamp = false;
+		}
 		return true;
 	}
 

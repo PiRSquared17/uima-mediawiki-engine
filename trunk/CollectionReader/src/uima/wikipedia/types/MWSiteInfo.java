@@ -17,7 +17,7 @@ public class MWSiteInfo {
 
 	@Override
 	public String toString() {
-		StringBuilder result = new StringBuilder();
+		final StringBuilder result = new StringBuilder();
 		result.append(sitename).append('\n').append(base).append('\n').append(generator).append('\n');
 		return result.append(mcase).append('\n').append(namespaces.toString()).toString();
 	}

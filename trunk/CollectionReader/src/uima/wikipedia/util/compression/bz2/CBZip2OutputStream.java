@@ -47,17 +47,17 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 	 */
 	private static final int	QSORT_STACK_SIZE	= 1000;
 
-	private CRC					m_crc				= new CRC();
+	private final CRC			m_crc				= new CRC();
 
-	private boolean[]			m_inUse				= new boolean[256];
+	private final boolean[]		m_inUse				= new boolean[256];
 
-	private char[]				m_seqToUnseq		= new char[256];
-	private char[]				m_unseqToSeq		= new char[256];
+	private final char[]		m_seqToUnseq		= new char[256];
+	private final char[]		m_unseqToSeq		= new char[256];
 
-	private char[]				m_selector			= new char[MAX_SELECTORS];
-	private char[]				m_selectorMtf		= new char[MAX_SELECTORS];
+	private final char[]		m_selector			= new char[MAX_SELECTORS];
+	private final char[]		m_selectorMtf		= new char[MAX_SELECTORS];
 
-	private int[]				m_mtfFreq			= new int[MAX_ALPHA_SIZE];
+	private final int[]			m_mtfFreq			= new int[MAX_ALPHA_SIZE];
 
 	private int					m_currentChar		= -1;
 	private int					m_runLength;
@@ -68,14 +68,14 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 	 * Knuth's increments seem to work better than Incerpi-Sedgewick here. Possibly because the number of elems to sort
 	 * is usually small, typically <= 20.
 	 */
-	private int[]				m_incs				= new int[] { 1, 4, 13, 40, 121, 364, 1093, 3280, 9841, 29524, 88573, 265720, 797161, 2391484 };
+	private final int[]			m_incs				= new int[] { 1, 4, 13, 40, 121, 364, 1093, 3280, 9841, 29524, 88573, 265720, 797161, 2391484 };
 
 	private boolean				m_blockRandomised;
 
 	/*
 	 * always: in the range 0 .. 9. The current block size is 100000 * this number.
 	 */
-	private int					m_blockSize100k;
+	private final int			m_blockSize100k;
 	private int					m_bsBuff;
 	private int					m_bsLive;
 
@@ -110,7 +110,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 	 * Used when sorting. If too many long comparisons happen, we stop sorting, randomise the block slightly, and try
 	 * again.
 	 */
-	private int					m_workFactor;
+	private final int			m_workFactor;
 	private int					m_workLimit;
 	private int[]				m_zptr;
 
@@ -166,9 +166,9 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 		int k;
 		boolean tooLong;
 
-		int[] heap = new int[MAX_ALPHA_SIZE + 2];
-		int[] weights = new int[MAX_ALPHA_SIZE * 2];
-		int[] parent = new int[MAX_ALPHA_SIZE * 2];
+		final int[] heap = new int[MAX_ALPHA_SIZE + 2];
+		final int[] weights = new int[MAX_ALPHA_SIZE * 2];
+		final int[] parent = new int[MAX_ALPHA_SIZE * 2];
 
 		for (i = 0; i < alphaSize; i++) {
 			weights[i + 1] = (freq[i] == 0 ? 1 : freq[i]) << 8;
@@ -357,7 +357,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 	 */
 	@Override
 	public void write(int bv) throws IOException {
-		int b = (256 + bv) % 256;
+		final int b = (256 + bv) % 256;
 		if (m_currentChar != -1) {
 			if (m_currentChar == b) {
 				m_runLength++;
@@ -378,7 +378,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 	}
 
 	private void allocateCompressStructures() {
-		int n = BASE_BLOCK_SIZE * m_blockSize100k;
+		final int n = BASE_BLOCK_SIZE * m_blockSize100k;
 		m_block = new char[(n + 1 + NUM_OVERSHOOT_BYTES)];
 		m_quadrant = new int[(n + NUM_OVERSHOOT_BYTES)];
 		m_zptr = new int[n];
@@ -403,10 +403,10 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 
 	private void bsFinishedWithStream() throws IOException {
 		while (m_bsLive > 0) {
-			int ch = m_bsBuff >> 24;
+			final int ch = m_bsBuff >> 24;
 			try {
 				m_bsStream.write(ch);// write 8-bit
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				throw e;
 			}
 			m_bsBuff <<= 8;
@@ -437,10 +437,10 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 
 	private void bsW(int n, int v) throws IOException {
 		while (m_bsLive >= 8) {
-			int ch = m_bsBuff >> 24;
+			final int ch = m_bsBuff >> 24;
 			try {
 				m_bsStream.write(ch);// write 8-bit
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				throw e;
 			}
 			m_bsBuff <<= 8;
@@ -661,7 +661,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 	}
 
 	private void generateMTFValues() {
-		char[] yy = new char[256];
+		final char[] yy = new char[256];
 		int i;
 		int j;
 		char tmp;
@@ -810,9 +810,9 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 		int j;
 		int ss;
 		int sb;
-		int[] runningOrder = new int[256];
-		int[] copy = new int[256];
-		boolean[] bigDone = new boolean[256];
+		final int[] runningOrder = new int[256];
+		final int[] copy = new int[256];
+		final boolean[] bigDone = new boolean[256];
 		int c1;
 		int c2;
 
@@ -923,8 +923,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 				for (j = 0; j <= 255; j++) {
 					sb = (ss << 8) + j;
 					if (!((m_ftab[sb] & SETMASK) == SETMASK)) {
-						int lo = m_ftab[sb] & CLEARMASK;
-						int hi = (m_ftab[sb + 1] & CLEARMASK) - 1;
+						final int lo = m_ftab[sb] & CLEARMASK;
+						final int hi = (m_ftab[sb + 1] & CLEARMASK) - 1;
 						if (hi > lo) {
 							qSort3(lo, hi, 2);
 							if (m_workDone > m_workLimit && m_firstAttempt)
@@ -942,8 +942,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 				bigDone[ss] = true;
 
 				if (i < 255) {
-					int bbStart = m_ftab[ss << 8] & CLEARMASK;
-					int bbSize = (m_ftab[ss + 1 << 8] & CLEARMASK) - bbStart;
+					final int bbStart = m_ftab[ss << 8] & CLEARMASK;
+					final int bbSize = (m_ftab[ss + 1 << 8] & CLEARMASK) - bbStart;
 					int shifts = 0;
 
 					while (bbSize >> shifts > 65534) {
@@ -951,8 +951,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 					}
 
 					for (j = 0; j < bbSize; j++) {
-						int a2update = m_zptr[bbStart + j];
-						int qVal = j >> shifts;
+						final int a2update = m_zptr[bbStart + j];
+						final int qVal = j >> shifts;
 						m_quadrant[a2update] = qVal;
 						if (a2update < NUM_OVERSHOOT_BYTES) {
 							m_quadrant[a2update + m_last + 1] = qVal;
@@ -1035,7 +1035,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 		int lo;
 		int hi;
 		int d;
-		StackElem[] stack = new StackElem[QSORT_STACK_SIZE];
+		final StackElem[] stack = new StackElem[QSORT_STACK_SIZE];
 		for (int count = 0; count < QSORT_STACK_SIZE; count++) {
 			stack[count] = new StackElem();
 		}
@@ -1182,7 +1182,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 	}
 
 	private void sendMTFValues() throws IOException {
-		char[][] len = new char[N_GROUPS][MAX_ALPHA_SIZE];
+		final char[][] len = new char[N_GROUPS][MAX_ALPHA_SIZE];
 
 		int v;
 
@@ -1321,7 +1321,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 					short cost5 = 0;
 
 					for (i = gs; i <= ge; i++) {
-						short icv = m_szptr[i];
+						final short icv = m_szptr[i];
 						cost0 += len[0][icv];
 						cost1 += len[1][icv];
 						cost2 += len[2][icv];
@@ -1337,7 +1337,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 					cost[5] = cost5;
 				} else {
 					for (i = gs; i <= ge; i++) {
-						short icv = m_szptr[i];
+						final short icv = m_szptr[i];
 						for (t = 0; t < nGroups; t++) {
 							cost[t] += len[t][icv];
 						}
@@ -1392,7 +1392,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 			/*
 			 * Compute MTF values for the selectors.
 			 */
-			char[] pos = new char[N_GROUPS];
+			final char[] pos = new char[N_GROUPS];
 			char ll_i;
 			char tmp2;
 			char tmp;
@@ -1414,7 +1414,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 			}
 		}
 
-		int[][] code = new int[N_GROUPS][MAX_ALPHA_SIZE];
+		final int[][] code = new int[N_GROUPS][MAX_ALPHA_SIZE];
 
 		/*
 		 * Assign actual codes for the tables.
@@ -1442,7 +1442,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 			/*
 			 * Transmit the mapping table.
 			 */
-			boolean[] inUse16 = new boolean[16];
+			final boolean[] inUse16 = new boolean[16];
 			for (i = 0; i < 16; i++) {
 				inUse16[i] = false;
 				for (j = 0; j < 16; j++) {

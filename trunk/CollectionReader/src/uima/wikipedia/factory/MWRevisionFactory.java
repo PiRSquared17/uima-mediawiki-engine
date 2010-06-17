@@ -47,7 +47,7 @@ public final class MWRevisionFactory {
 	public final void hasId(String id) {
 		try {
 			r_id = Integer.parseInt(id);
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			r_id = -1;
 		}
 	}
@@ -63,7 +63,7 @@ public final class MWRevisionFactory {
 		r_timestamp = Calendar.getInstance();
 		try {
 			r_timestamp.setTime(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(timestamp));
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			r_timestamp = null;
 		}
 	}

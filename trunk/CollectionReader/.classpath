@@ -5,7 +5,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="var" path="UIMA2.3_HOME/lib/uima-core.jar"/>
 	<classpathentry kind="var" path="UIMA2.3_HOME/lib/uima-cpe.jar"/>
-	<classpathentry kind="var" path="UIMA2.3_HOME/lib/uima-document-annotation.jar"/>
 	<classpathentry kind="var" path="UIMA2.3_HOME/lib/uima-examples.jar"/>
 	<classpathentry kind="var" path="UIMA2.3_HOME/lib/uima-tools.jar"/>
 	<classpathentry kind="var" path="UIMA2.3_HOME/lib/uimaj-bootstrap.jar"/>

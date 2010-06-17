@@ -13,29 +13,33 @@ public abstract class MWTitleFilter implements StreamFilter {
 	@Override
 	public final boolean accept(XMLStreamReader reader) {
 		if (!foundTitle) {
-			if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("title"))
+			if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("title")) {
 				// Si on rencontre un tag <title> ouvrant
 				foundTitle = true;
+			}
 		} else if (reader.getEventType() == CHARACTERS && !titleMatch(reader.getText())) {
 			// On a trouvé un titre a l'itération précédente
 			// On verifie s'il correspond au filtre
 			// Si le titre ne correspond pas, on saute au prochain
 			boolean pageSkipped = false;
-			while (!pageSkipped)
+			while (!pageSkipped) {
 				try {
 					reader.next();
-					if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("page"))
+					if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("page")) {
 						// When we reach the next title opening tag, we stop
 						// iterating
 						pageSkipped = true;
-				} catch (XMLStreamException e) {
+					}
+				} catch (final XMLStreamException e) {
 					// We do nothing, this should not happen.
 					// If it does, the next call to next() in the main
 					// parser will raise it again anyway.
 				}
+			}
 			foundTitle = false;
-		} else
+		} else {
 			foundTitle = false;
+		}
 		return true;
 	}
 

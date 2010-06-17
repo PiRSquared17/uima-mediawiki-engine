@@ -17,7 +17,7 @@ public class MWArticle {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		int i = 0;
 
 		builder.append("> Id = ");
@@ -27,7 +27,7 @@ public class MWArticle {
 		builder.append(" : ");
 		builder.append(title);
 		builder.append('\n');
-		for (MWRevision r : revisions) {
+		for (final MWRevision r : revisions) {
 			builder.append('\n');
 			builder.append("Revision > " + i);
 			builder.append('\n');
