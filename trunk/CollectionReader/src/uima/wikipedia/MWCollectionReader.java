@@ -202,17 +202,15 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 			// Set text
 			start = casContent.length();
 			casContent.append(myRevision.text);
-			end = myRevision.text.length() > 0 ? casContent.length() - 1 : start;
+			end = casContent.length();
 			// Set annotations
 			addRevisionAnnotation(newJCas, myRevision, start, end);
 		}
 		// All the textual content is collected now...
 		newJCas.setDocumentText(casContent.toString());
-		System.out.println(casContent.toString().length() + " = " + casContent.length());
 		// We can add the Article and DocumentAnnotation annotations...
 		addArticleAnnotation(newJCas, page, 0, casContent.length());
 		addDocumentAnnotation(newJCas, 0, casContent.length());
-		System.out.println("FIN DE L'ARTICLE");
 	}
 
 	/**
