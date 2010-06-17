@@ -1,12 +1,112 @@
 #summary This aims to serve as a basic documentation for the collection reader component.
 
-<wiki:toc max_depth="1" />
+<wiki:toc max_depth="3" />
+
 = Introduction =
 This page will present the Collection Reader component that is part of this project. This component is intended to be used within the [http://uima.apache.org/ Apache UIMA] framework. In just a few words, it takes XML dumps from various wikipedia-like projects, extracts the pages and turns them into a suitable format to be processed into the UIMA framework.
 
-= Details =
+= How to use it =
+To do
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+= Technical stuff =
+In this section I will talk a bit more about the technical aspects of this component.
+
+== Input ==
+In this section I will put together a few things that one should know about the files we take as an input.
+
+The files we are working on are database dumps of the projects managed by the Wikimedia foundation. These files are made freely available [http://dumps.wikimedia.org/ here] under the _Database backup dumps_ section. They are provided sometimes in raw *XML* format but more often under the form of *7Zip*, *BZip2* or *GZip* archives. Our component can *GZip* and *BZip2* files as well as raw XML natively (the component handled the unpacking for you). *7Zip* however is *not supported*. These files can typically weigh from 50 MB for smaller projects up to several GB for the bigger ones.
+
+=== Format ===
+These XML files are supposed to validate a XSD schema that can be found [http://www.mediawiki.org/xml/export-0.4.xsd here]. You can also find some more documentation about it [http://meta.wikimedia.org/wiki/Help:Export there]. To save you the hassle, hereafter is a slightly improved extract of the second link that shows what such a document shall contain with all the optional tags :
+
+{{{
+<mediawiki xml:lang="en">
+    <siteinfo>
+       <sitename>My wiki website</sitename>
+       <base>http://mywebsite.org/wiki/home</base>
+       <generator>Generator name</generator>
+       <case>first-letter</case>
+       <namespaces>
+          <namespace key="-2" case="first-letter">Media</namespace>
+          <namespace key="-1" case="first-letter">Spécial</namespace>
+          <namespace key="0" case="first-letter" />
+          <namespace key="1" case="first-letter">Talk</namespace>
+          ...
+       </namespaces>
+   </siteinfo>
+   <page>
+       <title>Page title</title>
+       <id>1337</id>
+       <redirect />
+       <restrictions>edit=sysop:move=sysop</restrictions>
+       <revision>
+          <id>1234</id>
+          <timestamp>2001-01-15T13:15:00Z</timestamp>
+          <contributor>
+             <username>Foobar</username>
+             <id>11111</id>
+             <ip>127.0.0.1</ip>
+          </contributor>
+          <minor />
+          <comment>I have just one thing to say!</comment>
+          <text>A bunch of text here.</text>
+       </revision>
+       <revision>
+          <timestamp>2001-01-15T13:10:27Z</timestamp>
+          <contributor>
+             <ip>10.0.0.2</ip>
+          </contributor>
+          <comment>new!</comment>
+          <text>An earlier revision.</text>
+       </revision>
+       ...
+   </page>
+   <page>
+       <title>Talk:Page title</title>
+       <revision>
+          <timestamp>2001-01-15T14:03:00Z</timestamp>
+          <contributor><ip>10.0.0.2</ip></contributor>
+          <comment>hey</comment>
+          <text>WHYD YOU LOCK PAGE??!!! i was editing that jerk</text>
+      </revision>
+      <upload>
+         ...
+      </upload>
+      <logitem>
+         ...
+      </logitem>
+   </page>
+   ...
+</mediawiki>
+}}}
+
+However, most of these tags are optional. The following contains only the mandatory tags ({{{<siteinfo>}}}, {{{<page>}}} and {{{<revision>}}} tags are not even mandatory, but without them the document is pretty much empty)  :
+{{{
+<mediawiki xml:lang="en">
+    <siteinfo>
+       <sitename>My wiki website</sitename>
+       <base>http://mywebsite.org/wiki/home</base>
+       <generator>Generator name</generator>
+       <case>first-letter</case>
+       <namespaces>
+          <namespace key="-2" case="first-letter">Media</namespace>
+          <namespace key="-1" case="first-letter">Spécial</namespace>
+          <namespace key="0" case="first-letter" />
+          <namespace key="1" case="first-letter">Talk</namespace>
+          ...
+       </namespaces>
+   </siteinfo>
+   <page>
+       <title>Page title</title>
+       <revision>
+          <timestamp>2001-01-15T13:15:00Z</timestamp>
+          <contributor />
+          <text>A bunch of text here.</text>
+       </revision>
+       ...
+   </page>
+   ...
+</mediawiki>
+}}}
+
+The documents passed on to this component should obviously respect this formatting. If you take them from the Wikimedia foundation website, all is well. If you provide your own wiki stuff, you might want to validate it against the XSD schema first.
