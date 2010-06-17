@@ -1,0 +1,12 @@
+#summary This aims to serve as a basic documentation for the collection reader component.
+
+<wiki:toc max_depth="1" />
+= Introduction =
+This page will present the Collection Reader component that is part of this project. This component is intended to be used within the [http://uima.apache.org/ Apache UIMA] framework. In just a few words, it takes XML dumps from various wikipedia-like projects, extracts the pages and turns them into a suitable format to be processed into the UIMA framework.
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
