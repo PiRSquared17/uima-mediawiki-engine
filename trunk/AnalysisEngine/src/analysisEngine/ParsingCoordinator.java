@@ -92,12 +92,7 @@ public class ParsingCoordinator implements IWemListener {
 		// We use a string reader to parse the raw wiki texte
 		final StringReader reader = new StringReader(rawWikiText);
 		// Parsing
-		try {
-			theParser.parse(reader, this);
-		} catch (final WikiParserException e) {
-			// if (!e.getMessage().contains("Encountered \" <D_TABLE_CAPTION> \""))
-			throw e;
-		}
+		theParser.parse(reader, this);
 	}
 
 	public String getContent() {
@@ -112,13 +107,11 @@ public class ParsingCoordinator implements IWemListener {
 	public ArrayList<Annotation> getAnnotations() {
 		final ArrayList<Annotation> list = new ArrayList<Annotation>();
 		// Add headers annotations
-		for (final Annotation a : theHeadersAnnotations) {
+		for (final Annotation a : theHeadersAnnotations)
 			list.add(a);
-		}
 		// Add links annotations
-		for (final Annotation a : theLinksAnnotations) {
+		for (final Annotation a : theLinksAnnotations)
 			list.add(a);
-		}
 		// Close all sections
 		for (final Section s : theUnclosedSections) {
 			s.setEnd(theOffset);
@@ -126,13 +119,11 @@ public class ParsingCoordinator implements IWemListener {
 		}
 		theUnclosedSections.clear();
 		// Add closed sections
-		for (final Annotation a : theClosedSections) {
+		for (final Annotation a : theClosedSections)
 			list.add(a);
-		}
 		// Add paragraphs
-		for (final Annotation a : theParagraphAnnotations) {
+		for (final Annotation a : theParagraphAnnotations)
 			list.add(a);
-		}
 		return list;
 	}
 
@@ -290,9 +281,8 @@ public class ParsingCoordinator implements IWemListener {
 		section.setBegin(theOffset);
 		section.setLevel(headerLevel);
 		// The parent section is the last non closed one
-		if (theUnclosedSections.size() > 0) {
+		if (theUnclosedSections.size() > 0)
 			section.setParent(theUnclosedSections.get(theUnclosedSections.size() - 1));
-		}
 		// The next encounered header will be set as title
 		// Add it to the list
 		theUnclosedSections.add(section);
@@ -360,9 +350,8 @@ public class ParsingCoordinator implements IWemListener {
 
 	/** We begin an item by a bullet */
 	public void beginListItem() {
-		for (int i = 0; i < theListLevel - 1; i++) {
+		for (int i = 0; i < theListLevel - 1; i++)
 			addToContent("\t");
-		}
 		addToContent("* ");
 	}
 
