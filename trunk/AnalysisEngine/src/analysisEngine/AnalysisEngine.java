@@ -27,12 +27,9 @@ public class AnalysisEngine extends JCasAnnotator_ImplBase {
 
 	private ParsingCoordinator		theConverter;
 	protected ArrayList<Revision>	theRevisions	= null;
-	int								cpt				= 0;
 
 	@Override
 	public void process(JCas newcas) throws AnalysisEngineProcessException {
-		cpt++;
-		System.out.println(cpt);
 		try {
 			// view containing text to parse
 			final JCas rawView = newcas.getView("RawWikiText");
@@ -80,9 +77,8 @@ public class AnalysisEngine extends JCasAnnotator_ImplBase {
 				newRevision.addToIndexes();
 
 				// recover and set annotations
-				for (final Annotation myAnnotation : theConverter.getAnnotations()) {
+				for (final Annotation myAnnotation : theConverter.getAnnotations())
 					myAnnotation.addToIndexes();
-				}
 
 			}
 
