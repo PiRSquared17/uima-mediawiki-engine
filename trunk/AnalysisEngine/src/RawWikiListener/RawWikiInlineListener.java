@@ -1,8 +1,10 @@
 package RawWikiListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.wikimodel.wem.IWemListenerInline;
 import org.wikimodel.wem.WikiFormat;
 import org.wikimodel.wem.WikiParameters;
@@ -21,6 +23,12 @@ public class RawWikiInlineListener implements IWemListenerInline {
 		mCas = mcas;
 		currentOffset = offset;
 		linkAnnotations = new ArrayList<Link>();
+	}
+
+	public List<Annotation> getAnnotations() {
+		ArrayList<Annotation> temp = new ArrayList<Annotation>();
+		temp.addAll(linkAnnotations);
+		return temp;
 	}
 
 	@Override
