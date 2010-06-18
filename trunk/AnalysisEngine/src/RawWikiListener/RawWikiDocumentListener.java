@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.wikimodel.wem.IWemListenerDocument;
 import org.wikimodel.wem.WikiParameters;
 
@@ -85,26 +86,35 @@ public class RawWikiDocumentListener implements IWemListenerDocument {
 		closedSections.add(section);
 	}
 
+	public List<Annotation> getAnnotations() {
+		ArrayList<Annotation> annotations = new ArrayList<Annotation>();
+		// Close the unclosed sections
+		for (Section s : unclosedSections)
+			s.setEnd(currentOffset);
+		annotations.addAll(headerAnnotations);
+		annotations.addAll(closedSections);
+		annotations.addAll(unclosedSections);
+		return annotations;
+	}
+
 	@Override
 	public void beginDocument(WikiParameters params) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void beginSectionContent(int docLevel, int headerLevel, WikiParameters params) {
+		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void endDocument(WikiParameters params) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void endSectionContent(int docLevel, int headerLevel, WikiParameters params) {
 		// TODO Auto-generated method stub
-
 	}
 
 	private void addContent(String str) {
