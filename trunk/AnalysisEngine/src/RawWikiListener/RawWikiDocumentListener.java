@@ -27,6 +27,9 @@ public class RawWikiDocumentListener implements IWemListenerDocument {
 		closedSections = new ArrayList<Section>();
 	}
 
+	/**
+	 * Create a new annotation when we encounter a header.
+	 */
 	@Override
 	public void beginHeader(int headerLevel, WikiParameters params) {
 		addContent("\n\n"); // Jump a line
@@ -36,9 +39,15 @@ public class RawWikiDocumentListener implements IWemListenerDocument {
 		newHeader.setBegin(currentOffset);
 		// Add it to the list
 		headerAnnotations.add(newHeader);
-	
+		// Add is as the header of the last unclosed section
+		if (!unclosedSections.isEmpty())
+			unclosedSections.get(unclosedSections.size() - 1).setTitle(newHeader);
 	}
 
+	/**
+	 * Create a new annotation when we encounter a section. Temporarily add it to the unclosed section list. A further
+	 * call to endSection() shall close it.
+	 */
 	@Override
 	public void beginSection(int docLevel, int headerLevel, WikiParameters params) {
 		// Create a new annotation
@@ -52,6 +61,9 @@ public class RawWikiDocumentListener implements IWemListenerDocument {
 		unclosedSections.add(newSection);
 	}
 
+	/**
+	 * Finishes the last header annotation.
+	 */
 	@Override
 	public void endHeader(int headerLevel, WikiParameters params) {
 		// Update the last header's ending value
@@ -59,6 +71,9 @@ public class RawWikiDocumentListener implements IWemListenerDocument {
 		addContent("\n\n)"); // Jump a line
 	}
 
+	/**
+	 * Closes the last unclosed section
+	 */
 	@Override
 	public void endSection(int docLevel, int headerLevel, WikiParameters params) {
 		// Retrieve the last unclosed section
