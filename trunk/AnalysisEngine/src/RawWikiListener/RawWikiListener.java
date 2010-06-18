@@ -25,4 +25,12 @@ public class RawWikiListener extends AgregatingWemListener {
 	public void addListListener() {
 		fListListener = new RawWikiListListener(textContent, currentOffset, mCas);
 	}
+
+	public void addInlineListener() {
+		fInlineListener = new RawWikiInlineListener(textContent, currentOffset, mCas);
+	}
+
+	public void addBlockListener() {
+		fBlockListener = new RawWikiBlockListener(textContent, currentOffset, mCas);
+	}
 }

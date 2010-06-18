@@ -1,50 +1,77 @@
 package RawWikiListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.wikimodel.wem.IWemListenerSimpleBlocks;
 import org.wikimodel.wem.WikiParameters;
 
+import uima.wikipedia.types.Paragraph;
+
 public class RawWikiBlockListener implements IWemListenerSimpleBlocks {
+	StringBuilder			buffer;
+	JCas					mCas;
+	int						currentOffset;
+	ArrayList<Paragraph>	paragraphAnnotations;
+
+	public RawWikiBlockListener(StringBuilder buffer, int offset, JCas mcas) {
+		this.buffer = buffer;
+		mCas = mcas;
+		currentOffset = offset;
+		paragraphAnnotations = new ArrayList<Paragraph>();
+	}
+
+	public List<Annotation> getAnnotations() {
+		ArrayList<Annotation> temp = new ArrayList<Annotation>();
+		temp.addAll(paragraphAnnotations);
+		return temp;
+	}
 
 	@Override
 	public void beginInfoBlock(String infoType, WikiParameters params) {
-		// TODO Auto-generated method stub
-
+		// TODO We ignore them for the moment
 	}
 
 	@Override
 	public void beginParagraph(WikiParameters params) {
-		// TODO Auto-generated method stub
-
+		// Create a new annotation
+		final Paragraph p = new Paragraph(mCas);
+		p.setBegin(currentOffset);
+		// Add it to the list
+		paragraphAnnotations.add(p);
 	}
 
 	@Override
 	public void endInfoBlock(String infoType, WikiParameters params) {
-		// TODO Auto-generated method stub
-
+		// TODO We ignore them for the moment
 	}
 
 	@Override
 	public void endParagraph(WikiParameters params) {
-		// TODO Auto-generated method stub
-
+		paragraphAnnotations.get(paragraphAnnotations.size() - 1).setEnd(currentOffset);
 	}
 
 	@Override
 	public void onEmptyLines(int count) {
-		// TODO Auto-generated method stub
-
+		addContent("\n");
 	}
 
 	@Override
 	public void onHorizontalLine(WikiParameters params) {
-		// TODO Auto-generated method stub
-
+		// We ignore horizontal lines
 	}
 
 	@Override
 	public void onVerbatimBlock(String str, WikiParameters params) {
-		// TODO Auto-generated method stub
-
+		addContent("\n" + str + "\n");
 	}
 
+	private void addContent(String str) {
+		if (str != null) {
+			buffer.append(str);
+			currentOffset += str.length();
+		}
+	}
 }
