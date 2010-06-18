@@ -3,26 +3,21 @@ package RawWikiListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.wikimodel.wem.IWemListenerSimpleBlocks;
 import org.wikimodel.wem.WikiParameters;
 
 import uima.wikipedia.types.Paragraph;
 
-public class RawWikiBlockListener implements IWemListenerSimpleBlocks {
-	StringBuilder			buffer;
-	JCas					mCas;
-	int						currentOffset;
+public class RawWikiBlockListener extends RawWikiListener implements IWemListenerSimpleBlocks {
 	ArrayList<Paragraph>	paragraphAnnotations;
 
-	public RawWikiBlockListener(StringBuilder buffer, int offset, JCas mcas) {
-		this.buffer = buffer;
-		mCas = mcas;
-		currentOffset = offset;
+	public RawWikiBlockListener() {
+		super();
 		paragraphAnnotations = new ArrayList<Paragraph>();
 	}
 
+	@Override
 	public List<Annotation> getAnnotations() {
 		ArrayList<Annotation> temp = new ArrayList<Annotation>();
 		temp.addAll(paragraphAnnotations);
@@ -70,7 +65,7 @@ public class RawWikiBlockListener implements IWemListenerSimpleBlocks {
 
 	private void addContent(String str) {
 		if (str != null) {
-			buffer.append(str);
+			textContent.append(str);
 			currentOffset += str.length();
 		}
 	}

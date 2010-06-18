@@ -55,7 +55,7 @@ public class MWRawText extends JCasAnnotator_ImplBase {
 				// Initialize the parser
 				theParser = new MediaWikiParser();
 				// Initialize the listener
-				theListener = new RawWikiListener(newcas, start);
+				theListener = RawWikiListener.newInstance(newcas, start);
 				// Parse the raw text
 				theParser.parse(new StringReader(myRevisionText), theListener);
 

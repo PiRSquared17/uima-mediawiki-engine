@@ -8,20 +8,29 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.wikimodel.wem.AgregatingWemListener;
 
 public class RawWikiListener extends AgregatingWemListener {
-	private final StringBuilder	textContent;
-	@SuppressWarnings("unused")
-	private final JCas			mCas;
-	private int					currentOffset;
+	protected static StringBuilder	textContent;
+	protected static JCas			mCas;
+	protected static int			currentOffset;
+	private static RawWikiListener	instance	= null;
 
-	public RawWikiListener(JCas mCas, int offset) {
-		this.mCas = mCas;
+	public RawWikiListener() {
+	}
+
+	public static RawWikiListener newInstance(JCas mCas, int offset) {
+		if (instance != null)
+			instance = new RawWikiListener(mCas, offset);
+		return instance;
+	}
+
+	private RawWikiListener(JCas mCas, int offset) {
+		RawWikiListener.mCas = mCas;
 		textContent = new StringBuilder();
 		currentOffset = offset;
 		fDocumentListener = new RawWikiDocumentListener(textContent, currentOffset, mCas);
 		fTableListener = new RawWikiTableListener(textContent, currentOffset, mCas);
 		fListListener = new RawWikiListListener(textContent, currentOffset, mCas);
 		fInlineListener = new RawWikiInlineListener(textContent, currentOffset, mCas);
-		fBlockListener = new RawWikiBlockListener(textContent, currentOffset, mCas);
+		fBlockListener = new RawWikiBlockListener();
 		fSemanticListener = new RawWikiSemanticListener();
 		fProgrammingListener = new RawWikiProgrammingListener();
 	}
