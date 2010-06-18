@@ -85,7 +85,7 @@ public class RawWikiInlineListener implements IWemListenerInline{
 
 	@Override
 	public void onVerbatimInline(String str, WikiParameters params) {
-		buffer.append("verbatim: "+str);
+		buffer.append("verbatim :"+str);
 		
 	}
 
