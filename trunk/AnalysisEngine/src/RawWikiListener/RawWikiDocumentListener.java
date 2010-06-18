@@ -28,6 +28,17 @@ public class RawWikiDocumentListener implements IWemListenerDocument {
 		closedSections = new ArrayList<Section>();
 	}
 
+	public List<Annotation> getAnnotations() {
+		ArrayList<Annotation> annotations = new ArrayList<Annotation>();
+		// Close the unclosed sections
+		for (Section s : unclosedSections)
+			s.setEnd(currentOffset);
+		annotations.addAll(headerAnnotations);
+		annotations.addAll(closedSections);
+		annotations.addAll(unclosedSections);
+		return annotations;
+	}
+
 	/**
 	 * Create a new annotation when we encounter a header.
 	 */
@@ -84,17 +95,6 @@ public class RawWikiDocumentListener implements IWemListenerDocument {
 		// Move it to the closed sections.
 		unclosedSections.remove(unclosedSections.size() - 1);
 		closedSections.add(section);
-	}
-
-	public List<Annotation> getAnnotations() {
-		ArrayList<Annotation> annotations = new ArrayList<Annotation>();
-		// Close the unclosed sections
-		for (Section s : unclosedSections)
-			s.setEnd(currentOffset);
-		annotations.addAll(headerAnnotations);
-		annotations.addAll(closedSections);
-		annotations.addAll(unclosedSections);
-		return annotations;
 	}
 
 	@Override
