@@ -1,5 +1,6 @@
 package RawWikiListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
@@ -7,15 +8,66 @@ import org.wikimodel.wem.IWemListenerDocument;
 import org.wikimodel.wem.WikiParameters;
 
 import uima.wikipedia.types.Header;
+import uima.wikipedia.types.Section;
 
 public class RawWikiDocumentListener implements IWemListenerDocument {
 	StringBuilder	buffer;
 	JCas			mCas;
+	int				currentOffset;
 	List<Header>	headerAnnotations;
+	List<Section>	unclosedSections;
+	List<Section>	closedSections;
 
-	public RawWikiDocumentListener(StringBuilder buffer, JCas mCas) {
+	public RawWikiDocumentListener(StringBuilder buffer, int offset, JCas mCas) {
 		this.buffer = buffer;
 		this.mCas = mCas;
+		currentOffset = buffer.length();
+		headerAnnotations = new ArrayList<Header>();
+		unclosedSections = new ArrayList<Section>();
+		closedSections = new ArrayList<Section>();
+	}
+
+	@Override
+	public void beginHeader(int headerLevel, WikiParameters params) {
+		addContent("\n\n"); // Jump a line
+		// Create a new header annotation
+		final Header newHeader = new Header(mCas);
+		newHeader.setLevel(headerLevel);
+		newHeader.setBegin(currentOffset);
+		// Add it to the list
+		headerAnnotations.add(newHeader);
+	
+	}
+
+	@Override
+	public void beginSection(int docLevel, int headerLevel, WikiParameters params) {
+		// Create a new annotation
+		final Section newSection = new Section(mCas);
+		newSection.setBegin(currentOffset);
+		newSection.setLevel(headerLevel);
+		// The parent section is the last unclosed one
+		if (unclosedSections.size() > 0)
+			newSection.setParent(unclosedSections.get(unclosedSections.size() - 1));
+		// The next encounered header will be set as title
+		unclosedSections.add(newSection);
+	}
+
+	@Override
+	public void endHeader(int headerLevel, WikiParameters params) {
+		// Update the last header's ending value
+		headerAnnotations.get(headerAnnotations.size() - 1).setEnd(currentOffset);
+		addContent("\n\n)"); // Jump a line
+	}
+
+	@Override
+	public void endSection(int docLevel, int headerLevel, WikiParameters params) {
+		// Retrieve the last unclosed section
+		final Section section = unclosedSections.get(unclosedSections.size() - 1);
+		// Close it
+		section.setEnd(currentOffset);
+		// Move it to the closed sections.
+		unclosedSections.remove(unclosedSections.size() - 1);
+		closedSections.add(section);
 	}
 
 	@Override
@@ -25,21 +77,7 @@ public class RawWikiDocumentListener implements IWemListenerDocument {
 	}
 
 	@Override
-	public void beginHeader(int headerLevel, WikiParameters params) {
-		buffer.append("\n\n"); // Jump a line
-
-	}
-
-	@Override
-	public void beginSection(int docLevel, int headerLevel, WikiParameters params) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void beginSectionContent(int docLevel, int headerLevel, WikiParameters params) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -49,20 +87,13 @@ public class RawWikiDocumentListener implements IWemListenerDocument {
 	}
 
 	@Override
-	public void endHeader(int headerLevel, WikiParameters params) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void endSection(int docLevel, int headerLevel, WikiParameters params) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void endSectionContent(int docLevel, int headerLevel, WikiParameters params) {
 		// TODO Auto-generated method stub
 
+	}
+
+	private void addContent(String str) {
+		buffer.append(str);
+		currentOffset += str.length();
 	}
 }
