@@ -17,4 +17,8 @@ public class RawWikiListener extends AgregatingWemListener {
 	public void addDocumentListener() {
 		fDocumentListener = new RawWikiDocumentListener(textContent, currentOffset, mCas);
 	}
+
+	public void addTableListener() {
+		fTableListener = new RawWikiTableListener(textContent, currentOffset, mCas);
+	}
 }
