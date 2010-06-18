@@ -1,6 +1,6 @@
 package RawWikiListener;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import org.apache.uima.jcas.JCas;
 import org.wikimodel.wem.IWemListenerInline;
@@ -8,91 +8,102 @@ import org.wikimodel.wem.WikiFormat;
 import org.wikimodel.wem.WikiParameters;
 import org.wikimodel.wem.WikiReference;
 
-import uima.wikipedia.types.*;
+import uima.wikipedia.types.Link;
 
-public class RawWikiInlineListener implements IWemListenerInline{
+public class RawWikiInlineListener implements IWemListenerInline {
 	StringBuilder	buffer;
 	JCas			mCas;
-	
-	public RawWikiInlineListener(StringBuilder buffer, JCas mcas) {
+	int				currentOffset;
+	ArrayList<Link>	linkAnnotations;
+
+	public RawWikiInlineListener(StringBuilder buffer, int offset, JCas mcas) {
 		this.buffer = buffer;
-		this.mCas = mcas;
+		mCas = mcas;
+		currentOffset = offset;
+		linkAnnotations = new ArrayList<Link>();
 	}
-	
+
 	@Override
 	public void beginFormat(WikiFormat format) {
-		// on ne fait rien
+		addContent("\n");
 	}
 
 	@Override
 	public void endFormat(WikiFormat format) {
-		// TODO Auto-generated method stub
-		
+		addContent("\n");
 	}
 
 	@Override
 	public void onEscape(String str) {
-		// TODO Auto-generated method stub
-		
+		addContent(str);
 	}
 
 	@Override
 	public void onImage(String ref) {
-		buffer.append("IMAGE :"+ref);
-		
+		// We ignore images
 	}
 
 	@Override
 	public void onImage(WikiReference ref) {
-		buffer.append("IMAGE :"+ref);
-		
+		// We ignore images
 	}
 
 	@Override
 	public void onLineBreak() {
-		buffer.append("\n");		
+		addContent("\n");
 	}
 
 	@Override
 	public void onNewLine() {
-		// TODO Auto-generated method stub
-		
+		addContent("\n");
 	}
 
 	@Override
 	public void onReference(String ref) {
-		buffer.append("reference :"+ref);
-		
+		onReference(new WikiReference(ref));
 	}
 
 	@Override
 	public void onReference(WikiReference ref) {
-		buffer.append("reference :"+ref);
-		
+		// We ignore images
+		// TODO : Make it configurable
+		if (!ref.getLink().startsWith("Image:")) {
+			// Create a new link annotation
+			final Link link = new Link(mCas);
+			link.setBegin(currentOffset);
+			link.setLabel(ref.getLabel());
+			link.setLink(ref.getLink());
+			// Add the label in the content
+			addContent(ref.getLabel());
+			// Add the annotation to the list
+			linkAnnotations.add(link);
+		}
 	}
 
 	@Override
 	public void onSpace(String str) {
-		buffer.append(" ");
-		
+		addContent(str);
 	}
 
 	@Override
 	public void onSpecialSymbol(String str) {
-		buffer.append(str);
-		
+		addContent(str);
 	}
 
 	@Override
 	public void onVerbatimInline(String str, WikiParameters params) {
-		buffer.append("verbatim :"+str);
-		
+		addContent(str);
 	}
 
 	@Override
 	public void onWord(String str) {
-		buffer.append(str);
-		
+		addContent(str);
 	}
 
+	private void addContent(String str) {
+		if (str != null) {
+			buffer.append(str);
+			currentOffset += str.length();
+		}
+	}
 }

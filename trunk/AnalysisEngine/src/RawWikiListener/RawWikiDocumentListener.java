@@ -22,7 +22,7 @@ public class RawWikiDocumentListener implements IWemListenerDocument {
 	public RawWikiDocumentListener(StringBuilder buffer, int offset, JCas mCas) {
 		this.buffer = buffer;
 		this.mCas = mCas;
-		currentOffset = buffer.length();
+		currentOffset = offset;
 		headerAnnotations = new ArrayList<Header>();
 		unclosedSections = new ArrayList<Section>();
 		closedSections = new ArrayList<Section>();
@@ -118,7 +118,9 @@ public class RawWikiDocumentListener implements IWemListenerDocument {
 	}
 
 	private void addContent(String str) {
-		buffer.append(str);
-		currentOffset += str.length();
+		if (str != null) {
+			buffer.append(str);
+			currentOffset += str.length();
+		}
 	}
 }

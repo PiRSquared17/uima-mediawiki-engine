@@ -15,26 +15,23 @@ public class RawWikiListListener implements IWemListenerList {
 	public RawWikiListListener(StringBuilder buffer, int offset, JCas mCas) {
 		this.buffer = buffer;
 		this.mCas = mCas;
-		currentOffset = buffer.length();
+		currentOffset = offset;
 		listContext = new Stack<ListContext>();
 	}
 
 	@Override
 	public void beginDefinitionDescription() {
-		// TODO Auto-generated method stub
-
+		addContent("\n");
 	}
 
 	@Override
 	public void beginDefinitionList(WikiParameters params) {
-		// TODO Auto-generated method stub
-
+		addContent("\n");
 	}
 
 	@Override
 	public void beginDefinitionTerm() {
-		// TODO Auto-generated method stub
-
+		addContent("\n");
 	}
 
 	@Override
@@ -50,14 +47,12 @@ public class RawWikiListListener implements IWemListenerList {
 
 	@Override
 	public void beginQuotation(WikiParameters params) {
-		// TODO Auto-generated method stub
-
+		addContent("\n");
 	}
 
 	@Override
 	public void beginQuotationLine() {
-		// TODO Auto-generated method stub
-
+		addContent("\n");
 	}
 
 	@Override
@@ -97,8 +92,10 @@ public class RawWikiListListener implements IWemListenerList {
 	}
 
 	private void addContent(String str) {
-		buffer.append(str);
-		currentOffset += str.length();
+		if (str != null) {
+			buffer.append(str);
+			currentOffset += str.length();
+		}
 	}
 
 	private class ListContext {
@@ -113,7 +110,7 @@ public class RawWikiListListener implements IWemListenerList {
 		public String getCount() {
 			if (ordered) {
 				count++;
-				return Integer.toString(count) + " ";
+				return Integer.toString(count) + "- ";
 			} else
 				return "* ";
 		}

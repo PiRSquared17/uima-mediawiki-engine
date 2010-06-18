@@ -12,7 +12,7 @@ public class RawWikiTableListener implements IWemListenerTable {
 	public RawWikiTableListener(StringBuilder buffer, int offset, JCas mCas) {
 		this.buffer = buffer;
 		this.mCas = mCas;
-		currentOffset = buffer.length();
+		currentOffset = offset;
 	}
 
 	@Override
@@ -49,7 +49,9 @@ public class RawWikiTableListener implements IWemListenerTable {
 	}
 
 	private void addContent(String str) {
-		buffer.append(str);
-		currentOffset += str.length();
+		if (str != null) {
+			buffer.append(str);
+			currentOffset += str.length();
+		}
 	}
 }
