@@ -1,8 +1,7 @@
 package analysisEngine;
 
+import java.io.StringReader;
 import java.util.ArrayList;
-
-import metaParser.ParsingCoordinator;
 
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -10,10 +9,12 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.wikimodel.wem.WikiParserException;
+import org.wikimodel.wem.mediawiki.MediaWikiParser;
 
+import uima.wikipedia.types.Article;
 import uima.wikipedia.types.Revision;
+import RawWikiListener.RawWikiListener;
 
 /**
  * This class aims to recover a raw view of the CAS (RawWikiText) sent by the Collection Reader, analyzed it and add the
@@ -23,58 +24,80 @@ import uima.wikipedia.types.Revision;
  * @author Maxime Rihouey <maxime.rihouey@univ-nantes.fr>
  */
 public class MWRawText extends JCasAnnotator_ImplBase {
-
-	private ParsingCoordinator		theConverter;
+	private MediaWikiParser			theParser;
+	private RawWikiListener			theListener;
 	protected ArrayList<Revision>	theRevisions	= null;
 
 	@Override
 	public void process(JCas newcas) throws AnalysisEngineProcessException {
-
 		try {
-			// view containing text to parse
+			// Get the view containing the raw text
 			final JCas rawView = newcas.getView("RawWikiText");
 
 			// Initialize the buffer where the text will be stored
-			final StringBuffer casContent = new StringBuffer();
+			final StringBuilder casContent = new StringBuilder();
 
-			// setup the iteration on revisions
+			// Get an iterator for the revisions
 			final FSIterator<Annotation> iteratorRevision = rawView.getAnnotationIndex(Revision.type).iterator();
-			Revision myRevision;
+			// Some storage variables
+			Revision myRevision, newRevision = new Revision(newcas);
 
-			new uima.wikipedia.types.Revision(newcas);
-
-			// Create all the revision annotations
+			// Iterate over the revision annotations
 			while (iteratorRevision.hasNext()) {
-
+				// Get a revision annotation
 				myRevision = (Revision) iteratorRevision.next();
 
-				// the text to parse
+				// Get the text
 				final String myRevisionText = myRevision.getCoveredText();
 
-				// save the starting point to make the revision annotation
-				final Integer start = casContent.length();
+				final int start = casContent.length();
 
-				// initialize the converter
-				theConverter = new ParsingCoordinator();
-				theConverter.setUp(newcas, start);
-				// parse the text
-				theConverter.runParser(myRevisionText);
+				// Initialize the parser
+				theParser = new MediaWikiParser();
+				// Initialize the listener
+				theListener = new RawWikiListener(newcas, start);
+				// Parse the raw text
+				theParser.parse(new StringReader(myRevisionText), theListener);
 
-				// add parsed text to buffer
-				casContent.append(theConverter.getContent());
-				casContent.length();
+				// Add the parsed text to buffer
+				casContent.append(theListener.getContent());
+				final int end = casContent.length();
+
+				// Craft the revision annotation
+				newRevision.setBegin(start);
+				newRevision.setEnd(end);
+				newRevision.setComment(myRevision.getComment());
+				newRevision.setId(myRevision.getId());
+				newRevision.setIsMinor(myRevision.getIsMinor());
+				newRevision.setUser(myRevision.getUser());
+				newRevision.addToIndexes();
+
+				// Get all the annotations crafted by the parser and add them
+				for (final Annotation myAnnotation : theListener.getAnnotations())
+					myAnnotation.addToIndexes();
 
 			}
 
 			// All the textual content is collected now...
 			newcas.setDocumentText(casContent.toString());
 
-			// We can add the Article annotations...
-			final DocumentAnnotation newDocument = new DocumentAnnotation(newcas);
-			newDocument.setLanguage("unknown");
-			newDocument.setBegin(0);
-			newDocument.setEnd(casContent.length() - 1);
-			newDocument.addToIndexes();
+			// We can add the Article annotations using an iterator
+			Article myArticle, newArticle = new Article(newcas);
+			final FSIterator<Annotation> iterateurArticle = rawView.getAnnotationIndex(Article.type).iterator();
+			// We iterate over the Article annotations, there should be only one.
+			while (iterateurArticle.hasNext()) {
+				// Get the annotation
+				myArticle = (Article) iterateurArticle.next();
+				// Copy it to a new one
+				newArticle.setId(myArticle.getId());
+				newArticle.setNamespace(myArticle.getNamespace());
+				newArticle.setPrefix(myArticle.getPrefix());
+				newArticle.setTitle(myArticle.getTitle());
+				newArticle.setBegin(myArticle.getBegin());
+				newArticle.setEnd(myArticle.getEnd());
+				// Add it
+				newArticle.addToIndexes();
+			}
 
 		} catch (final CASException e) {
 			throw new AnalysisEngineProcessException(e);
