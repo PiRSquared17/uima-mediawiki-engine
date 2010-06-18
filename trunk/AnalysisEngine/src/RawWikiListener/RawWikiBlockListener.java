@@ -13,7 +13,6 @@ public class RawWikiBlockListener extends RawWikiListener implements IWemListene
 	ArrayList<Paragraph>	paragraphAnnotations;
 
 	public RawWikiBlockListener() {
-		super();
 		paragraphAnnotations = new ArrayList<Paragraph>();
 	}
 

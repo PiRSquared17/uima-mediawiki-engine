@@ -3,7 +3,6 @@ package RawWikiListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.wikimodel.wem.IWemListenerInline;
 import org.wikimodel.wem.WikiFormat;
@@ -12,19 +11,14 @@ import org.wikimodel.wem.WikiReference;
 
 import uima.wikipedia.types.Link;
 
-public class RawWikiInlineListener implements IWemListenerInline {
-	StringBuilder	buffer;
-	JCas			mCas;
-	int				currentOffset;
+public class RawWikiInlineListener extends RawWikiListener implements IWemListenerInline {
 	ArrayList<Link>	linkAnnotations;
 
-	public RawWikiInlineListener(StringBuilder buffer, int offset, JCas mcas) {
-		this.buffer = buffer;
-		mCas = mcas;
-		currentOffset = offset;
+	public RawWikiInlineListener() {
 		linkAnnotations = new ArrayList<Link>();
 	}
 
+	@Override
 	public List<Annotation> getAnnotations() {
 		ArrayList<Annotation> temp = new ArrayList<Annotation>();
 		temp.addAll(linkAnnotations);
@@ -110,7 +104,7 @@ public class RawWikiInlineListener implements IWemListenerInline {
 
 	private void addContent(String str) {
 		if (str != null) {
-			buffer.append(str);
+			textContent.append(str);
 			currentOffset += str.length();
 		}
 	}

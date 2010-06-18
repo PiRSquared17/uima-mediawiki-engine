@@ -3,7 +3,6 @@ package RawWikiListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.wikimodel.wem.IWemListenerDocument;
 import org.wikimodel.wem.WikiParameters;
@@ -11,23 +10,18 @@ import org.wikimodel.wem.WikiParameters;
 import uima.wikipedia.types.Header;
 import uima.wikipedia.types.Section;
 
-public class RawWikiDocumentListener implements IWemListenerDocument {
-	StringBuilder	buffer;
-	JCas			mCas;
-	int				currentOffset;
+public class RawWikiDocumentListener extends RawWikiListener implements IWemListenerDocument {
 	List<Header>	headerAnnotations;
 	List<Section>	unclosedSections;
 	List<Section>	closedSections;
 
-	public RawWikiDocumentListener(StringBuilder buffer, int offset, JCas mCas) {
-		this.buffer = buffer;
-		this.mCas = mCas;
-		currentOffset = offset;
+	public RawWikiDocumentListener() {
 		headerAnnotations = new ArrayList<Header>();
 		unclosedSections = new ArrayList<Section>();
 		closedSections = new ArrayList<Section>();
 	}
 
+	@Override
 	public List<Annotation> getAnnotations() {
 		ArrayList<Annotation> annotations = new ArrayList<Annotation>();
 		// Close the unclosed sections
@@ -119,7 +113,7 @@ public class RawWikiDocumentListener implements IWemListenerDocument {
 
 	private void addContent(String str) {
 		if (str != null) {
-			buffer.append(str);
+			textContent.append(str);
 			currentOffset += str.length();
 		}
 	}

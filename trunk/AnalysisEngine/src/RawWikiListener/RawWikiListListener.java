@@ -2,20 +2,13 @@ package RawWikiListener;
 
 import java.util.Stack;
 
-import org.apache.uima.jcas.JCas;
 import org.wikimodel.wem.IWemListenerList;
 import org.wikimodel.wem.WikiParameters;
 
-public class RawWikiListListener implements IWemListenerList {
-	StringBuilder				buffer;
-	JCas						mCas;
-	int							currentOffset;
+public class RawWikiListListener extends RawWikiListener implements IWemListenerList {
 	private Stack<ListContext>	listContext;
 
-	public RawWikiListListener(StringBuilder buffer, int offset, JCas mCas) {
-		this.buffer = buffer;
-		this.mCas = mCas;
-		currentOffset = offset;
+	public RawWikiListListener() {
 		listContext = new Stack<ListContext>();
 	}
 
@@ -93,7 +86,7 @@ public class RawWikiListListener implements IWemListenerList {
 
 	private void addContent(String str) {
 		if (str != null) {
-			buffer.append(str);
+			textContent.append(str);
 			currentOffset += str.length();
 		}
 	}

@@ -26,10 +26,10 @@ public class RawWikiListener extends AgregatingWemListener {
 		RawWikiListener.mCas = mCas;
 		textContent = new StringBuilder();
 		currentOffset = offset;
-		fDocumentListener = new RawWikiDocumentListener(textContent, currentOffset, mCas);
-		fTableListener = new RawWikiTableListener(textContent, currentOffset, mCas);
-		fListListener = new RawWikiListListener(textContent, currentOffset, mCas);
-		fInlineListener = new RawWikiInlineListener(textContent, currentOffset, mCas);
+		fDocumentListener = new RawWikiDocumentListener();
+		fTableListener = new RawWikiTableListener();
+		fListListener = new RawWikiListListener();
+		fInlineListener = new RawWikiInlineListener();
 		fBlockListener = new RawWikiBlockListener();
 		fSemanticListener = new RawWikiSemanticListener();
 		fProgrammingListener = new RawWikiProgrammingListener();
