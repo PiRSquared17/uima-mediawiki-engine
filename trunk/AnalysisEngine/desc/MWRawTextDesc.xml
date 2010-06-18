@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationNameanalysisEngine.MWRawText</annotatorImplementationName>
+  <annotatorImplementationName>analysisEngine.MWRawText</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>MWRawTextDesc</name>
     <description>parse la syntaxe wiki.</description>
