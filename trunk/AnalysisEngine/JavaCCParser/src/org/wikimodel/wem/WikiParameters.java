@@ -50,7 +50,7 @@ public class WikiParameters implements Iterable<WikiParameter> {
 		if (str == null)
 			return EMPTY;
 		str = str.trim();
-		if ("".equals(str))
+		if (str.isEmpty())
 			return EMPTY;
 		return new WikiParameters(str, escapeChar);
 	}
@@ -158,9 +158,8 @@ public class WikiParameters implements Iterable<WikiParameter> {
 				final WikiParameter[] list = fMap.get(key);
 				final int len = list != null ? list.length : 0;
 				final WikiParameter[] newList = new WikiParameter[len + 1];
-				if (len > 0) {
+				if (len > 0)
 					System.arraycopy(list, 0, newList, 0, len);
-				}
 				newList[len] = param;
 				fMap.put(key, newList);
 			}
@@ -211,9 +210,8 @@ public class WikiParameters implements Iterable<WikiParameter> {
 	public WikiParameters remove(String key) {
 		int pos = 0;
 		for (final WikiParameter param : fList) {
-			if (key.equals(param.getKey())) {
+			if (key.equals(param.getKey()))
 				break;
-			}
 			pos++;
 		}
 		WikiParameters result = this;
