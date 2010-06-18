@@ -1,18 +1,18 @@
 package uima.wikipedia.types;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MWArticle {
-	public final String					title;
-	public final int					namespace;
-	public final int					id;
-	public final ArrayList<MWRevision>	revisions;
+	public final String				title;
+	public final int				namespace;
+	public final int				id;
+	public final List<MWRevision>	revisions;
 
-	public MWArticle(String title, int namespace, int id, ArrayList<MWRevision> revisions) {
+	public MWArticle(String title, int namespace, int id, List<MWRevision> list) {
 		this.namespace = namespace;
 		this.title = title;
 		this.id = id;
-		this.revisions = revisions;
+		revisions = list;
 	}
 
 	@Override

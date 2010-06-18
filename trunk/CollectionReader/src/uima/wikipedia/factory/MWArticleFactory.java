@@ -1,6 +1,7 @@
 package uima.wikipedia.factory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import uima.wikipedia.types.MWArticle;
 import uima.wikipedia.types.MWRevision;
@@ -36,7 +37,7 @@ public class MWArticleFactory {
 	 * @return a new instance of MWArticle as crafted by the factory.
 	 */
 	public final MWArticle newInstance() {
-		return new MWArticle(a_title, a_namespace, a_id, a_revisions);
+		return new MWArticle(a_title, a_namespace, a_id, Collections.unmodifiableList(a_revisions));
 	}
 
 	/**
@@ -94,9 +95,8 @@ public class MWArticleFactory {
 	public final void latestOnly() {
 		MWRevision latest = a_revisions.get(0);
 		for (final MWRevision rev : a_revisions)
-			if (rev.compareTo(latest) > 0) {
+			if (rev.compareTo(latest) > 0)
 				latest = rev;
-			}
 		a_revisions.clear();
 		a_revisions.add(latest);
 	}
