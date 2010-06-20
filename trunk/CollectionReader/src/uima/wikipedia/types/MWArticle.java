@@ -8,8 +8,11 @@ import java.util.List;
  * fields without fearing user's modifications.
  * <p>
  * It holds the title of the article (also know as the page's title), the namespace index associated with that
- * page (for more info on this, see {@link types.MWSiteInfo}), the article's id and the list of it's
- * revisions. The revisions contain the actual text.
+ * page (for more info on this, see {@link uima.wikipedia.types.MWSiteInfo}), the article's id and the list of
+ * it's revisions. The revisions contain the actual text.
+ * <p>
+ * Articles are crafted by the article factory . Some fields might be initialized with default values (see
+ * {@link uima.wikipedia.factory.MWArticleFactory} for more details).
  * 
  * @author Maxime Bury <Maxime.bury@gmail.com>
  * @see MWRevision
@@ -21,6 +24,19 @@ public final class MWArticle {
 	public final int				id;
 	public final List<MWRevision>	revisions;
 
+	/**
+	 * Constructs a new MWArticle object. Once initialized, the fields can't be modified anymore, thus making
+	 * this object immutable.
+	 * 
+	 * @param title
+	 *            The article's title
+	 * @param namespace
+	 *            The article's namespace
+	 * @param id
+	 *            The article's id
+	 * @param revisions
+	 *            The list of the article's revision. This list is made immutable as well.
+	 */
 	public MWArticle(String title, int namespace, int id, List<MWRevision> revisions) {
 		this.namespace = namespace;
 		this.title = title;

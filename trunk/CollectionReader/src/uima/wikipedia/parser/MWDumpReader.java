@@ -23,9 +23,9 @@ import uima.wikipedia.types.MWSiteInfo;
  * namespaces) if it's present.
  * 
  * @author Maxime Bury <Maxime.bury@gmail.com>
- * @see types.MWSiteInfo
- * @see types.MWArticle
- * @see types.MWRevision
+ * @see uima.wikipedia.types.MWSiteInfo
+ * @see uima.wikipedia.types.MWArticle
+ * @see uima.wikipedia.types.MWRevision
  */
 public class MWDumpReader {
 	/** Parser variables */
@@ -75,10 +75,10 @@ public class MWDumpReader {
 
 	/**
 	 * This method returns the last computed page. It should only be used after a successful call to the
-	 * {@link hasPage()} method.
+	 * {@link #hasPage()} method.
 	 * 
 	 * @return the last computed page
-	 * @see types.MWArticle
+	 * @see uima.wikipedia.types.MWArticle
 	 */
 	public MWArticle getPage() {
 		pageComputed = false;
@@ -87,18 +87,18 @@ public class MWDumpReader {
 
 	/**
 	 * This method return the site info (containing namespaces in particular). It should only be used after a
-	 * successful call to {@link hasSiteInfo()}. Otherwise, the fields of the returned object will have a
+	 * successful call to {@link #hasSiteInfo()}. Otherwise, the fields of the returned object will have a
 	 * default value.
 	 * 
 	 * @return the site info
-	 * @see types.MWSiteInfo
+	 * @see uima.wikipedia.types.MWSiteInfo
 	 */
 	public MWSiteInfo getSiteInfo() {
 		return theInfo;
 	}
 
 	/**
-	 * A successful call to this method ensures you that a call to {@link getSiteInfo()} will return relevant
+	 * A successful call to this method ensures you that a call to {@link #getSiteInfo()} will return relevant
 	 * information.
 	 * 
 	 * @return <code>true</code> if the parser has managed to compute the site info; <code>false</code>
@@ -109,8 +109,8 @@ public class MWDumpReader {
 	}
 
 	/**
-	 * A successful call to this method ensures you that a call to {@link getPage()} will succeed as well. The
-	 * parser tries to compute a page, taking in account the filters, until it succeeds to compute one or
+	 * A successful call to this method ensures you that a call to {@link #getPage()} will succeed as well.
+	 * The parser tries to compute a page, taking in account the filters, until it succeeds to compute one or
 	 * reaches the end of the document.
 	 * 
 	 * @return <code>true</code> if the parser has managed to compute a page; <code>false</code> otherwise.

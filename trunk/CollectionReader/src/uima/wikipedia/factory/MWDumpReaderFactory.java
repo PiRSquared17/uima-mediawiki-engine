@@ -49,8 +49,8 @@ public class MWDumpReaderFactory {
 	 * Initialize the factory with the provided XML input stream. You may now get a basic parser by calling
 	 * {@link #getParser()}
 	 * 
-	 * @param Tools
-	 *            .openInputFile(theXMLDump) the XML stream to read from.
+	 * @param theXMLDump
+	 *            the XML stream to read from.
 	 * @throws FactoryConfigurationError
 	 *             if something goes wrong.
 	 */
@@ -70,14 +70,15 @@ public class MWDumpReaderFactory {
 
 	/**
 	 * <p>
-	 * Returns the current parser as crafted by the factory. It includes the filter(s) that you may have specified. You
-	 * may get as many as you want. You may also get a different one by adding new filters. You may as well get the
-	 * default one after calling {@link #clearFilters()}
+	 * Returns the current parser as crafted by the factory. It includes the filter(s) that you may have
+	 * specified. You may get as many as you want. You may also get a different one by adding new filters. You
+	 * may as well get the default one after calling {@link #clearFilters()}
 	 * <p>
-	 * Even though you can get several parsers at the same time, it is not warranted that they are threadsafe. Watchout.
+	 * Even though you can get several parsers at the same time, it is not warranted that they are threadsafe.
+	 * Watchout.
 	 * <p>
-	 * During the initialisation of the parser, it skips some unuseful heading elements. If the input stream is
-	 * malformed it will raise a parse exception.
+	 * During the initialisation of the parser, it skips some unuseful heading elements. If the input stream
+	 * is malformed it will raise a parse exception.
 	 * 
 	 * @return a new parser for the provided input stream
 	 * @throws MWParseException
@@ -131,7 +132,8 @@ public class MWDumpReaderFactory {
 	 *            the regular expression you want the titles to match
 	 * @throws XMLStreamException
 	 *             if the parser encounters a malformation in the underlying XML document.
-	 * @see <a href="http://java.sun.com/javase/6/docs/api/java/util/regex/Pattern.html#sum"> RegEx sum up </a>
+	 * @see <a href="http://java.sun.com/javase/6/docs/api/java/util/regex/Pattern.html#sum"> RegEx sum up
+	 *      </a>
 	 */
 	public void addTitleRegexFilter(String regex) throws XMLStreamException {
 		streamReader = factory.createFilteredReader(streamReader, new TitleRegexFilter(regex));
