@@ -10,5 +10,6 @@
 	<classpathentry kind="var" path="UIMA2.3_HOME/lib/uimaj-bootstrap.jar"/>
 	<classpathentry kind="var" path="UIMA_HOME"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/MWUimaEngine"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

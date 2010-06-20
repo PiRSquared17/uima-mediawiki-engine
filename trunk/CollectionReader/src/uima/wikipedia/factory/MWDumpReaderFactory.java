@@ -23,10 +23,10 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import uima.wikipedia.parser.MWDumpReader;
-import uima.wikipedia.parser.MWParseException;
 import uima.wikipedia.parser.MWRevisionFilter;
 import uima.wikipedia.parser.MWTimeStampFilter;
 import uima.wikipedia.parser.MWTitleFilter;
+import uima.wikipedia.parser.MWDumpReader.MWParseException;
 import uima.wikipedia.types.MWArticle;
 import uima.wikipedia.types.MWSiteInfo;
 import uima.wikipedia.util.Tools;
@@ -82,8 +82,9 @@ public class MWDumpReaderFactory {
 	 * @return a new parser for the provided input stream
 	 * @throws MWParseException
 	 *             if the parser encounters a malformation in the underlying XML document.
+	 * @throws uima.wikipedia.parser.MWDumpReader.MWParseException
 	 */
-	public MWDumpReader getParser() throws MWParseException {
+	public MWDumpReader getParser() throws MWParseException, uima.wikipedia.parser.MWDumpReader.MWParseException {
 		if (latestOnly)
 			return new MWDumpReaderLatestOnly(streamReader);
 		return new MWDumpReader(streamReader);
@@ -111,9 +112,8 @@ public class MWDumpReaderFactory {
 		while (line != null) {
 			if (!line.startsWith("#")) {
 				title = line.replace("_", " ").trim();
-				if (!title.isEmpty()) {
+				if (!title.isEmpty())
 					myList.add(title);
-				}
 			}
 			line = input.readLine();
 		}
@@ -158,9 +158,8 @@ public class MWDumpReaderFactory {
 			keyList.add(nskey);
 		}
 		for (final int key : keyList)
-			if (theSiteInfo.namespaces.hasIndex(key)) {
+			if (theSiteInfo.namespaces.hasIndex(key))
 				myList.add(theSiteInfo.namespaces.getPrefix(key));
-			}
 
 		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(myList, exclude));
 	}
@@ -176,9 +175,8 @@ public class MWDumpReaderFactory {
 		while (it.hasNext()) {
 			ns = it.next();
 			// Talk namespaces have a odd key
-			if (ns.getKey() > 0 && ns.getKey() % 2 == 1) {
+			if (ns.getKey() > 0 && ns.getKey() % 2 == 1)
 				excludedNS.add(ns.getValue());
-			}
 		}
 		// We add the concerned namespaces to the exclude list
 		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(excludedNS, true));
@@ -191,9 +189,8 @@ public class MWDumpReaderFactory {
 
 		while (line != null) {
 			line = line.trim();
-			if (line.length() > 0 && !line.startsWith("#")) {
+			if (line.length() > 0 && !line.startsWith("#"))
 				myList.add(Integer.parseInt(line));
-			}
 			line = input.readLine();
 		}
 		input.close();

@@ -7,7 +7,7 @@ import javax.xml.stream.XMLStreamException;
 
 import uima.wikipedia.factory.MWDumpReaderFactory;
 import uima.wikipedia.parser.MWDumpReader;
-import uima.wikipedia.parser.MWParseException;
+import uima.wikipedia.parser.MWDumpReader.MWParseException;
 
 public class Test {
 

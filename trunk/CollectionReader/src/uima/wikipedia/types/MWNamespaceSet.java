@@ -40,13 +40,4 @@ public class MWNamespaceSet {
 	public Iterator<Entry<Integer, String>> orderedEntries() {
 		return namespaces.entrySet().iterator();
 	}
-
-	@Override
-	public String toString() {
-		final StringBuilder result = new StringBuilder();
-		for (final String name : namespaces.values()) {
-			result.append(name).append('\n');
-		}
-		return result.toString();
-	}
 }

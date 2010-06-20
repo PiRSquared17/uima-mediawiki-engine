@@ -20,28 +20,6 @@ public class MWRevision implements Comparable<MWRevision> {
 	}
 
 	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("[Id = ");
-		builder.append(id);
-		builder.append(" | Timestamp = ");
-		builder.append(timestamp.getTime().toString());
-		builder.append(" | Contributor = ");
-		builder.append(contributor);
-		builder.append(" | Minor = ");
-		builder.append(minor);
-		builder.append("]");
-		builder.append('\n');
-		builder.append("Comment : ");
-		builder.append(comment);
-		builder.append('\n');
-		builder.append('\n');
-		builder.append(text);
-		builder.append('\n');
-		return builder.toString();
-	}
-
-	@Override
 	public int compareTo(MWRevision o) {
 		return timestamp.compareTo(o.timestamp);
 	}

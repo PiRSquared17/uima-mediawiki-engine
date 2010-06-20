@@ -19,7 +19,7 @@ import org.apache.uima.util.ProgressImpl;
 
 import uima.wikipedia.factory.MWDumpReaderFactory;
 import uima.wikipedia.parser.MWDumpReader;
-import uima.wikipedia.parser.MWParseException;
+import uima.wikipedia.parser.MWDumpReader.MWParseException;
 import uima.wikipedia.types.Article;
 import uima.wikipedia.types.MWArticle;
 import uima.wikipedia.types.MWRevision;
@@ -123,12 +123,7 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 
 	@Override
 	public void close() throws IOException {
-		try {
-			parser.close();
-		} catch (final XMLStreamException e) {
-			// Too bad, the liberation of the parser's ressource failed.
-			// The GC will have to handle it himself.
-		}
+		parser.close();
 	}
 
 	private void configureFilters() throws ResourceInitializationException {
