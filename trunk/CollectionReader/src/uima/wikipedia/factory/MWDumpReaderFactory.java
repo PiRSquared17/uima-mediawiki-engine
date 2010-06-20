@@ -11,10 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import javax.xml.parsers.FactoryConfigurationError;
@@ -28,7 +27,7 @@ import uima.wikipedia.parser.MWTimeStampFilter;
 import uima.wikipedia.parser.MWTitleFilter;
 import uima.wikipedia.parser.MWDumpReader.MWParseException;
 import uima.wikipedia.types.MWArticle;
-import uima.wikipedia.types.MWSiteInfo;
+import uima.wikipedia.types.MWSiteinfo;
 import uima.wikipedia.util.Tools;
 
 public class MWDumpReaderFactory {
@@ -139,7 +138,7 @@ public class MWDumpReaderFactory {
 		streamReader = factory.createFilteredReader(streamReader, new TitleRegexFilter(regex));
 	}
 
-	public void addNamespaceFilter(MWSiteInfo theSiteInfo, String cfgNamespaces) throws XMLStreamException {
+	public void addNamespaceFilter(MWSiteinfo theSiteInfo, String cfgNamespaces) throws XMLStreamException {
 		int nskey;
 		boolean exclude = false;
 		final List<String> myList = new ArrayList<String>();
@@ -166,22 +165,18 @@ public class MWDumpReaderFactory {
 		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(myList, exclude));
 	}
 
-	public void addExcludeTalkFilter(MWSiteInfo theSiteInfo) throws XMLStreamException {
+	public void addExcludeTalkFilter(MWSiteinfo theSiteInfo) throws XMLStreamException {
 		// A list of discussion namespace to ignore
-		final ArrayList<String> excludedNS = new ArrayList<String>();
-		// Iterator over the namespace object
-		final Iterator<Entry<Integer, String>> it = theSiteInfo.namespaces.orderedEntries();
-		// A variable to store each couple (key, stringvalue)
-		Entry<Integer, String> ns;
+		final ArrayList<String> excludedNamespace = new ArrayList<String>();
+		// The map containing the (key, namespace) couples.
+		final Map<Integer, String> namespaceMap = theSiteInfo.namespaces.getMap();
 
-		while (it.hasNext()) {
-			ns = it.next();
-			// Talk namespaces have a odd key
-			if (ns.getKey() > 0 && ns.getKey() % 2 == 1)
-				excludedNS.add(ns.getValue());
-		}
-		// We add the concerned namespaces to the exclude list
-		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(excludedNS, true));
+		for (int key : namespaceMap.keySet())
+			if (key > 0 && key % 2 == 1)
+				// We add the concerned namespaces to the exclude list
+				excludedNamespace.add(namespaceMap.get(key));
+		// Create the filter with the proper list of namespaces.
+		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(excludedNamespace, true));
 	}
 
 	public void addRevisionFilter(String cfgRevisionList) throws IOException, XMLStreamException {

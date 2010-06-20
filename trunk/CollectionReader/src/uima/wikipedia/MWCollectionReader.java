@@ -23,7 +23,7 @@ import uima.wikipedia.parser.MWDumpReader.MWParseException;
 import uima.wikipedia.types.Article;
 import uima.wikipedia.types.MWArticle;
 import uima.wikipedia.types.MWRevision;
-import uima.wikipedia.types.MWSiteInfo;
+import uima.wikipedia.types.MWSiteinfo;
 import uima.wikipedia.types.Revision;
 
 public class MWCollectionReader extends CollectionReader_ImplBase {
@@ -52,7 +52,7 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 	private static MWDumpReader			parser;
 
 	/** Website info, useful to recover the namespaces */
-	private static MWSiteInfo			theSiteInfo;
+	private static MWSiteinfo			theSiteInfo;
 
 	@Override
 	public void initialize() throws ResourceInitializationException {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import uima.wikipedia.types.MWArticle;
 import uima.wikipedia.types.MWRevision;
-import uima.wikipedia.types.MWSiteInfo;
+import uima.wikipedia.types.MWSiteinfo;
 
 /**
  * This class is a factory for the articles. It is used for two main purposes :
@@ -31,13 +31,13 @@ public class MWArticleFactory {
 	private ArrayList<MWRevision>	m_revisions;
 
 	// Website info
-	private final MWSiteInfo		m_siteinfo;
+	private final MWSiteinfo		m_siteinfo;
 
 	/**
 	 * Default initialisation of the fields. The title is set to the empty string, the namespace is set to 0
 	 * (default namespace), the id is set to -1 and the revision list is initialized (empty).
 	 */
-	public MWArticleFactory(MWSiteInfo siteinfo) {
+	public MWArticleFactory(MWSiteinfo siteinfo) {
 		// Default initialisation
 		m_title = "";
 		m_namespace = 0;

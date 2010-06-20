@@ -3,6 +3,7 @@ package uima.wikipedia.parser;
 import static javax.xml.stream.XMLStreamConstants.CHARACTERS;
 import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 import javax.xml.stream.XMLStreamException;
@@ -11,8 +12,7 @@ import javax.xml.stream.XMLStreamReader;
 import uima.wikipedia.factory.MWArticleFactory;
 import uima.wikipedia.factory.MWRevisionFactory;
 import uima.wikipedia.types.MWArticle;
-import uima.wikipedia.types.MWNamespaceSet;
-import uima.wikipedia.types.MWSiteInfo;
+import uima.wikipedia.types.MWSiteinfo;
 
 /**
  * This class is the core of the Collection reader component. It's dedicated to extract the relevant data from
@@ -23,7 +23,7 @@ import uima.wikipedia.types.MWSiteInfo;
  * namespaces) if it's present.
  * 
  * @author Maxime Bury <Maxime.bury@gmail.com>
- * @see uima.wikipedia.types.MWSiteInfo
+ * @see uima.wikipedia.types.MWSiteinfo
  * @see uima.wikipedia.types.MWArticle
  * @see uima.wikipedia.types.MWRevision
  */
@@ -34,7 +34,7 @@ public class MWDumpReader {
 	protected final MWArticleFactory	thePage;
 	protected final MWRevisionFactory	theRevision;
 	/** Data */
-	protected MWSiteInfo				theInfo;
+	protected MWSiteinfo				theInfo;
 	/** Some flags */
 	protected boolean					endOfDocumentReached;
 	protected boolean					hasSiteInfo;
@@ -91,9 +91,9 @@ public class MWDumpReader {
 	 * default value.
 	 * 
 	 * @return the site info
-	 * @see uima.wikipedia.types.MWSiteInfo
+	 * @see uima.wikipedia.types.MWSiteinfo
 	 */
-	public MWSiteInfo getSiteInfo() {
+	public MWSiteinfo getSiteInfo() {
 		return theInfo;
 	}
 
@@ -270,7 +270,7 @@ public class MWDumpReader {
 		String base = "";
 		String generator = "";
 		String thecase = "";
-		final MWNamespaceSet namespaces = new MWNamespaceSet();
+		HashMap<Integer, String> namespaces = new HashMap<Integer, String>();
 		// A flag
 		boolean endSiteInfo = false;
 
@@ -302,7 +302,7 @@ public class MWDumpReader {
 							nsIndex = Integer.parseInt(streamReader.getAttributeValue(0));
 							streamReader.next();
 							nsName = nsIndex == 0 ? "" : streamReader.getText();
-							namespaces.add(nsIndex, nsName);
+							namespaces.put(nsIndex, nsName);
 							nextOpeningTag(1);
 						}
 						endSiteInfo = true;
@@ -320,7 +320,7 @@ public class MWDumpReader {
 			endOfDocumentReached = true;
 			throw new MWParseException("The parser encountered a malformation in the input file. " + e.getMessage());
 		}
-		theInfo = new MWSiteInfo(sitename, base, generator, thecase, namespaces);
+		theInfo = new MWSiteinfo(sitename, base, generator, thecase, namespaces);
 	}
 
 	/**
