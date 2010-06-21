@@ -1,0 +1,6 @@
+uima.wikipedia
+uima.wikipedia.factory
+uima.wikipedia.parser
+uima.wikipedia.types
+uima.wikipedia.util
+uima.wikipedia.util.compression.bz2
