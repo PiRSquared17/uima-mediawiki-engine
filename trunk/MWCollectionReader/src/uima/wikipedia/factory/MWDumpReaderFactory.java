@@ -41,7 +41,7 @@ import uima.wikipedia.util.Tools;
  * compare. All the filters will be detailed further in this documentation.
  * 
  * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
- * @see uima.wikipedia.type.MWDumpReader MWDumpReader
+ * @see uima.wikipedia.parser.MWDumpReader MWDumpReader
  */
 public class MWDumpReaderFactory {
 	/** The input stream we are reading from */
@@ -321,7 +321,7 @@ public class MWDumpReaderFactory {
 	 * This method works exactly the same way as the {@link #addBeforeTimestampFilter(String)} method, except
 	 * for the fact that here only the revisions contributed after the given timestamp are considered valid.
 	 * 
-	 * @param cfgBeforeTimestamp
+	 * @param cfgAfterTimestamp
 	 *            The timestamp to check for.
 	 * @throws ParseException
 	 *             If the provided timestamp doesn't follow the format specification.
