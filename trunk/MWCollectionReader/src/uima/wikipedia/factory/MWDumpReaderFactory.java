@@ -30,6 +30,19 @@ import uima.wikipedia.types.MWArticle;
 import uima.wikipedia.types.MWSiteinfo;
 import uima.wikipedia.util.Tools;
 
+/**
+ * This class is the factory for the parser. It's designed mainly to handle smoothly the process of adding
+ * filters to the XML stream before it's actually processed by the parser. It also serves as the entry point
+ * to open the file we will be reading from.
+ * <p>
+ * The filters are almost all at the XML stream level. There is of course an exception : the "latest only"
+ * filter that allows you to keep only the latest revision in an article, is at the parser level. That is
+ * because at the XML stream level, we only see one revision at a time, and so we don't have two of them to
+ * compare. All the filters will be detailed further in this documentation.
+ * 
+ * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
+ * @see uima.wikipedia.type.MWDumpReader MWDumpReader
+ */
 public class MWDumpReaderFactory {
 	/** The input stream we are reading from */
 	private InputStream				inputstream;
@@ -37,9 +50,7 @@ public class MWDumpReaderFactory {
 	private final File				theDump;
 	/** The factory that will provide us with various XMLStreamReaders */
 	private final XMLInputFactory	factory;
-	/**
-	 * The XMLStreamReader that will be augmented with filters and passed on the the actual parser
-	 */
+	/** The XMLStreamReader that will be augmented with filters and passed on the the actual parser */
 	private XMLStreamReader			streamReader;
 	/** Some other variables */
 	private boolean					latestOnly;
@@ -54,9 +65,12 @@ public class MWDumpReaderFactory {
 	 *             if something goes wrong.
 	 */
 	public MWDumpReaderFactory(File theXMLDump) throws FactoryConfigurationError {
+		// Save a reference to the file
 		theDump = theXMLDump;
 		try {
+			// Open the XML file
 			inputstream = Tools.openInputFile(theXMLDump);
+			// Create a basic XMLStreamReader reading from it.
 			factory = XMLInputFactory.newInstance();
 			streamReader = factory.createXMLStreamReader(inputstream);
 		} catch (final XMLStreamException e) {
@@ -64,24 +78,25 @@ public class MWDumpReaderFactory {
 		} catch (final IOException e) {
 			throw new FactoryConfigurationError(e);
 		}
+		// Set the latesOnly flag to false by default (we keep all the revisions)
 		latestOnly = false;
 	}
 
 	/**
 	 * <p>
 	 * Returns the current parser as crafted by the factory. It includes the filter(s) that you may have
-	 * specified. You may get as many as you want. You may also get a different one by adding new filters. You
-	 * may as well get the default one after calling {@link #clearFilters()}
+	 * specified. You may as well get the default one after calling {@link #clearFilters()}
 	 * <p>
-	 * Even though you can get several parsers at the same time, it is not warranted that they are threadsafe.
-	 * Watchout.
+	 * Even though you could in theory get several parsers from the same factory, this is not a good idea.
+	 * They would all be reading from the same XML stream, and they are not designed for concurrent use. This
+	 * would most likely result in each parser reporting the malformedness of the XML stream.
 	 * <p>
 	 * During the initialisation of the parser, it skips some unuseful heading elements. If the input stream
 	 * is malformed it will raise a parse exception.
 	 * 
-	 * @return a new parser for the provided input stream
+	 * @return A new parser for the provided input stream.
 	 * @throws MWParseException
-	 *             if the parser encounters a malformation in the underlying XML document.
+	 *             If the parser encounters a malformation in the underlying XML document.
 	 * @throws uima.wikipedia.parser.MWDumpReader.MWParseException
 	 */
 	public MWDumpReader getParser() throws MWParseException, uima.wikipedia.parser.MWDumpReader.MWParseException {
@@ -91,18 +106,41 @@ public class MWDumpReaderFactory {
 	}
 
 	/**
-	 * Clears all the filters that may have been applied to the XML stream.
+	 * Clears all the filters that may have been applied to the XML stream. It does so by closing the current
+	 * streams and creating new ones from the original file. This also has the effect to reset the cursors to
+	 * 0.
 	 * 
 	 * @throws XMLStreamException
-	 *             if the parser encounters a malformation in the underlying XML document.
+	 *             If the parser encounters a malformation in the underlying XML document.
 	 * @throws IOException
+	 *             If the factory fails to open the dump file again.
 	 */
 	public void clearFilters() throws XMLStreamException, IOException {
+		// Close the current streams
 		inputstream.close();
+		streamReader.close();
+		// Initialize new ones
 		inputstream = Tools.openInputFile(theDump);
 		streamReader = factory.createXMLStreamReader(inputstream);
 	}
 
+	/**
+	 * This method allows you to set up a title filter easily. The titles you want to keep should be place in
+	 * a text file, one by line. You may comment a line with a '#' character at its beginning. You may also
+	 * use underscores instead of whitespaces in the titles.
+	 * <p>
+	 * The exact flag allows you to specify if the match should be exact or not. An exact match means that
+	 * only the pages with the specified title and which are in the default namespace, will get through.
+	 * 
+	 * @param cfgList
+	 *            The file we are reading from (containing the list of titles)
+	 * @param exact
+	 *            A flag indicating if the match should be exact or not
+	 * @throws IOException
+	 *             If we fail to open the file containing the title list
+	 * @throws XMLStreamException
+	 *             If we fail to create the new filtered XML stream reader.
+	 */
 	public void addTitleListFilter(String cfgList, boolean exact) throws IOException, XMLStreamException {
 		String line, title;
 		final List<String> myList = new ArrayList<String>();
@@ -110,27 +148,32 @@ public class MWDumpReaderFactory {
 
 		line = input.readLine();
 		while (line != null) {
+			// If the line isn't commented
 			if (!line.startsWith("#")) {
+				// Replace the underscores by spaces and trim
 				title = line.replace("_", " ").trim();
+				// Build the list
 				if (!title.isEmpty())
 					myList.add(title);
 			}
 			line = input.readLine();
 		}
 		input.close();
+		// Create a new filtered stream
 		streamReader = factory.createFilteredReader(streamReader, new TitleListFilter(myList, exact));
 	}
 
 	/**
 	 * <p>
-	 * Filters out all the pages which titles do not match the provided regex.
+	 * Filters out all the pages which titles do not match the provided regular expression. The match takes
+	 * place only on the actual title, we don't consider the eventual namespace prefix.
 	 * <p>
-	 * Example : "Foo bar.*" will allow all the pages with a title starting with "Foo bar"
+	 * Example : "^Foo bar.*" will allow all the pages with a title starting with "Foo bar"
 	 * 
 	 * @param regex
-	 *            the regular expression you want the titles to match
+	 *            The regular expression you want the titles to match
 	 * @throws XMLStreamException
-	 *             if the parser encounters a malformation in the underlying XML document.
+	 *             If we fail to create the new filtered XML stream reader.
 	 * @see <a href="http://java.sun.com/javase/6/docs/api/java/util/regex/Pattern.html#sum"> RegEx sum up
 	 *      </a>
 	 */
@@ -138,6 +181,11 @@ public class MWDumpReaderFactory {
 		streamReader = factory.createFilteredReader(streamReader, new TitleRegexFilter(regex));
 	}
 
+	/**
+	 * @param theSiteInfo
+	 * @param cfgNamespaces
+	 * @throws XMLStreamException
+	 */
 	public void addNamespaceFilter(MWSiteinfo theSiteInfo, String cfgNamespaces) throws XMLStreamException {
 		int nskey;
 		boolean exclude = false;
@@ -220,6 +268,8 @@ public class MWDumpReaderFactory {
 
 		@Override
 		protected final boolean titleMatch(String title) {
+			final int pos = title.indexOf(':');
+			title = pos == -1 ? title.trim() : title.substring(pos).trim();
 			return myPattern.matcher(title).matches();
 		}
 	}

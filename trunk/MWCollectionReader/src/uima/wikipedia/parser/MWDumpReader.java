@@ -21,6 +21,10 @@ import uima.wikipedia.types.MWSiteinfo;
  * I make use of the StAX API to provide a pull-parsing style parser. The basic unit you can get from that
  * parser is a page, also known as an article. You can also get the Siteinfo information (especially the
  * namespaces) if it's present.
+ * <p>
+ * You can get an instance of this parser with the {@link uima.wikipedia.factory.MWDumpReaderFactory
+ * MWDumpReaderFactory}. This factory also allows you to place various filters on the XML stream to exclude or
+ * include only certain pages or revisions.
  * 
  * @see uima.wikipedia.types.MWSiteinfo
  * @see uima.wikipedia.types.MWArticle
