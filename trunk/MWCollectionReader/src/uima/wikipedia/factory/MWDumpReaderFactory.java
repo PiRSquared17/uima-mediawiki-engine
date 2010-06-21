@@ -100,6 +100,7 @@ public class MWDumpReaderFactory {
 	 * @throws uima.wikipedia.parser.MWDumpReader.MWParseException
 	 */
 	public MWDumpReader getParser() throws MWParseException, uima.wikipedia.parser.MWDumpReader.MWParseException {
+		// If the latest only flag is set, we instantiate a particular parser that handles it.
 		if (latestOnly)
 			return new MWDumpReaderLatestOnly(streamReader);
 		return new MWDumpReader(streamReader);
@@ -182,9 +183,20 @@ public class MWDumpReaderFactory {
 	}
 
 	/**
+	 * This method allows you to setup a filter on the namespaces you want to consider. It takes as an input a
+	 * string, that should be formed by integers separated by comas. (Ex : "1, 2, 5, 101"). This integers are
+	 * the keys associated with the namespaces. This is why we need to have the website info object, so we can
+	 * tell what is the string prefix that corresponds to each key.
+	 * <p>
+	 * The default behaviour of this filter is to include only the specified namespace in the results. If you
+	 * want to exclude namespaces, you can prefix the key list by a '!' (Ex : "! 1, 2, 5, 101")
+	 * 
 	 * @param theSiteInfo
+	 *            The website info gathered by the parser.
 	 * @param cfgNamespaces
+	 *            The list of namespaces to filter.
 	 * @throws XMLStreamException
+	 *             If we fail to create the new filtered XML stream reader.
 	 */
 	public void addNamespaceFilter(MWSiteinfo theSiteInfo, String cfgNamespaces) throws XMLStreamException {
 		int nskey;
@@ -192,27 +204,42 @@ public class MWDumpReaderFactory {
 		final List<String> myList = new ArrayList<String>();
 		final Set<Integer> keyList = new HashSet<Integer>();
 
+		// If the string starts with a '!' we set the exclude flag to true
 		if (cfgNamespaces.startsWith("!")) {
 			cfgNamespaces = cfgNamespaces.substring(1);
 			exclude = true;
 		}
-		final String[] namespaces = cfgNamespaces.split(",");
+		// We separate the key values
+		final String[] namespaces = cfgNamespaces.trim().split(",");
+
 		for (final String ns : namespaces) {
 			ns.trim();
 			try {
-				nskey = Integer.parseInt(ns);
+				if (!ns.isEmpty()) {
+					nskey = Integer.parseInt(ns);
+					keyList.add(nskey);
+				}
 			} catch (final NumberFormatException e) {
-				nskey = 0;
+				// If we fail to parse the key value, then nothing is added to the set
 			}
-			keyList.add(nskey);
 		}
+		// We look for the valid keys in the set we built, and add the corresponding prefixes to the list
 		for (final int key : keyList)
 			if (theSiteInfo.namespaces.hasIndex(key))
 				myList.add(theSiteInfo.namespaces.getPrefix(key));
-
+		// Create the new filtered XML stream reader.
 		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(myList, exclude));
 	}
 
+	/**
+	 * This method is just a shortcut for the namespace filter, allowing you to filter out all the talk pages
+	 * easily. Talk pages have an odd namespace key, compared to the non-talk which have an even one.
+	 * 
+	 * @param theSiteInfo
+	 *            The website info gathered by the parser.
+	 * @throws XMLStreamException
+	 *             If we fail to create the new filtered XML stream reader.
+	 */
 	public void addExcludeTalkFilter(MWSiteinfo theSiteInfo) throws XMLStreamException {
 		// A list of discussion namespace to ignore
 		final ArrayList<String> excludedNamespace = new ArrayList<String>();
@@ -227,45 +254,110 @@ public class MWDumpReaderFactory {
 		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(excludedNamespace, true));
 	}
 
+	/**
+	 * This method provides filtering on the revision's id. It works in a very similar fashion as the
+	 * {@link #addTitleListFilter(String, boolean)} method described earlier. The ids you want to keep should
+	 * appear only one by line in the provided file. You can comment a line with a '#'.
+	 * 
+	 * @param cfgRevisionList
+	 *            The file we are reading from (containing the list of ids)
+	 * @throws IOException
+	 *             If we fail to open the file containing the ids
+	 * @throws XMLStreamException
+	 *             If we fail to create the new filtered XML stream reader.
+	 */
 	public void addRevisionFilter(String cfgRevisionList) throws IOException, XMLStreamException {
 		final ArrayList<Integer> myList = new ArrayList<Integer>();
 		final BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(cfgRevisionList), "utf-8"));
 		String line = input.readLine();
 
+		// Read all the ids from the file, one per line
 		while (line != null) {
 			line = line.trim();
 			if (line.length() > 0 && !line.startsWith("#"))
-				myList.add(Integer.parseInt(line));
+				try {
+					myList.add(Integer.parseInt(line));
+				} catch (NumberFormatException e) {
+					// We just don't add it to the list if we can't parse it to a integer
+				}
 			line = input.readLine();
 		}
 		input.close();
-
+		// Create the filtered XML stream reader with the proper id list.
 		streamReader = factory.createFilteredReader(streamReader, new MWRevisionFilter(myList));
 	}
 
+	/**
+	 * This just tells the factory to instantiate a parser that will strip off all the revisions but the
+	 * latest in it's results, instead of a regular parser.
+	 */
 	public void addLatestOnlyFilter() {
 		latestOnly = true;
 	}
 
+	/**
+	 * This allows you to filter out all the revisions that were not contributed before the given timestamp.
+	 * The timestamp format we consider is the following : yyyy-MM-dd'T'HH:mm:ss'Z' (Ex :
+	 * 2001-06-21T10:20:30Z).
+	 * <p>
+	 * Be aware that this filter internally uses a {@link Calendar} object that is lenient. That means that if
+	 * you try to specify the month 20, it will try to work arround it and probably consider it like December
+	 * + 8 month.
+	 * 
+	 * @param cfgBeforeTimestamp
+	 *            The timestamp to check for.
+	 * @throws ParseException
+	 *             If the provided timestamp doesn't follow the format specification.
+	 * @throws XMLStreamException
+	 *             If we fail to create the new filtered XML stream reader.
+	 */
 	public void addBeforeTimestampFilter(String cfgBeforeTimestamp) throws ParseException, XMLStreamException {
 		final Calendar reference = Calendar.getInstance();
 		reference.setTime(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(cfgBeforeTimestamp));
 		streamReader = factory.createFilteredReader(streamReader, new BeforeTimestampFilter(reference));
 	}
 
+	/**
+	 * This method works exactly the same way as the {@link #addBeforeTimestampFilter(String)} method, except
+	 * for the fact that here only the revisions contributed after the given timestamp are considered valid.
+	 * 
+	 * @param cfgBeforeTimestamp
+	 *            The timestamp to check for.
+	 * @throws ParseException
+	 *             If the provided timestamp doesn't follow the format specification.
+	 * @throws XMLStreamException
+	 *             If we fail to create the new filtered XML stream reader.
+	 */
 	public void addAfterTimestampFilter(String cfgAfterTimestamp) throws ParseException, XMLStreamException {
 		final Calendar reference = Calendar.getInstance();
 		reference.setTime(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(cfgAfterTimestamp));
 		streamReader = factory.createFilteredReader(streamReader, new AfterTimestampFilter(reference));
 	}
 
+	/**
+	 * This class provides titles filtering with regular expressions to the parser.
+	 * 
+	 * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
+	 */
 	public class TitleRegexFilter extends MWTitleFilter {
 		private final Pattern	myPattern;
 
+		/**
+		 * Compiles the string parameter into a Pattern object.
+		 * 
+		 * @param regex
+		 *            The regular expression we want the titles to match.
+		 */
 		public TitleRegexFilter(String regex) {
 			myPattern = Pattern.compile(regex);
 		}
 
+		/**
+		 * Checks if the title matches the regex or not. We don't consider the namespace prefix as part of the
+		 * title for this check.
+		 * 
+		 * @return <code>true</code> if the title passes, <code>false</code> otherwise.
+		 */
 		@Override
 		protected final boolean titleMatch(String title) {
 			final int pos = title.indexOf(':');
@@ -274,62 +366,118 @@ public class MWDumpReaderFactory {
 		}
 	}
 
+	/**
+	 * This class provides title matching against a list to the parser.
+	 * 
+	 * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
+	 */
 	public class TitleListFilter extends MWTitleFilter {
 		private final List<String>	listOfTitles;
 		private final boolean		exact;
 
+		/**
+		 * Initialize the filter's parameters.
+		 * 
+		 * @param myList
+		 *            The list of titles to match against.
+		 * @param exact
+		 *            Flag that tells if should only consider the default namespace.
+		 */
 		public TitleListFilter(List<String> myList, boolean exact) {
 			listOfTitles = myList;
 			this.exact = exact;
 		}
 
+		/**
+		 * Check is the title is present in the white list or not. If the exact flag is set to true, the page
+		 * also has to be in the default namespace.
+		 * 
+		 * @return <code>true</code> if the title passes, <code>false</code> otherwise.
+		 */
 		@Override
 		protected final boolean titleMatch(String title) {
-			for (final String match : listOfTitles) {
-				final int pos = title.indexOf(':');
-				if (pos != -1 && !exact) {
-					title = title.substring(pos);
-					if (title.equals(match))
-						return true;
-				} else if (pos == -1)
-					if (title.equals(match))
-						return true;
-			}
-			return false;
+			final int pos = title.indexOf(':');
+			title = pos == -1 ? title : title.substring(pos).trim();
+			boolean found = listOfTitles.contains(title);
+			if (pos == -1)
+				// If the page is in the default namespace.
+				return found;
+			else if (pos != -1 && !exact)
+				// If it's not in the default namespace but we don't want an exact match
+				return found;
+			else
+				// If it's not in the default namespace and we DO want an exact match, it's discarded
+				return false;
 		}
 	}
 
+	/**
+	 * This class provides namespace filtering against a list to the parser.
+	 * 
+	 * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
+	 */
 	public class NamespaceFilter extends MWTitleFilter {
 		private final List<String>	listOfNamespaces;
-		private final boolean		exclude;
-		private boolean				found;
 		private String				namespace;
+		private final boolean		exclude;
 
+		/**
+		 * Initialize the filter's parameters.
+		 * 
+		 * @param myList
+		 *            The list of namespaces to match against.
+		 * @param exclude
+		 *            Flag indicating whether we should include only or exclude the namespaces in the list.
+		 */
 		public NamespaceFilter(List<String> myList, boolean exclude) {
 			listOfNamespaces = myList;
 			this.exclude = exclude;
 		}
 
+		/**
+		 * Check if the page's namespace is in the list or not. Then depending on whether we include or
+		 * exclude those namespaces, it tells if the pages passes or not.
+		 * 
+		 * @return <code>true</code> if the page has a valid namespace, <code>false</code> otherwise.
+		 */
 		@Override
 		protected boolean titleMatch(String title) {
 			final int pos = title.indexOf(':');
-			namespace = pos != -1 ? title.substring(0, pos) : "";
-			found = listOfNamespaces.contains(namespace.trim());
+			namespace = pos != -1 ? title.substring(0, pos).trim() : "";
+			boolean found = listOfNamespaces.contains(namespace);
 			if (exclude)
 				return !found;
 			return found;
 		}
 	}
 
+	/**
+	 * This class provides revisions filtering depending on their timestamp to the parser.
+	 * 
+	 * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
+	 */
 	public class AfterTimestampFilter extends MWTimeStampFilter {
 		private final Calendar	reference;
 		private final Calendar	temp;
 
+		/**
+		 * Initialize the filer's variables.
+		 * 
+		 * @param reference
+		 *            the reference timestamp we are matching against.
+		 */
 		public AfterTimestampFilter(Calendar reference) {
 			this.reference = reference;
 			temp = Calendar.getInstance();
 		}
 
+		/**
+		 * Check if the revision's timestamp is after the reference one. If we fail to parse the timestamp, we
+		 * consider it valid.
+		 * 
+		 * @return <code>true</code> if the revision's timestamp is after the reference one,
+		 *         <code>false</code> otherwise.
+		 */
 		@Override
 		protected boolean timeStampMatch(String timestamp) {
 			try {
@@ -341,15 +489,33 @@ public class MWDumpReaderFactory {
 		}
 	}
 
+	/**
+	 * This class provides revisions filtering depending on their timestamp to the parser.
+	 * 
+	 * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
+	 */
 	public class BeforeTimestampFilter extends MWTimeStampFilter {
 		private final Calendar	reference;
 		private final Calendar	temp;
 
+		/**
+		 * Initialize the filer's variables.
+		 * 
+		 * @param reference
+		 *            the reference timestamp we are matching against.
+		 */
 		public BeforeTimestampFilter(Calendar reference) {
 			this.reference = reference;
 			temp = Calendar.getInstance();
 		}
 
+		/**
+		 * Check if the revision's timestamp is before the reference one. If we fail to parse the timestamp,
+		 * we consider it valid.
+		 * 
+		 * @return <code>true</code> if the revision's timestamp is before the reference one,
+		 *         <code>false</code> otherwise.
+		 */
 		@Override
 		protected boolean timeStampMatch(String timestamp) {
 			try {
@@ -361,11 +527,22 @@ public class MWDumpReaderFactory {
 		}
 	}
 
+	/**
+	 * This filter allows to keep only the latest revision for each page. It works differently from all the
+	 * other filter as it doesn't operate at the XML stream level. It inherits the base parser, and overrides
+	 * the getPage() method in order to strip all the revisions but the latest from the page, before returning
+	 * it.
+	 * 
+	 * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
+	 */
 	public class MWDumpReaderLatestOnly extends MWDumpReader {
 		public MWDumpReaderLatestOnly(XMLStreamReader reader) throws MWParseException {
 			super(reader);
 		}
 
+		/**
+		 * Strips off all the revisions but the latest before returning the page.
+		 */
 		@Override
 		public MWArticle getPage() {
 			pageComputed = false;
