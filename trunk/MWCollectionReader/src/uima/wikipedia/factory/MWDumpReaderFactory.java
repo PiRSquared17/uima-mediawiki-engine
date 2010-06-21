@@ -117,12 +117,28 @@ public class MWDumpReaderFactory {
 	 *             If the factory fails to open the dump file again.
 	 */
 	public void clearFilters() throws XMLStreamException, IOException {
-		// Close the current streams
-		inputstream.close();
-		streamReader.close();
+		try {
+			// Close the current streams
+			inputstream.close();
+			streamReader.close();
+		} catch (Exception e) {
+			// If it fails, the GC will have to handle it...
+		}
 		// Initialize new ones
 		inputstream = Tools.openInputFile(theDump);
 		streamReader = factory.createXMLStreamReader(inputstream);
+	}
+
+	/**
+	 * This method attemps to cleanly free the ressources used by the factory.
+	 */
+	public void close() {
+		try {
+			inputstream.close();
+			streamReader.close();
+		} catch (Exception e) {
+			// If it fails, the GC will have to handle it...
+		}
 	}
 
 	/**

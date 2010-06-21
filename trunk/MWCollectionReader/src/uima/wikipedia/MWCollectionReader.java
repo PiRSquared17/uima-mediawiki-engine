@@ -2,6 +2,7 @@ package uima.wikipedia;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
@@ -26,16 +27,20 @@ import uima.wikipedia.types.MWRevision;
 import uima.wikipedia.types.MWSiteinfo;
 import uima.wikipedia.types.Revision;
 
+/**
+ * This class serves as the front end for the Apache UIMA framework. It initializes the parser, adds the
+ * filters, and then gets the pages one by one until the end of the file.
+ * 
+ * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
+ */
 public class MWCollectionReader extends CollectionReader_ImplBase {
 	/** Setting up the logger for this class */
 	private static Logger				theLogger;
 	/** Configuration parameters */
 	private static final String			PARAM_XMLDUMP				= "InputXmlDump";
 	/** Filters parameters */
-	// private static String PARAMGRP_NAMESPACE = "NamespaceFilters";
 	private static String				PARAM_FLG_IGNORETALKS		= "IgnoreTalks";
 	private static String				PARAM_INP_NAMESPACE			= "ConfigNamespacesFilter";
-	// private static String PARAMGRP_REVISIONS = "RevisionFilters";
 	private static String				PARAM_FLG_LATESTREVISION	= "LatestRevisionOnly";
 	private static String				PARAM_INP_TITLEMATCH		= "ConfigTitleMatch";
 	private static String				PARAM_INP_LIST				= "ConfigListFilter";
@@ -54,6 +59,10 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 	/** Website info, useful to recover the namespaces */
 	private static MWSiteinfo			theSiteInfo;
 
+	/**
+	 * In this method we initialize a first parser to try to gather the website info. We then clear the
+	 * factory, add the filters specified by the user, and instantiate a new parser. We also create a logger.
+	 */
 	@Override
 	public void initialize() throws ResourceInitializationException {
 		super.initialize();
@@ -72,7 +81,8 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 				if (parser.hasSiteInfo())
 					theSiteInfo = parser.getSiteInfo();
 				else {
-					theSiteInfo = null;
+					// Default empty website info.
+					theSiteInfo = new MWSiteinfo("", "", "", "", new HashMap<Integer, String>());
 					theLogger.log(Level.INFO, "The website info is unavailable, we know nothing about the namespaces.");
 				}
 				factory.clearFilters();
@@ -94,6 +104,9 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 		cCasProduced = 0;
 	}
 
+	/**
+	 * In this method we get an available page from the parser and put it into a CAS.
+	 */
 	@Override
 	public void getNext(CAS newCas) throws IOException, CollectionException {
 		final CAS RawWikiTextView = newCas.createView("RawWikiText");
@@ -109,20 +122,27 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 		}
 	}
 
+	/**
+	 * If the parser has a page, we should keep processing.
+	 */
 	@Override
 	public boolean hasNext() throws IOException, CollectionException {
 		return parser.hasPage();
 	}
 
-	/** We cannot do much with this one... */
+	/** We cannot do much with this one, we don't know how much there is. */
 	@Override
 	public Progress[] getProgress() {
 		// We do not really know how much there is left
 		return new Progress[] { new ProgressImpl(cCasProduced, 0, Progress.ENTITIES) };
 	}
 
+	/**
+	 * Attempt to close the resources cleanly.
+	 */
 	@Override
-	public void close() throws IOException {
+	public void close() {
+		factory.close();
 		parser.close();
 	}
 
@@ -202,31 +222,13 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 		}
 		// All the textual content is collected now...
 		newJCas.setDocumentText(casContent.toString());
-		// We can add the Article and DocumentAnnotation annotations...
+		// We can add the Article annotation...
 		addArticleAnnotation(newJCas, page, 0, casContent.length());
-		// addDocumentAnnotation(newJCas, 0, casContent.length());
 	}
 
 	/**
-	 * This method add a document annotation over the JCas.
-	 * 
-	 * @param cas
-	 *            the JCas on which the annotation is indexed
-	 * @param start
-	 *            the index of the annotation beginning
-	 * @param end
-	 *            the index of the annotation ending
-	 */
-	// private void addDocumentAnnotation(JCas cas, int start, int end) {
-	// DocumentAnnotation myDocument = new DocumentAnnotation(cas);
-	// myDocument.setLanguage("unknown");
-	// myDocument.setBegin(start);
-	// myDocument.setEnd(end);
-	// myDocument.addToIndexes();
-	// }
-
-	/**
-	 * This method add an article annotation over the JCas based on the information retrieve from the Page instance.
+	 * This method add an article annotation over the JCas based on the information retrieve from the Page
+	 * instance.
 	 * 
 	 * @param cas
 	 *            the JCas on which the annotation is indexed
