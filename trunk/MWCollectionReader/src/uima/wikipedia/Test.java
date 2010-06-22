@@ -1,9 +1,15 @@
 package uima.wikipedia;
 
+import java.io.BufferedWriter;
 import java.io.File;
-import java.util.Date;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.xml.stream.XMLStreamException;
+
+import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
+import org.eclipse.mylyn.wikitext.core.parser.builder.HtmlDocumentBuilder;
+import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
 
 import uima.wikipedia.factory.MWDumpReaderFactory;
 import uima.wikipedia.parser.MWDumpReader;
@@ -16,24 +22,30 @@ public class Test {
 	 * @throws XMLStreamException
 	 */
 	public static void main(String[] args) throws XMLStreamException {
-		MWDumpReaderFactory f;
+		// XML
+		MWDumpReaderFactory factory;
 		int i = 0;
-		final Date start = new Date();
+		// WIKI
+		MarkupParser parser = new MarkupParser(new MediaWikiLanguage());
+		// FILE
+		BufferedWriter output;
 		try {
-			f = new MWDumpReaderFactory(new File("/Users/Bowbaq/Downloads/frwikinews-20100420-pages-meta-history.xml"));
-			f.addLatestOnlyFilter();
-			final MWDumpReader dr = f.getParser();
-			System.out.println(dr.getSiteInfo().toString());
-			while (dr.hasPage()) {
-				dr.getPage();
-				// System.out.println(a.toString());
+			factory = new MWDumpReaderFactory(new File("/Users/Bowbaq/Downloads/frwikinews-20100420-pages-meta-history.xml"));
+			factory.addLatestOnlyFilter();
+			MWDumpReader XMLParser = factory.getParser();
+			while (XMLParser.hasPage()) {
 				++i;
-				// System.out.println(i);
+				File f = new File("/Users/Bowbaq/Desktop/output/Page_" + i);
+				f.createNewFile();
+				output = new BufferedWriter(new FileWriter(f));
+				parser.setBuilder(new HtmlDocumentBuilder(output));
+				parser.parse(XMLParser.getPage().revisions.get(0).text);
 			}
-			final Date end = new Date();
-			final long time = (end.getTime() - start.getTime()) / 1000;
-			System.out.println("END OF PARSING - Time = " + time + " PageNbr = " + i);
+			System.out.println("END OF PARSING - PageNbr = " + i);
 		} catch (final MWParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
