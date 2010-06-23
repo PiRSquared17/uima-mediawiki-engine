@@ -181,7 +181,7 @@ public class MWDumpReader {
 					case PAGE:
 						endPage = true;
 						break;
-					default:
+					default: // This happens if we don't process a tag acknoledged in the MWTag enum.
 						endPage = true;
 				}
 				if (!endPage)
