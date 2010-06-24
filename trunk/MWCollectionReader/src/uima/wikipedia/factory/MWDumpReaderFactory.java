@@ -72,6 +72,7 @@ public class MWDumpReaderFactory {
 			inputstream = Tools.openInputFile(theXMLDump);
 			// Create a basic XMLStreamReader reading from it.
 			factory = XMLInputFactory.newInstance();
+			factory.setProperty(XMLInputFactory.IS_VALIDATING, Boolean.FALSE);
 			streamReader = factory.createXMLStreamReader(inputstream);
 		} catch (final XMLStreamException e) {
 			throw new FactoryConfigurationError(e);

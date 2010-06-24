@@ -1,8 +1,5 @@
 package uima.wikipedia.parser;
 
-import static javax.xml.stream.XMLStreamConstants.CHARACTERS;
-import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
-
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
@@ -128,6 +125,7 @@ public class MWDumpReader {
 			while (!pageComputed && !endOfDocumentReached)
 				pageComputed = computePage();
 		} catch (final MWParseException e) {
+			e.printStackTrace();
 			endOfDocumentReached = true;
 			pageComputed = false;
 		}
@@ -210,9 +208,8 @@ public class MWDumpReader {
 	 *             If something goes wrong, catched by the computePage() method.
 	 */
 	private final void computeRevision() throws NoSuchElementException, XMLStreamException {
-		StringBuilder textBuilder;
 		boolean endRevision = false;
-
+		StringBuilder textBuilder;
 		nextOpeningTag(1);
 		// Clear the revision factory
 		theRevision.clear();
@@ -243,9 +240,11 @@ public class MWDumpReader {
 					// TODO : Tuning the size of the StringBuilder?
 					textBuilder = new StringBuilder();
 					// While we get characters events, we add the text to the builder.
-					do
-						textBuilder.append(getTagText());
-					while (streamReader.getEventType() == CHARACTERS);
+					streamReader.next();
+					while (streamReader.isCharacters()) {
+						textBuilder.append(streamReader.getText());
+						streamReader.next();
+					}
 					textBuilder.trimToSize();
 					theRevision.hasText(textBuilder.toString());
 					endRevision = true;
@@ -357,7 +356,7 @@ public class MWDumpReader {
 		boolean endOfTag = false;
 		while (!endOfTag) {
 			streamReader.next();
-			if (streamReader.getEventType() == END_ELEMENT && streamReader.getLocalName().equals(name))
+			if (streamReader.isEndElement() && streamReader.getLocalName().equals(name))
 				endOfTag = true;
 		}
 	}
@@ -378,7 +377,7 @@ public class MWDumpReader {
 	 */
 	private final String getTagText() throws XMLStreamException {
 		streamReader.next();
-		if (streamReader.getEventType() == CHARACTERS)
+		if (streamReader.isCharacters())
 			return streamReader.getText();
 		return "";
 	}
