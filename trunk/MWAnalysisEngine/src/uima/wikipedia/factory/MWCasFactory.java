@@ -59,6 +59,7 @@ public class MWCasFactory {
 			int start = content.length();
 			// Instanciate a new builder
 			revision = new MWRevisionBuilder();
+			parser.setBuilder(revision);
 			// Parse the revision
 			parser.parse(rawRevision.getCoveredText());
 			// Add the revision's text to the CAS content
