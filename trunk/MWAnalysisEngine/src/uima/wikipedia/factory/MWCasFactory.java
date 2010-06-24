@@ -71,6 +71,7 @@ public class MWCasFactory {
 				a.addToIndexes();
 		}
 		// Finalize the CAS processing.
+		finalizeCAS();
 	}
 
 	/**
