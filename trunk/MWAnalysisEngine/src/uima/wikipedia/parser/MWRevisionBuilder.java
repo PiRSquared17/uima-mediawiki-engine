@@ -7,21 +7,26 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.eclipse.mylyn.wikitext.core.parser.Attributes;
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder;
 
+import uima.wikipedia.factory.MWAnnotator;
+
 public class MWRevisionBuilder extends DocumentBuilder {
 	// The text builder
-	StringBuilder		builder;
+	private StringBuilder		builder;
 	// A stack for the type of block we are in.
-	Stack<BlockType>	blockContext;
+	private Stack<BlockType>	blockContext;
 	// A stack for the type of list we are in.
-	Stack<BlockType>	listContext;
+	private Stack<BlockType>	listContext;
 	// Item count for the list we are in.
-	Stack<Integer>		itemCount;
+	private Stack<Integer>		itemCount;
+	// The annotation factory
+	private MWAnnotator			factory;
 
 	public MWRevisionBuilder() {
 		builder = new StringBuilder();
 		blockContext = new Stack<BlockType>();
 		listContext = new Stack<BlockType>();
 		itemCount = new Stack<Integer>();
+		factory = new MWAnnotator();
 	}
 
 	@Override
@@ -159,12 +164,10 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	}
 
 	public List<Annotation> getAnnotations() {
-		// TODO : Return all the annotations
-		return null;
+		return factory.getAnnotations();
 	}
 
 	public String getText() {
-		// TODO : Return the parsed text
-		return null;
+		return builder.toString();
 	}
 }
