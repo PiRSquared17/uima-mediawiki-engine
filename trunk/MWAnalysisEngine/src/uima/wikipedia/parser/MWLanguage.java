@@ -1,5 +1,7 @@
 package uima.wikipedia.parser;
 
-public class MWLanguage {
+import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
+
+public class MWLanguage extends MediaWikiLanguage {
 
 }

@@ -25,6 +25,7 @@ public class AnalysisEngine extends JCasAnnotator_ImplBase {
 		try {
 			MWCasFactory.initialize(cas, "RawWikiText");
 			MWCasFactory.parseRevisions();
+			MWCasFactory.finalizeCAS();
 		} catch (CASException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
