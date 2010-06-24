@@ -13,7 +13,6 @@ import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
 import uima.wikipedia.factory.MWDumpReaderFactory;
 import uima.wikipedia.parser.MWDumpReader;
 import uima.wikipedia.parser.MWDumpReader.MWParseException;
-import uima.wikipedia.types.MWArticle;
 
 public class Test {
 
@@ -32,7 +31,6 @@ public class Test {
 		try {
 			factory = new MWDumpReaderFactory(new File("/Users/Bowbaq/Desktop/ultimetest.xml"));
 			MWDumpReader XMLParser = factory.getParser();
-			MWArticle a;
 			StringBuilder builder = new StringBuilder();
 			while (XMLParser.hasPage()) {
 				++i;
