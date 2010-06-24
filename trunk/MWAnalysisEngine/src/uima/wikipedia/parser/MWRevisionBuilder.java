@@ -159,7 +159,12 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	}
 
 	public List<Annotation> getAnnotations() {
-		// TODO Auto-generated method stub
+		// TODO : Return all the annotations
+		return null;
+	}
+
+	public String getText() {
+		// TODO : Return the parsed text
 		return null;
 	}
 }

@@ -21,6 +21,8 @@ public class MWCasFactory {
 	private static MarkupParser			parser;
 	/** The revision builder */
 	private static MWRevisionBuilder	revision;
+	/** A string builder for the CAS content */
+	private static StringBuilder		content;
 
 	public static void initialize(JCas cas, String rawViewName) throws CASException {
 		// Initialise the CAS
@@ -28,6 +30,8 @@ public class MWCasFactory {
 		rawTextView = main.getView(rawViewName);
 		// Initialize the parser
 		parser = new MarkupParser(new MWLanguage());
+		// Others
+		content = new StringBuilder();
 	}
 
 	public static void parseRevisions() {
@@ -35,21 +39,34 @@ public class MWCasFactory {
 		FSIterator<Annotation> revisionIterator = rawTextView.getAnnotationIndex(Revision.type).iterator();
 
 		while (revisionIterator.hasNext()) {
+			Revision rawRevision = (Revision) revisionIterator.next();
+			// Start of the annotation
+			int start = content.length();
 			// Instanciate a new builder
 			revision = new MWRevisionBuilder();
 			// Parse the revision
-			parser.parse(revisionIterator.next().getCoveredText());
-			// Set the revision annotation
-			setAnnotations(revision.getAnnotations());
+			parser.parse(rawRevision.getCoveredText());
+			// Add the revision's text to the CAS content
+			content.append(revision.getText());
+			int end = content.length();
+			// Create a new revision annotation
+			craftRevisionAnnotation(rawRevision, start, end);
+			// Gather the revision's content annotations
+			gatherAnnotations(revision.getAnnotations());
 		}
 	}
 
-	public static void finalizeCAS() {
+	private static void craftRevisionAnnotation(Revision rawRevision, int start, int end) {
+		// TODO Create the new revision annotation (id, user, ...)
 
 	}
 
-	private static void setAnnotations(List<Annotation> annotations) {
-		// TODO Auto-generated method stub
+	public static void finalizeCAS() {
+		// TODO : Add the article annotation
+	}
+
+	private static void gatherAnnotations(List<Annotation> annotations) {
+		// TODO : Handle the annotations
 
 	}
 }
