@@ -15,9 +15,15 @@ public class MWCasBuilder {
 	/** The main CAS we will be working on */
 	private static JCas					main;
 	/** The view of the cas containing the raw wiki text */
-	private static JCas					rawTextView;
+	private static JCas					rawView;
+	/** The name of the view containing the raw wiki text */
+	private static String				rawViewName;
 	/** The mediawiki parser */
 	private static MarkupParser			parser;
+	/** The language we are parsing */
+	private static MWLanguage			language;
+	/** A flag indicating if we need to consider macros */
+	private static boolean				enableMacros;
 	/** The revision builder */
 	private static MWRevisionBuilder	revision;
 	/** A string builder for the CAS content */
@@ -26,20 +32,21 @@ public class MWCasBuilder {
 	/**
 	 * Initializes the factory with a new CAS to process.
 	 * 
-	 * @param cas
-	 *            the CAS we are working on
 	 * @param rawViewName
 	 *            the name of the view where the raw text is located
 	 * @throws CASException
 	 *             If something goes wrong
 	 */
-	public static void initialize(JCas cas, String rawViewName) throws CASException {
-		// Initialise the CAS
-		main = cas;
-		rawTextView = main.getView(rawViewName);
+	public static void initialize(String rawViewName, boolean enableMacros) throws CASException {
+		// Initialize some parameters
+		MWCasBuilder.rawViewName = rawViewName;
+		MWCasBuilder.enableMacros = enableMacros;
 		// Initialize the parser
-		parser = new MarkupParser(new MWLanguage());
-		// Others
+		language = new MWLanguage();
+		language.setEnableMacros(enableMacros);
+		if (enableMacros)
+			configureMacros();
+		// Others initialization
 		content = new StringBuilder();
 	}
 
@@ -48,10 +55,16 @@ public class MWCasBuilder {
 	 * <p>
 	 * It gathers the revision annotations from the raw view, parses the text, gather the content annotation
 	 * and adds the result to the CAS.
+	 * 
+	 * @throws CASException
+	 *             if something goes wrong
 	 */
-	public static void build() {
+	public static void build(JCas cas) throws CASException {
+		// Initialize the CAS
+		main = cas;
+		rawView = main.getView(rawViewName);
 		// An iterator over the revision annotations.
-		FSIterator<Annotation> revisionIterator = rawTextView.getAnnotationIndex(Revision.type).iterator();
+		FSIterator<Annotation> revisionIterator = rawView.getAnnotationIndex(Revision.type).iterator();
 
 		while (revisionIterator.hasNext()) {
 			Revision rawRevision = (Revision) revisionIterator.next();
@@ -83,7 +96,7 @@ public class MWCasBuilder {
 		main.setDocumentText(content.toString());
 		// Add the article annotation.
 		Article parsedArticle = new Article(main);
-		FSIterator<Annotation> articleIterator = rawTextView.getAnnotationIndex(Article.type).iterator();
+		FSIterator<Annotation> articleIterator = rawView.getAnnotationIndex(Article.type).iterator();
 
 		// We iterate over the Article annotations, there should be only one.
 		while (articleIterator.hasNext()) {
@@ -99,6 +112,11 @@ public class MWCasBuilder {
 			// Add it to the index
 			parsedArticle.addToIndexes();
 		}
+	}
+
+	private static void configureMacros() {
+		// TODO Auto-generated method stub
+
 	}
 
 	private static void addRevisionAnnotation(Revision rawRevision, int start, int end) {

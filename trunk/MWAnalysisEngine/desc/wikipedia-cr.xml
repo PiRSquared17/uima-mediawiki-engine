@@ -4,12 +4,27 @@
   <primitive>true</primitive>
   <annotatorImplementationName>uima.wikipedia.AnalysisEngine</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>aeDescriptor</name>
+    <name>MWAnalysisEngine</name>
     <description>parse la syntaxe wiki.</description>
     <version>1.0</version>
     <vendor/>
-    <configurationParameters searchStrategy="language_fallback"/>
-    <configurationParameterSettings/>
+    <configurationParameters searchStrategy="language_fallback">
+    	<configurationParameter>
+        	<name>enableMacros</name>
+        	<description>Tick it if you want to process macros, don't if you want them left as is.</description>
+       	 	<type>Boolean</type>
+        	<multiValued>false</multiValued>
+        	<mandatory>false</mandatory>
+      	</configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+    	<nameValuePair>
+        	<name>enableMacros</name>
+        	<value>
+          		<boolean>false</boolean>
+        	</value>
+      	</nameValuePair>
+    </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
         <import name="wikipedia-ts"/>
