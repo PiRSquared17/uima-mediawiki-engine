@@ -11,7 +11,7 @@ import uima.wikipedia.parser.MWRevisionBuilder;
 import uima.wikipedia.types.Article;
 import uima.wikipedia.types.Revision;
 
-public class MWCasFactory {
+public class MWCasBuilder {
 	/** The main CAS we will be working on */
 	private static JCas					main;
 	/** The view of the cas containing the raw wiki text */
@@ -49,7 +49,7 @@ public class MWCasFactory {
 	 * It gathers the revision annotations from the raw view, parses the text, gather the content annotation
 	 * and adds the result to the CAS.
 	 */
-	public static void processCAS() {
+	public static void build() {
 		// An iterator over the revision annotations.
 		FSIterator<Annotation> revisionIterator = rawTextView.getAnnotationIndex(Revision.type).iterator();
 
@@ -58,7 +58,7 @@ public class MWCasFactory {
 			// Start of the annotation
 			int start = content.length();
 			// Instanciate a new builder
-			revision = new MWRevisionBuilder();
+			revision = new MWRevisionBuilder(main);
 			parser.setBuilder(revision);
 			// Parse the revision
 			parser.parse(rawRevision.getCoveredText());
@@ -79,6 +79,9 @@ public class MWCasFactory {
 	 * Finalize the CAS processing. In particular it adds the Article annotation.
 	 */
 	private static void finalizeCAS() {
+		// Add the document text.
+		main.setDocumentText(content.toString());
+		// Add the article annotation.
 		Article parsedArticle = new Article(main);
 		FSIterator<Annotation> articleIterator = rawTextView.getAnnotationIndex(Article.type).iterator();
 
