@@ -84,7 +84,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	@Override
 	public void endBlock() {
 		BlockType type = blockContext.pop();
-
+		annotator.end(type, content.length());
 		switch (type) {
 			case TABLE:
 			case TABLE_ROW:
