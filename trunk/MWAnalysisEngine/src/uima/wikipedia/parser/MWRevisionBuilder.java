@@ -74,6 +74,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 
 	@Override
 	public void beginSpan(SpanType type, Attributes attributes) {
+		annotator.newSpan(type, content.length());
 	}
 
 	@Override
@@ -161,6 +162,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 
 	@Override
 	public void link(Attributes attributes, String href, String label) {
+		annotator.newLink(label, href, content.length());
 		content.append(label);
 	}
 

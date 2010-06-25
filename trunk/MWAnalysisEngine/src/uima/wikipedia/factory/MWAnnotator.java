@@ -6,19 +6,39 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType;
+import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.SpanType;
 
 import uima.wikipedia.types.Header;
+import uima.wikipedia.types.Link;
 import uima.wikipedia.types.Paragraph;
 
 public class MWAnnotator {
 	private JCas					cas;
 	private final List<Header>		headers;
+	private final List<Link>		links;
 	private final List<Paragraph>	paragraphs;
 
 	public MWAnnotator(JCas cas) {
 		this.cas = cas;
 		headers = new ArrayList<Header>();
+		links = new ArrayList<Link>();
 		paragraphs = new ArrayList<Paragraph>();
+	}
+
+	public void newHeader(int level, int offset) {
+		Header h = new Header(cas);
+		h.setBegin(offset);
+		h.setLevel(level);
+		headers.add(h);
+	}
+
+	public void newLink(String label, String href, int offset) {
+		Link l = new Link(cas);
+		l.setBegin(offset);
+		l.setLabel(label);
+		l.setLink(href);
+		l.setEnd(offset + label.length());
+		links.add(l);
 	}
 
 	public void newBlock(BlockType type, int offset) {
@@ -31,11 +51,7 @@ public class MWAnnotator {
 		}
 	}
 
-	public void newHeader(int level, int offset) {
-		Header h = new Header(cas);
-		h.setBegin(offset);
-		h.setLevel(level);
-		headers.add(h);
+	public void newSpan(SpanType type, int offset) {
 	}
 
 	public void end(String name, int offset) {
@@ -54,6 +70,7 @@ public class MWAnnotator {
 	public List<Annotation> getAnnotations() {
 		List<Annotation> annotations = new ArrayList<Annotation>();
 		annotations.addAll(headers);
+		annotations.addAll(links);
 		annotations.addAll(paragraphs);
 		return annotations;
 	}
