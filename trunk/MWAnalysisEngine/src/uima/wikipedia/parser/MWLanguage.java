@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.mylyn.internal.wikitext.mediawiki.core.block.ListBlock;
-import org.eclipse.mylyn.internal.wikitext.mediawiki.core.block.ParagraphBlock;
 import org.eclipse.mylyn.internal.wikitext.mediawiki.core.block.PreformattedBlock;
 import org.eclipse.mylyn.internal.wikitext.mediawiki.core.block.TableBlock;
 import org.eclipse.mylyn.internal.wikitext.mediawiki.core.block.TableOfContentsBlock;
@@ -13,6 +12,7 @@ import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
 import org.eclipse.mylyn.wikitext.mediawiki.core.TemplateResolver;
 
 import uima.wikipedia.parser.block.MWHeaderBlock;
+import uima.wikipedia.parser.block.MWParagraphBlock;
 
 public class MWLanguage extends MediaWikiLanguage {
 	CustomTemplateResolver	resolver;
@@ -44,7 +44,7 @@ public class MWLanguage extends MediaWikiLanguage {
 
 		for (final Block block : blocks) {
 			// Paragraphs cant break themselves
-			if (block instanceof ParagraphBlock)
+			if (block instanceof MWParagraphBlock)
 				continue;
 			// Any other block causes a paragraph to be broken
 			paragraphBreakingBlocks.add(block);
@@ -53,6 +53,6 @@ public class MWLanguage extends MediaWikiLanguage {
 
 	@Override
 	protected Block createParagraphBlock() {
-		return new ParagraphBlock(true);
+		return new MWParagraphBlock();
 	}
 }
