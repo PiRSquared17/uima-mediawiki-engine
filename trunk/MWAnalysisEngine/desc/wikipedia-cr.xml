@@ -16,12 +16,25 @@
         	<multiValued>false</multiValued>
         	<mandatory>false</mandatory>
       	</configurationParameter>
+      	<configurationParameter>
+        	<name>DefinitionFilePath</name>
+        	<description>The path of the file where the macros are defined (More info in the doc)</description>
+       	 	<type>String</type>
+        	<multiValued>false</multiValued>
+        	<mandatory>false</mandatory>
+      	</configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
     	<nameValuePair>
         	<name>enableMacros</name>
         	<value>
-          		<boolean>false</boolean>
+          		<boolean>true</boolean>
+        	</value>
+      	</nameValuePair>
+      	<nameValuePair>
+        	<name>DefinitionFilePath</name>
+        	<value>
+          		<string></string>
         	</value>
       	</nameValuePair>
     </configurationParameterSettings>

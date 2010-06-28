@@ -67,6 +67,8 @@ public class MWRevisionBuilder extends DocumentBuilder {
 						break;
 				}
 				break;
+			case TABLE:
+				break;
 			default:
 				break;
 		}

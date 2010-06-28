@@ -1,5 +1,10 @@
 package uima.wikipedia.factory;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
@@ -22,8 +27,6 @@ public class MWCasBuilder {
 	private static MarkupParser			parser;
 	/** The language we are parsing */
 	private static MWLanguage			language;
-	/** A flag indicating if we need to consider macros */
-	private static boolean				enableMacros;
 	/** The revision builder */
 	private static MWRevisionBuilder	revision;
 	/** A string builder for the CAS content */
@@ -37,17 +40,15 @@ public class MWCasBuilder {
 	 * @throws CASException
 	 *             If something goes wrong
 	 */
-	public static void initialize(String rawViewName, boolean enableMacros) throws CASException {
+	public static void initialize(String rawViewName, boolean enableMacros, File def) throws CASException {
 		// Initialize some parameters
 		MWCasBuilder.rawViewName = rawViewName;
-		MWCasBuilder.enableMacros = enableMacros;
 		// Initialize the parser
 		language = new MWLanguage();
 		language.setEnableMacros(enableMacros);
 		if (enableMacros)
-			configureMacros();
-		// Others initialization
-		content = new StringBuilder();
+			configureMacros(def);
+		parser = new MarkupParser(language);
 	}
 
 	/**
@@ -63,6 +64,8 @@ public class MWCasBuilder {
 		// Initialize the CAS
 		main = cas;
 		rawView = main.getView(rawViewName);
+		// Initialize the content builder
+		content = new StringBuilder();
 		// An iterator over the revision annotations.
 		FSIterator<Annotation> revisionIterator = rawView.getAnnotationIndex(Revision.type).iterator();
 
@@ -114,9 +117,28 @@ public class MWCasBuilder {
 		}
 	}
 
-	private static void configureMacros() {
-		// TODO Auto-generated method stub
+	private static void configureMacros(File def) {
+		try {
+			if (def != null && def.exists() && def.isFile()) {
+				final BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(def), "utf-8"));
+				String line = input.readLine().trim();
 
+				// Read all the macros from the file, one per line
+				while (line != null) {
+					if (line.contains("->")) {
+						String[] macro = line.split("->");
+						if (macro.length >= 2)
+							language.addMacro(macro[0].trim(), macro[1].trim());
+						else
+							language.addMacro(macro[0].trim(), "");
+					}
+					line = input.readLine();
+				}
+				input.close();
+			}
+		} catch (Exception e) {
+			// This should not happen
+		}
 	}
 
 	private static void addRevisionAnnotation(Revision rawRevision, int start, int end) {
