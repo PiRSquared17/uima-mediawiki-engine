@@ -25,8 +25,8 @@ import java.io.OutputStream;
  */
 
 /**
- * An output stream that compresses into the BZip2 format (without the file header chars) into another stream. TODO:
- * Update to BZip2 1.0.1
+ * An output stream that compresses into the BZip2 format (without the file header chars) into another stream.
+ * TODO: Update to BZip2 1.0.1
  * 
  * @author <a href="mailto:keiron@aftexsw.com">Keiron Liddle</a>
  */
@@ -41,9 +41,9 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 	private static final int	DEPTH_THRESH		= 10;
 
 	/*
-	 * If you are ever unlucky/improbable enough to get a stack overflow whilst sorting, increase the following constant
-	 * and try again. In practice I have never seen the stack go above 27 elems, so the following limit seems very
-	 * generous.
+	 * If you are ever unlucky/improbable enough to get a stack overflow whilst sorting, increase the
+	 * following constant and try again. In practice I have never seen the stack go above 27 elems, so the
+	 * following limit seems very generous.
 	 */
 	private static final int	QSORT_STACK_SIZE	= 1000;
 
@@ -65,8 +65,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 	private boolean				m_closed;
 
 	/*
-	 * Knuth's increments seem to work better than Incerpi-Sedgewick here. Possibly because the number of elems to sort
-	 * is usually small, typically <= 20.
+	 * Knuth's increments seem to work better than Incerpi-Sedgewick here. Possibly because the number of
+	 * elems to sort is usually small, typically <= 20.
 	 */
 	private final int[]			m_incs				= new int[] { 1, 4, 13, 40, 121, 364, 1093, 3280, 9841, 29524, 88573, 265720, 797161, 2391484 };
 
@@ -107,8 +107,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 	private int					m_workDone;
 
 	/*
-	 * Used when sorting. If too many long comparisons happen, we stop sorting, randomise the block slightly, and try
-	 * again.
+	 * Used when sorting. If too many long comparisons happen, we stop sorting, randomise the block slightly,
+	 * and try again.
 	 */
 	private final int			m_workFactor;
 	private int					m_workLimit;
@@ -391,10 +391,11 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 		}
 
 		/*
-		 * The back end needs a place to store the MTF values whilst it calculates the coding tables. We could put them
-		 * in the zptr array. However, these values will fit in a short, so we overlay szptr at the start of zptr, in
-		 * the hope of reducing the number of cache misses induced by the multiple traversals of the MTF values when
-		 * calculating coding tables. Seems to improve compression speed by about 1%.
+		 * The back end needs a place to store the MTF values whilst it calculates the coding tables. We could
+		 * put them in the zptr array. However, these values will fit in a short, so we overlay szptr at the
+		 * start of zptr, in the hope of reducing the number of cache misses induced by the multiple
+		 * traversals of the MTF values when calculating coding tables. Seems to improve compression speed by
+		 * about 1%.
 		 */
 		// szptr = zptr;
 
@@ -494,12 +495,13 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 		doReversibleTransformation();
 
 		/*
-		 * A 6-byte block header, the value chosen arbitrarily as 0x314159265359 :-). A 32 bit value does not really
-		 * give a strong enough guarantee that the value will not appear by chance in the compressed datastream.
-		 * Worst-case probability of this event, for a 900k block, is about 2.0e-3 for 32 bits, 1.0e-5 for 40 bits and
-		 * 4.0e-8 for 48 bits. For a compressed file of size 100Gb -- about 100000 blocks -- only a 48-bit marker will
-		 * do. NB: normal compression/ decompression do *not* rely on these statistical properties. They are only
-		 * important when trying to recover blocks from damaged files.
+		 * A 6-byte block header, the value chosen arbitrarily as 0x314159265359 :-). A 32 bit value does not
+		 * really give a strong enough guarantee that the value will not appear by chance in the compressed
+		 * datastream. Worst-case probability of this event, for a 900k block, is about 2.0e-3 for 32 bits,
+		 * 1.0e-5 for 40 bits and 4.0e-8 for 48 bits. For a compressed file of size 100Gb -- about 100000
+		 * blocks -- only a 48-bit marker will do. NB: normal compression/ decompression do *not* rely on
+		 * these statistical properties. They are only important when trying to recover blocks from damaged
+		 * files.
 		 */
 		bsPutUChar(0x31);
 		bsPutUChar(0x41);
@@ -530,9 +532,9 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 
 	private void endCompression() throws IOException {
 		/*
-		 * Now another magic 48-bit number, 0x177245385090, to indicate the end of the last block. (sqrt(pi), if you
-		 * want to know. I did want to use e, but it contains too much repetition -- 27 18 28 18 28 46 -- for me to feel
-		 * statistically comfortable. Call me paranoid.)
+		 * Now another magic 48-bit number, 0x177245385090, to indicate the end of the last block. (sqrt(pi),
+		 * if you want to know. I did want to use e, but it contains too much repetition -- 27 18 28 18 28 46
+		 * -- for me to feel statistically comfortable. Call me paranoid.)
 		 */
 		bsPutUChar(0x17);
 		bsPutUChar(0x72);
@@ -797,7 +799,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 
 	private void initialize() throws IOException {
 		/*
-		 * Write `magic' bytes h indicating file-format == huffmanised, followed by a digit indicating blockSize100k.
+		 * Write `magic' bytes h indicating file-format == huffmanised, followed by a digit indicating
+		 * blockSize100k.
 		 */
 		bsPutUChar('h');
 		bsPutUChar('0' + m_blockSize100k);
@@ -817,8 +820,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 		int c2;
 
 		/*
-		 * In the various block-sized structures, live data runs from 0 to last+NUM_OVERSHOOT_BYTES inclusive. First,
-		 * set up the overshoot area for block.
+		 * In the various block-sized structures, live data runs from 0 to last+NUM_OVERSHOOT_BYTES inclusive.
+		 * First, set up the overshoot area for block.
 		 */
 		// if (verbosity >= 4) fprintf ( stderr, "        sort initialise ...\n"
 		// );
@@ -876,8 +879,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 			m_zptr[m_ftab[j]] = m_last;
 
 			/*
-			 * Now ftab contains the first loc of every small bucket. Calculate the running order, from smallest to
-			 * largest big bucket.
+			 * Now ftab contains the first loc of every small bucket. Calculate the running order, from
+			 * smallest to largest big bucket.
 			 */
 			for (i = 0; i <= 255; i++) {
 				runningOrder[i] = i;
@@ -916,9 +919,9 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 				ss = runningOrder[i];
 
 				/*
-				 * Complete the big bucket [ss] by quicksorting any unsorted small buckets [ss, j]. Hopefully previous
-				 * pointer-scanning phases have already completed many of the small buckets [ss, j], so we don't have to
-				 * sort them at all.
+				 * Complete the big bucket [ss] by quicksorting any unsorted small buckets [ss, j]. Hopefully
+				 * previous pointer-scanning phases have already completed many of the small buckets [ss, j],
+				 * so we don't have to sort them at all.
 				 */
 				for (j = 0; j <= 255; j++) {
 					sb = (ss << 8) + j;
@@ -935,9 +938,10 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 				}
 
 				/*
-				 * The ss big bucket is now done. Record this fact, and update the quadrant descriptors. Remember to
-				 * update quadrants in the overshoot area too, if necessary. The "if (i < 255)" test merely skips this
-				 * updating for the last bucket processed, since updating for the last bucket is pointless.
+				 * The ss big bucket is now done. Record this fact, and update the quadrant descriptors.
+				 * Remember to update quadrants in the overshoot area too, if necessary. The "if (i < 255)"
+				 * test merely skips this updating for the last bucket processed, since updating for the last
+				 * bucket is pointless.
 				 */
 				bigDone[ss] = true;
 
@@ -965,8 +969,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 				}
 
 				/*
-				 * Now scan this big bucket so as to synthesise the sorted order for small buckets [t, ss] for all t !=
-				 * ss.
+				 * Now scan this big bucket so as to synthesise the sorted order for small buckets [t, ss] for
+				 * all t != ss.
 				 */
 				for (j = 0; j <= 255; j++) {
 					copy[j] = m_ftab[(j << 8) + ss] & CLEARMASK;
@@ -1345,7 +1349,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 				}
 
 				/*
-				 * Find the coding table which is best for this group, and record its identity in the selector table.
+				 * Find the coding table which is best for this group, and record its identity in the selector
+				 * table.
 				 */
 				bc = 999999999;
 				bt = -1;

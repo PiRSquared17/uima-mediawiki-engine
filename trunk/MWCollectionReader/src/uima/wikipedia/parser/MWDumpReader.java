@@ -63,8 +63,9 @@ public class MWDumpReader {
 		// Process website info
 		// Check if the <siteinfo> tag is there (it's optional)
 		hasSiteInfo = streamReader.getLocalName().toLowerCase().equals("siteinfo");
-		if (hasSiteInfo)
+		if (hasSiteInfo) {
 			computeSiteInfo();
+		}
 		// Initialise Article and Revision factorys
 		thePage = new MWArticleFactory(theInfo);
 		theRevision = new MWRevisionFactory();
@@ -122,8 +123,9 @@ public class MWDumpReader {
 		// Try to compute a page
 		pageComputed = false;
 		try {
-			while (!pageComputed && !endOfDocumentReached)
+			while (!pageComputed && !endOfDocumentReached) {
 				pageComputed = computePage();
+			}
 		} catch (final MWParseException e) {
 			e.printStackTrace();
 			endOfDocumentReached = true;
@@ -141,7 +143,7 @@ public class MWDumpReader {
 	public final void close() {
 		try {
 			streamReader.close();
-		} catch (XMLStreamException e) {
+		} catch (final XMLStreamException e) {
 			// If the closing fails, the GC will just have to deal with it.
 		}
 	}
@@ -182,8 +184,9 @@ public class MWDumpReader {
 					default: // This happens if we don't process a tag acknoledged in the MWTag enum.
 						endPage = true;
 				}
-				if (!endPage)
+				if (!endPage) {
 					nextOpeningTag(1);
+				}
 			}
 		} catch (final NoSuchElementException e) {
 			// If we reach the end of the document
@@ -225,8 +228,9 @@ public class MWDumpReader {
 					// This is actully a nested element. We are only interrested in the user name.
 					// The user name tag is however optional.
 					nextOpeningTag(1);
-					if (streamReader.getLocalName().equals("username"))
+					if (streamReader.getLocalName().equals("username")) {
 						theRevision.hasContributor(getTagText());
+					}
 					break;
 				case MINOR:
 					// If the tag is <minor /> then it's set to false
@@ -254,8 +258,9 @@ public class MWDumpReader {
 				default:
 					endRevision = true;
 			}
-			if (!endRevision)
+			if (!endRevision) {
 				nextOpeningTag(1);
+			}
 		}
 		// Add the revision to the list
 		thePage.hasRevision(theRevision.newInstance());
@@ -273,7 +278,7 @@ public class MWDumpReader {
 		String base = "";
 		String generator = "";
 		String thecase = "";
-		HashMap<Integer, String> namespaces = new HashMap<Integer, String>();
+		final HashMap<Integer, String> namespaces = new HashMap<Integer, String>();
 		// A flag
 		boolean endSiteInfo = false;
 
@@ -313,8 +318,9 @@ public class MWDumpReader {
 					default:
 						endSiteInfo = true;
 				}
-				if (!endSiteInfo)
+				if (!endSiteInfo) {
 					nextOpeningTag(1);
+				}
 			}
 		} catch (final NoSuchElementException e) {
 			endOfDocumentReached = true;
@@ -340,8 +346,9 @@ public class MWDumpReader {
 		int i = 0;
 		while (i < n) {
 			streamReader.next();
-			if (streamReader.isStartElement())
+			if (streamReader.isStartElement()) {
 				++i;
+			}
 		}
 	}
 
@@ -356,8 +363,9 @@ public class MWDumpReader {
 		boolean endOfTag = false;
 		while (!endOfTag) {
 			streamReader.next();
-			if (streamReader.isEndElement() && streamReader.getLocalName().equals(name))
+			if (streamReader.isEndElement() && streamReader.getLocalName().equals(name)) {
 				endOfTag = true;
+			}
 		}
 	}
 

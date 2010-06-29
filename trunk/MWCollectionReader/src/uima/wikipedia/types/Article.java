@@ -7,9 +7,9 @@ import org.apache.uima.jcas.cas.TOP_Type;
 import org.apache.uima.jcas.tcas.Annotation;
 
 /**
- * An article is the unity describing a concept or an idea in the Wikipedia. It is composed of several revisions, each
- * of which proposing a content for the article. Updated by JCasGen Thu Feb 25 18:30:14 CET 2010 XML source:
- * /tmp/wikipedia-cr/desc/wikipedia-ts.xml
+ * An article is the unity describing a concept or an idea in the Wikipedia. It is composed of several
+ * revisions, each of which proposing a content for the article. Updated by JCasGen Thu Feb 25 18:30:14 CET
+ * 2010 XML source: /tmp/wikipedia-cr/desc/wikipedia-ts.xml
  * 
  * @generated
  */
@@ -75,8 +75,8 @@ public class Article extends Annotation {
 	// * Feature: namespace
 
 	/**
-	 * getter for namespace - gets There are potentially several namespaces in a MediaWiki. However this feature is not
-	 * really used in the Wikipedia.
+	 * getter for namespace - gets There are potentially several namespaces in a MediaWiki. However this
+	 * feature is not really used in the Wikipedia.
 	 * 
 	 * @generated
 	 */
@@ -88,8 +88,8 @@ public class Article extends Annotation {
 	}
 
 	/**
-	 * setter for namespace - sets There are potentially several namespaces in a MediaWiki. However this feature is not
-	 * really used in the Wikipedia.
+	 * setter for namespace - sets There are potentially several namespaces in a MediaWiki. However this
+	 * feature is not really used in the Wikipedia.
 	 * 
 	 * @generated
 	 */
@@ -104,8 +104,8 @@ public class Article extends Annotation {
 	// * Feature: title
 
 	/**
-	 * getter for title - gets The title of the article, it mostly corresponds to the address of the content on the
-	 * Wikipedia.
+	 * getter for title - gets The title of the article, it mostly corresponds to the address of the content
+	 * on the Wikipedia.
 	 * 
 	 * @generated
 	 */
@@ -117,8 +117,8 @@ public class Article extends Annotation {
 	}
 
 	/**
-	 * setter for title - sets The title of the article, it mostly corresponds to the address of the content on the
-	 * Wikipedia.
+	 * setter for title - sets The title of the article, it mostly corresponds to the address of the content
+	 * on the Wikipedia.
 	 * 
 	 * @generated
 	 */

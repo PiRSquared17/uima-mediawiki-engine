@@ -7,8 +7,9 @@ import org.apache.uima.jcas.cas.TOP_Type;
 import org.apache.uima.jcas.tcas.Annotation;
 
 /**
- * A revision is the version of an article by a contributor. It is most likely based on the direct previous revision.
- * Updated by JCasGen Thu Feb 25 18:30:14 CET 2010 XML source: /tmp/wikipedia-cr/desc/wikipedia-ts.xml
+ * A revision is the version of an article by a contributor. It is most likely based on the direct previous
+ * revision. Updated by JCasGen Thu Feb 25 18:30:14 CET 2010 XML source:
+ * /tmp/wikipedia-cr/desc/wikipedia-ts.xml
  * 
  * @generated
  */
@@ -101,8 +102,8 @@ public class Revision extends Annotation {
 	// * Feature: comment
 
 	/**
-	 * getter for comment - gets A comment by the contributor that describes what the correspond new revision is made of
-	 * in comparison to the previous one.
+	 * getter for comment - gets A comment by the contributor that describes what the correspond new revision
+	 * is made of in comparison to the previous one.
 	 * 
 	 * @generated
 	 */
@@ -114,8 +115,8 @@ public class Revision extends Annotation {
 	}
 
 	/**
-	 * setter for comment - sets A comment by the contributor that describes what the correspond new revision is made of
-	 * in comparison to the previous one.
+	 * setter for comment - sets A comment by the contributor that describes what the correspond new revision
+	 * is made of in comparison to the previous one.
 	 * 
 	 * @generated
 	 */
@@ -157,7 +158,8 @@ public class Revision extends Annotation {
 	// * Feature: isMinor
 
 	/**
-	 * getter for isMinor - gets Flag indicating if the revision is a minor one (mostly typo fixes) or something more.
+	 * getter for isMinor - gets Flag indicating if the revision is a minor one (mostly typo fixes) or
+	 * something more.
 	 * 
 	 * @generated
 	 */
@@ -169,7 +171,8 @@ public class Revision extends Annotation {
 	}
 
 	/**
-	 * setter for isMinor - sets Flag indicating if the revision is a minor one (mostly typo fixes) or something more.
+	 * setter for isMinor - sets Flag indicating if the revision is a minor one (mostly typo fixes) or
+	 * something more.
 	 * 
 	 * @generated
 	 */

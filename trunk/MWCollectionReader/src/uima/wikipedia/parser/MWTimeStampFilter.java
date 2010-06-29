@@ -40,28 +40,32 @@ public abstract class MWTimeStampFilter implements StreamFilter {
 	public final boolean accept(XMLStreamReader reader) {
 		if (!foundTimestamp) {
 			// If we encounter an opening <timestamp> tag, we set the flag to true.
-			if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("timestamp"))
+			if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("timestamp")) {
 				foundTimestamp = true;
+			}
 		} else if (reader.getEventType() == CHARACTERS && !timeStampMatch(reader.getText())) {
 			// If the foundTimestamp flag is set to true, we found a <timestamp> tag on the previous call.
 			// <timestamp> tags are mandatory, and can't be empty. This event should be a CHARACTERS one (we
 			// check nevertheless)
 			// If the timestamp doesn't pass the check, we iterate to the next <revision> opening tag.
 			boolean revisionSkipped = false;
-			while (!revisionSkipped)
+			while (!revisionSkipped) {
 				try {
 					reader.next();
-					if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("revision"))
+					if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("revision")) {
 						revisionSkipped = true;
+					}
 				} catch (final XMLStreamException e) {
 					// We do nothing, this should not happen.
 					// If it does, the next call to next() in the main parser will raise it again anyway.
 				}
+			}
 			// We skipped the revision, we set the flag back to false.
 			foundTimestamp = false;
-		} else
+		} else {
 			// The timestamp passed the check, we set the flag to false until the next revision.
 			foundTimestamp = false;
+		}
 		// We always return true, since the events we want to filter are simply skipped by the above code.
 		return true;
 	}

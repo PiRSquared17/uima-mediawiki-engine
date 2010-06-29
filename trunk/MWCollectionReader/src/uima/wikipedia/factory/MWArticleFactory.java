@@ -25,13 +25,13 @@ import uima.wikipedia.types.MWSiteinfo;
  */
 public class MWArticleFactory {
 	// Article variables
-	private String					m_title;
-	private int						m_namespace;
-	private int						m_id;
-	private ArrayList<MWRevision>	m_revisions;
+	private String						m_title;
+	private int							m_namespace;
+	private int							m_id;
+	private final ArrayList<MWRevision>	m_revisions;
 
 	// Website info
-	private final MWSiteinfo		m_siteinfo;
+	private final MWSiteinfo			m_siteinfo;
 
 	/**
 	 * Default initialisation of the fields. The title is set to the empty string, the namespace is set to 0
@@ -113,8 +113,9 @@ public class MWArticleFactory {
 	public final void latestOnly() {
 		MWRevision latest = m_revisions.get(0);
 		for (final MWRevision rev : m_revisions)
-			if (rev.compareTo(latest) > 0)
+			if (rev.compareTo(latest) > 0) {
 				latest = rev;
+			}
 		m_revisions.clear();
 		m_revisions.add(latest);
 	}

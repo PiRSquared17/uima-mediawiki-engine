@@ -122,7 +122,7 @@ public class MWDumpReaderFactory {
 			// Close the current streams
 			inputstream.close();
 			streamReader.close();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			// If it fails, the GC will have to handle it...
 		}
 		// Initialize new ones
@@ -137,7 +137,7 @@ public class MWDumpReaderFactory {
 		try {
 			inputstream.close();
 			streamReader.close();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			// If it fails, the GC will have to handle it...
 		}
 	}
@@ -171,8 +171,9 @@ public class MWDumpReaderFactory {
 				// Replace the underscores by spaces and trim
 				title = line.replace("_", " ").trim();
 				// Build the list
-				if (!title.isEmpty())
+				if (!title.isEmpty()) {
 					myList.add(title);
+				}
 			}
 			line = input.readLine();
 		}
@@ -242,8 +243,9 @@ public class MWDumpReaderFactory {
 		}
 		// We look for the valid keys in the set we built, and add the corresponding prefixes to the list
 		for (final int key : keyList)
-			if (theSiteInfo.namespaces.hasIndex(key))
+			if (theSiteInfo.namespaces.hasIndex(key)) {
 				myList.add(theSiteInfo.namespaces.getPrefix(key));
+			}
 		// Create the new filtered XML stream reader.
 		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(myList, exclude));
 	}
@@ -263,10 +265,11 @@ public class MWDumpReaderFactory {
 		// The map containing the (key, namespace) couples.
 		final Map<Integer, String> namespaceMap = theSiteInfo.namespaces.getMap();
 
-		for (int key : namespaceMap.keySet())
-			if (key > 0 && key % 2 == 1)
+		for (final int key : namespaceMap.keySet())
+			if (key > 0 && key % 2 == 1) {
 				// We add the concerned namespaces to the exclude list
 				excludedNamespace.add(namespaceMap.get(key));
+			}
 		// Create the filter with the proper list of namespaces.
 		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(excludedNamespace, true));
 	}
@@ -291,12 +294,13 @@ public class MWDumpReaderFactory {
 		// Read all the ids from the file, one per line
 		while (line != null) {
 			line = line.trim();
-			if (line.length() > 0 && !line.startsWith("#"))
+			if (line.length() > 0 && !line.startsWith("#")) {
 				try {
 					myList.add(Integer.parseInt(line));
-				} catch (NumberFormatException e) {
+				} catch (final NumberFormatException e) {
 					// We just don't add it to the list if we can't parse it to a integer
 				}
+			}
 			line = input.readLine();
 		}
 		input.close();
@@ -415,7 +419,7 @@ public class MWDumpReaderFactory {
 		protected final boolean titleMatch(String title) {
 			final int pos = title.indexOf(':');
 			title = pos == -1 ? title : title.substring(pos).trim();
-			boolean found = listOfTitles.contains(title);
+			final boolean found = listOfTitles.contains(title);
 			if (pos == -1)
 				// If the page is in the default namespace.
 				return found;
@@ -461,7 +465,7 @@ public class MWDumpReaderFactory {
 		protected boolean titleMatch(String title) {
 			final int pos = title.indexOf(':');
 			namespace = pos != -1 ? title.substring(0, pos).trim() : "";
-			boolean found = listOfNamespaces.contains(namespace);
+			final boolean found = listOfNamespaces.contains(namespace);
 			if (exclude)
 				return !found;
 			return found;

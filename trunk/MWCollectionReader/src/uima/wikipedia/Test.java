@@ -20,10 +20,11 @@ public class Test {
 		int i = 0;
 		try {
 			factory = new MWDumpReaderFactory(new File("/Users/Bowbaq/Desktop/ultimetest.xml"));
-			MWDumpReader XMLParser = factory.getParser();
-			StringBuilder builder = new StringBuilder();
-			while (XMLParser.hasPage())
+			final MWDumpReader XMLParser = factory.getParser();
+			new StringBuilder();
+			while (XMLParser.hasPage()) {
 				++i;
+			}
 
 			System.out.println("END OF PARSING - PageNbr = " + i);
 		} catch (final MWParseException e) {

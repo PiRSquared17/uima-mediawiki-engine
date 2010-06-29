@@ -25,8 +25,8 @@ import java.io.InputStream;
  */
 
 /**
- * An input stream that decompresses from the BZip2 format (without the file header chars) to be read as any other
- * stream.
+ * An input stream that decompresses from the BZip2 format (without the file header chars) to be read as any
+ * other stream.
  * 
  * @author <a href="mailto:keiron@aftexsw.com">Keiron Liddle</a>
  */
@@ -342,8 +342,8 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 		int groupPos = 0;
 
 		/*
-		 * Setting up the unzftab entries here is not strictly necessary, but it does save having to do it later in a
-		 * separate pass, and so saves a block's worth of cache misses.
+		 * Setting up the unzftab entries here is not strictly necessary, but it does save having to do it
+		 * later in a separate pass, and so saves a block's worth of cache misses.
 		 */
 		for (int i = 0; i <= 255; i++) {
 			m_unzftab[i] = 0;
@@ -471,8 +471,8 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 				m_ll8[m_last] = m_seqToUnseq[tmp];
 
 				/*
-				 * This loop is hammered during decompression, hence the unrolling. for (j = nextSym-1; j > 0; j--)
-				 * yy[j] = yy[j-1];
+				 * This loop is hammered during decompression, hence the unrolling. for (j = nextSym-1; j > 0;
+				 * j--) yy[j] = yy[j-1];
 				 */
 				int j = nextSym - 1;
 				for (; j > 3; j -= 4) {

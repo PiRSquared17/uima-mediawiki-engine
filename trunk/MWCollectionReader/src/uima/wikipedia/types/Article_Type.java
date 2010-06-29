@@ -13,8 +13,9 @@ import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /**
- * An article is the unity describing a concept or an idea in the Wikipedia. It is composed of several revisions, each
- * of which proposing a content for the article. Updated by JCasGen Thu Feb 25 18:30:14 CET 2010
+ * An article is the unity describing a concept or an idea in the Wikipedia. It is composed of several
+ * revisions, each of which proposing a content for the article. Updated by JCasGen Thu Feb 25 18:30:14 CET
+ * 2010
  * 
  * @generated
  */
