@@ -9,6 +9,7 @@ import org.eclipse.mylyn.wikitext.core.parser.Attributes;
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder;
 
 import uima.wikipedia.factory.MWAnnotator;
+import uima.wikipedia.types.Section;
 
 public class MWRevisionBuilder extends DocumentBuilder {
 	// The text builder
@@ -21,7 +22,8 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	private Stack<Integer>		itemCount;
 	// The annotation factory
 	private MWAnnotator			annotator;
-	// 
+	// A Stack for the section's level we are in
+	private Stack<Integer> sectionsLevel;
 
 	public MWRevisionBuilder(JCas cas) {
 		content = new StringBuilder();
@@ -35,6 +37,22 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	public void beginHeading(int level, Attributes attributes) {
 		content.append("\n\n");
 		annotator.newHeader(level, content.length());
+		
+		// verifying wether some sections need to be closed
+		if(sectionsLevel.isEmpty()){
+			sectionsLevel.push(level);
+		}else{
+			if(level < sectionsLevel.lastElement()){
+				// the new section is less important than the one we a re already in
+				sectionsLevel.push(level);
+			}else{
+				while(level >= sectionsLevel.pop()){
+					annotator.endSection(content.length());
+				}
+			}
+		}
+		// adding the new section
+		annotator.newSection(content.length());
 	}
 
 	@Override
