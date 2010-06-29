@@ -19,8 +19,8 @@ public class MWAnnotator {
 	private final List<Header>		headers;
 	private final List<Link>		links;
 	private final List<Paragraph>	paragraphs;
-	private final List<Section> sections;
-	private final Stack<Section> currentSections;
+	private final List<Section>		sections;
+	private final Stack<Section>	currentSections;
 
 	public MWAnnotator(JCas cas) {
 		this.cas = cas;
@@ -57,24 +57,25 @@ public class MWAnnotator {
 		}
 	}
 
-	public void newSection(int offset){
+	public void newSection(int level, int offset) {
 		Section s = new Section(cas);
 		s.setBegin(offset);
+		s.setLevel(level);
 		currentSections.push(s);
 	}
-	
-	public void endSection(int offset){
-		Section s = currentSections.pop();
-		s.setEnd(offset);
-		sections.add(s);
-	}
-	
+
 	public void newSpan(SpanType type, int offset) {
 	}
 
 	public void end(String name, int offset) {
-		if (name.equals("header"))
+		if (name.equals("header")) {
 			headers.get(headers.size() - 1).setEnd(offset);
+			currentSections.peek().setTitle(headers.get(headers.size() - 1));
+		} else if (name.equals("section")) {
+			Section s = currentSections.pop();
+			s.setEnd(offset);
+			sections.add(s);
+		}
 	}
 
 	public void end(BlockType type, int offset) {
