@@ -6,7 +6,7 @@ import java.util.Map;
 import org.eclipse.mylyn.wikitext.mediawiki.core.Template;
 import org.eclipse.mylyn.wikitext.mediawiki.core.TemplateResolver;
 
-public class CustomTemplateResolver extends TemplateResolver {
+public class MWTemplateResolver extends TemplateResolver {
 	private static Map<String, String>	customTemplates	= new HashMap<String, String>();
 	static {
 		customTemplates.put("mdash", "&nbsp;&mdash; "); //$NON-NLS-1$//$NON-NLS-2$

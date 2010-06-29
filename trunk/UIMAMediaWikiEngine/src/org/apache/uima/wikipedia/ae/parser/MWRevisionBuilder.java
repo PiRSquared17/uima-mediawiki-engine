@@ -9,20 +9,32 @@ import org.apache.uima.wikipedia.ae.factory.MWAnnotator;
 import org.eclipse.mylyn.wikitext.core.parser.Attributes;
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder;
 
+/**
+ * This class is a helper for the actual parser. It acts as a sink for the parser events. It is used to notify
+ * the annotator for each new annotation, and also to build the revision's text without the wiki syntax.
+ * 
+ * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
+ */
 public class MWRevisionBuilder extends DocumentBuilder {
-	// The text builder
+	/** The StringBuilder for the revision's content */
 	private final StringBuilder		content;
-	// A stack for the type of block we are in.
+	/** A stack to keep track of the kind of block we are in */
 	private final Stack<BlockType>	blockContext;
-	// A stack for the type of list we are in.
+	/** A more specialized stack for the type of list we are in */
 	private final Stack<BlockType>	listContext;
-	// Item count for the list we are in.
+	/** A stack to count the items per list level */
 	private final Stack<Integer>	itemCount;
-	// The annotation factory
-	private final MWAnnotator		annotator;
-	// A Stack for the section's level we are in
+	/** A stack to keep stack of the different sections */
 	private final Stack<Integer>	sectionsLevel;
+	/** The factory to create the annotations */
+	private final MWAnnotator		annotator;
 
+	/**
+	 * Initialize the revision builder.
+	 * 
+	 * @param cas
+	 *            the CAS we are processing
+	 */
 	public MWRevisionBuilder(JCas cas) {
 		content = new StringBuilder();
 		blockContext = new Stack<BlockType>();
@@ -32,14 +44,17 @@ public class MWRevisionBuilder extends DocumentBuilder {
 		annotator = new MWAnnotator(cas);
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public void beginHeading(int level, Attributes attributes) {
 		content.append("\n\n");
 		annotator.newHeader(level, content.length());
 
-		if (sectionsLevel.isEmpty() || level > sectionsLevel.peek()) {
+		if (sectionsLevel.isEmpty() || level > sectionsLevel.peek())
 			sectionsLevel.push(level);
-		} else {
+		else {
 			while (!sectionsLevel.isEmpty() && level <= sectionsLevel.peek()) {
 				sectionsLevel.pop();
 				annotator.end("section", content.length());
@@ -65,9 +80,8 @@ public class MWRevisionBuilder extends DocumentBuilder {
 			case DEFINITION_TERM:
 			case DEFINITION_ITEM:
 				content.append('\n');
-				for (int level = 0; level < listContext.size() - 1; level++) {
+				for (int level = 0; level < listContext.size() - 1; level++)
 					content.append('\t');
-				}
 				final int count = itemCount.pop() + 1;
 				itemCount.push(count);
 				switch (listContext.peek()) {
@@ -93,7 +107,6 @@ public class MWRevisionBuilder extends DocumentBuilder {
 
 	@Override
 	public void beginSpan(SpanType type, Attributes attributes) {
-		annotator.newSpan(type, content.length());
 	}
 
 	@Override

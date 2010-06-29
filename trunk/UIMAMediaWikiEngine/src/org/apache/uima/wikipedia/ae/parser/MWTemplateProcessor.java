@@ -11,7 +11,7 @@ import org.eclipse.mylyn.internal.wikitext.mediawiki.core.AbstractMediaWikiLangu
 import org.eclipse.mylyn.wikitext.mediawiki.core.Template;
 import org.eclipse.mylyn.wikitext.mediawiki.core.TemplateResolver;
 
-public class CustomTemplateProcessor {
+public class MWTemplateProcessor {
 
 	private static final Pattern			templatePattern				= Pattern.compile("(?:^|(?<!\\{))(\\{\\{([^\\}\\|]++)(\\|[^\\}]*+)?+\\}\\})");	//$NON-NLS-1$
 
@@ -30,7 +30,7 @@ public class CustomTemplateProcessor {
 
 	private final List<Pattern>				excludePatterns				= new ArrayList<Pattern>();
 
-	public CustomTemplateProcessor(AbstractMediaWikiLanguage abstractMediaWikiLanguage) {
+	public MWTemplateProcessor(AbstractMediaWikiLanguage abstractMediaWikiLanguage) {
 		mediaWikiLanguage = abstractMediaWikiLanguage;
 
 		for (final Template template : mediaWikiLanguage.getTemplates()) {
@@ -118,7 +118,7 @@ public class CustomTemplateProcessor {
 	}
 
 	private List<Parameter> processParameters(String parametersText) {
-		final List<Parameter> parameters = new ArrayList<CustomTemplateProcessor.Parameter>();
+		final List<Parameter> parameters = new ArrayList<MWTemplateProcessor.Parameter>();
 		if (parametersText != null) {
 			final Matcher matcher = parameterSpec.matcher(parametersText);
 			while (matcher.find()) {

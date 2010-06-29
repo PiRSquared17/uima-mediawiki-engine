@@ -15,11 +15,11 @@ import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
 import org.eclipse.mylyn.wikitext.mediawiki.core.TemplateResolver;
 
 public class MWLanguage extends MediaWikiLanguage {
-	CustomTemplateResolver	resolver;
+	MWTemplateResolver	resolver;
 
 	public MWLanguage() {
 		super();
-		resolver = new CustomTemplateResolver();
+		resolver = new MWTemplateResolver();
 		final List<TemplateResolver> temp = new ArrayList<TemplateResolver>();
 		temp.add(resolver);
 		setTemplateProviders(temp);
@@ -66,6 +66,6 @@ public class MWLanguage extends MediaWikiLanguage {
 	}
 
 	private String preprocessContent(String markupContent) {
-		return new CustomTemplateProcessor(this).processTemplates(markupContent);
+		return new MWTemplateProcessor(this).processTemplates(markupContent);
 	}
 }

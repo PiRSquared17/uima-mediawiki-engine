@@ -11,11 +11,11 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.wikipedia.ae.factory.MWCasBuilder;
 
 /**
- * This class aims to recover a raw view of the CAS (RawWikiText) sent by the Collection Reader, analyzed it
- * and add the expected annotations to the default view (
+ * This class aims to recover a raw view of the CAS (RawWikiText) sent by the Collection Reader, analyze it
+ * and add the expected annotations to the default view.
  * 
  * @author Fabien Poulard <fabien.poulard@univ-nantes.fr>
- * @author Maxime Bury <maxime.bury@univ-nantes.fr>
+ * @author Maxime Bury &lt;maxime.bury@gmail.com&gt;
  * @author Maxime Rihouey <maxime.rihouey@univ-nantes.fr>
  */
 public class AnalysisEngine extends JCasAnnotator_ImplBase {
@@ -29,14 +29,13 @@ public class AnalysisEngine extends JCasAnnotator_ImplBase {
 		// Get the path of the definition file for the macros
 		File definition = null;
 		final String path = (String) context.getConfigParameterValue(PARAM_INP_DEFINITIONPATH);
-		if (path != null && !path.isEmpty()) {
+		if (path != null && !path.isEmpty())
 			definition = new File(path);
-		}
 		// Initialize the factory
 		try {
 			MWCasBuilder.initialize("RawWikiText", enableMacros, definition);
 		} catch (final CASException e) {
-			throw new ResourceInitializationException("There was an error initializin the analysis engine.", null);
+			throw new ResourceInitializationException("There was an error initializing the analysis engine.\n" + e.getMessage(), null);
 		}
 	}
 

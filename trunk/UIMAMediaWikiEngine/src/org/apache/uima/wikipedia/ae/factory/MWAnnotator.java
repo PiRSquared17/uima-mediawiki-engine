@@ -11,16 +11,34 @@ import org.apache.uima.wikipedia.types.Link;
 import org.apache.uima.wikipedia.types.Paragraph;
 import org.apache.uima.wikipedia.types.Section;
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType;
-import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.SpanType;
 
+/**
+ * This class handles the creation of all the annotations for the CAS. The
+ * {@link org.apache.uima.wikipedia.ae.parser.MWRevisionBuilder document builder} calls the method provided by
+ * this factory to populate the CAS with annotations while processing the content.
+ * <p>
+ * For now, we handle {@link org.apache.uima.wikipedia.types.Header},
+ * {@link org.apache.uima.wikipedia.types.Section}, {@link org.apache.uima.wikipedia.types.Paragraph} and
+ * {@link org.apache.uima.wikipedia.types.Link} annotations.
+ * 
+ * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
+ */
 public class MWAnnotator {
+	/** The CAS we are working on */
 	private final JCas				cas;
+	/** Lists of annotations relative to this CAS */
 	private final List<Header>		headers;
 	private final List<Link>		links;
 	private final List<Paragraph>	paragraphs;
 	private final List<Section>		sections;
 	private final Stack<Section>	currentSections;
 
+	/**
+	 * Initialize the factory with a new CAS to process.
+	 * 
+	 * @param cas
+	 *            the CAS to process
+	 */
 	public MWAnnotator(JCas cas) {
 		this.cas = cas;
 		headers = new ArrayList<Header>();
@@ -30,6 +48,15 @@ public class MWAnnotator {
 		currentSections = new Stack<Section>();
 	}
 
+	/**
+	 * Creates a new {@link org.apache.uima.wikipedia.types.Header} annotation of level <code>level</code>
+	 * starting at <code>offset</code>.
+	 * 
+	 * @param level
+	 *            the header's level
+	 * @param offset
+	 *            the starting offset
+	 */
 	public void newHeader(int level, int offset) {
 		final Header h = new Header(cas);
 		h.setBegin(offset);
@@ -37,6 +64,16 @@ public class MWAnnotator {
 		headers.add(h);
 	}
 
+	/**
+	 * Creates a new {@link org.apache.uima.wikipedia.types.Link} annotation.
+	 * 
+	 * @param label
+	 *            the link's label (name)
+	 * @param href
+	 *            the link's adress
+	 * @param offset
+	 *            the starting offset
+	 */
 	public void newLink(String label, String href, int offset) {
 		final Link l = new Link(cas);
 		l.setBegin(offset);
@@ -46,6 +83,15 @@ public class MWAnnotator {
 		links.add(l);
 	}
 
+	/**
+	 * Creates a new block annotation of the provided type. Currently, only
+	 * {@link org.apache.uima.wikipedia.types.Paragraph} are supported.
+	 * 
+	 * @param type
+	 *            the block's type.
+	 * @param offset
+	 *            the starting offset.
+	 */
 	public void newBlock(BlockType type, int offset) {
 		switch (type) {
 			case PARAGRAPH:
@@ -56,6 +102,15 @@ public class MWAnnotator {
 		}
 	}
 
+	/**
+	 * Creates a new {@link org.apache.uima.wikipedia.types.Section} annotation. The section's level is the
+	 * same as the corresponding header's.
+	 * 
+	 * @param level
+	 *            the section's level.
+	 * @param offset
+	 *            the starting offset.
+	 */
 	public void newSection(int level, int offset) {
 		final Section s = new Section(cas);
 		s.setBegin(offset);
@@ -63,20 +118,26 @@ public class MWAnnotator {
 		currentSections.push(s);
 	}
 
-	public void newSpan(SpanType type, int offset) {
-	}
+	/**
+	 * This method handles the closing of various annotations. For now, it handles closing headers, sections
+	 * and it also closes the unclosed section when we reach the end of the document.
+	 * 
+	 * @param type
+	 *            the type of the annotation we are closing.
+	 * @param offset
+	 *            the ending offset.
+	 */
+	public void end(String type, int offset) {
 
-	public void end(String name, int offset) {
-
-		if (name.equals("header")) {
+		if (type.equals("header")) {
 			headers.get(headers.size() - 1).setEnd(offset);
 			currentSections.peek().setTitle(headers.get(headers.size() - 1));
-		} else if (name.equals("section")) {
+		} else if (type.equals("section")) {
 			final Section s = currentSections.pop();
 			s.setEnd(offset);
 			s.setParent(currentSections.peek());
 			sections.add(s);
-		} else if (name.equals("unclosed")) {
+		} else if (type.equals("unclosed")) {
 			final Section root = currentSections.firstElement();
 			currentSections.remove(0);
 			for (final Section s : currentSections) {
@@ -89,6 +150,14 @@ public class MWAnnotator {
 		}
 	}
 
+	/**
+	 * This method handles the closing of block annotations. For the moment, only paragraphs are considered.
+	 * 
+	 * @param type
+	 *            the block annotation type.
+	 * @param offset
+	 *            the ending offset.
+	 */
 	public void end(BlockType type, int offset) {
 		switch (type) {
 			case PARAGRAPH:
@@ -97,6 +166,11 @@ public class MWAnnotator {
 		}
 	}
 
+	/**
+	 * Creates one big list with all the different annotations.
+	 * 
+	 * @return all the annotations gathered by this factory.
+	 */
 	public List<Annotation> getAnnotations() {
 		final List<Annotation> annotations = new ArrayList<Annotation>();
 		annotations.addAll(headers);
