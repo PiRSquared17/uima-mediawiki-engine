@@ -68,13 +68,25 @@ public class MWAnnotator {
 	}
 
 	public void end(String name, int offset) {
+
 		if (name.equals("header")) {
 			headers.get(headers.size() - 1).setEnd(offset);
 			currentSections.peek().setTitle(headers.get(headers.size() - 1));
 		} else if (name.equals("section")) {
 			Section s = currentSections.pop();
 			s.setEnd(offset);
+			s.setParent(currentSections.peek());
 			sections.add(s);
+		} else if (name.equals("unclosed")) {
+			Section root = currentSections.firstElement();
+			currentSections.remove(0);
+			for (Section s : currentSections) {
+				s.setEnd(offset);
+				s.setParent(root);
+				sections.add(s);
+			}
+			root.setEnd(offset);
+			sections.add(root);
 		}
 	}
 

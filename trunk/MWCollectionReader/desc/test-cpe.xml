@@ -9,7 +9,7 @@
                 <nameValuePair>
                     <name>InputXmlDump</name>
                     <value>
-                        <string>/Users/Bowbaq/Desktop/ultimetest.xml</string>
+                        <string>/Users/Bowbaq/Downloads/frwiki-20100401-pages-meta-current.xml</string>
                     </value>
                 </nameValuePair>
             </configurationParameterSettings>
@@ -51,7 +51,7 @@
                 <nameValuePair>
                     <name>OutputDirectory</name>
                     <value>
-                        <string>/Users/Bowbaq/Desktop/testpage</string>
+                        <string>/Users/Bowbaq/Desktop/test</string>
                     </value>
                 </nameValuePair>
             </configurationParameterSettings>

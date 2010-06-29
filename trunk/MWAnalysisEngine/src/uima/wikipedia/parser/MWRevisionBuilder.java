@@ -41,8 +41,10 @@ public class MWRevisionBuilder extends DocumentBuilder {
 		if (sectionsLevel.isEmpty() || level > sectionsLevel.peek())
 			sectionsLevel.push(level);
 		else {
-			while (!sectionsLevel.isEmpty() && level <= sectionsLevel.pop())
+			while (!sectionsLevel.isEmpty() && level <= sectionsLevel.peek()) {
+				sectionsLevel.pop();
 				annotator.end("section", content.length());
+			}
 			sectionsLevel.push(level);
 		}
 		annotator.newSection(level, content.length());
@@ -96,7 +98,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 
 	@Override
 	public void beginDocument() {
-		// TODO Handle Document annotation here
+		annotator.newSection(1, content.length());
 	}
 
 	@Override
@@ -132,8 +134,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 
 	@Override
 	public void endDocument() {
-		// TODO Auto-generated method stub
-
+		annotator.end("unclosed", content.length());
 	}
 
 	@Override
