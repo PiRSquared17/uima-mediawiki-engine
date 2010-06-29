@@ -90,6 +90,7 @@ public class MWAnnotator {
 		annotations.addAll(headers);
 		annotations.addAll(links);
 		annotations.addAll(paragraphs);
+		annotations.addAll(sections);
 		return annotations;
 	}
 }
