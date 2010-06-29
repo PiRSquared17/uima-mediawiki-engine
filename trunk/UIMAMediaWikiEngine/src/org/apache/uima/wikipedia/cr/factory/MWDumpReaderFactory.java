@@ -41,7 +41,7 @@ import org.apache.uima.wikipedia.types.MWSiteinfo;
  * compare. All the filters will be detailed further in this documentation.
  * 
  * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
- * @see uima.wikipedia.parser.MWDumpReader MWDumpReader
+ * @see org.apache.uima.wikipedia.cr.parser.MWDumpReader MWDumpReader
  */
 public class MWDumpReaderFactory {
 	/** The input stream we are reading from */
@@ -171,9 +171,8 @@ public class MWDumpReaderFactory {
 				// Replace the underscores by spaces and trim
 				title = line.replace("_", " ").trim();
 				// Build the list
-				if (!title.isEmpty()) {
+				if (!title.isEmpty())
 					myList.add(title);
-				}
 			}
 			line = input.readLine();
 		}
@@ -243,9 +242,8 @@ public class MWDumpReaderFactory {
 		}
 		// We look for the valid keys in the set we built, and add the corresponding prefixes to the list
 		for (final int key : keyList)
-			if (theSiteInfo.namespaces.hasIndex(key)) {
+			if (theSiteInfo.namespaces.hasIndex(key))
 				myList.add(theSiteInfo.namespaces.getPrefix(key));
-			}
 		// Create the new filtered XML stream reader.
 		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(myList, exclude));
 	}
@@ -266,10 +264,9 @@ public class MWDumpReaderFactory {
 		final Map<Integer, String> namespaceMap = theSiteInfo.namespaces.getMap();
 
 		for (final int key : namespaceMap.keySet())
-			if (key > 0 && key % 2 == 1) {
+			if (key > 0 && key % 2 == 1)
 				// We add the concerned namespaces to the exclude list
 				excludedNamespace.add(namespaceMap.get(key));
-			}
 		// Create the filter with the proper list of namespaces.
 		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(excludedNamespace, true));
 	}
@@ -294,13 +291,12 @@ public class MWDumpReaderFactory {
 		// Read all the ids from the file, one per line
 		while (line != null) {
 			line = line.trim();
-			if (line.length() > 0 && !line.startsWith("#")) {
+			if (line.length() > 0 && !line.startsWith("#"))
 				try {
 					myList.add(Integer.parseInt(line));
 				} catch (final NumberFormatException e) {
 					// We just don't add it to the list if we can't parse it to a integer
 				}
-			}
 			line = input.readLine();
 		}
 		input.close();

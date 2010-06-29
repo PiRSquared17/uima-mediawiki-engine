@@ -24,9 +24,9 @@ import org.apache.uima.wikipedia.types.MWSiteinfo;
  * allows you to place various filters on the XML stream to exclude or include only certain pages or
  * revisions.
  * 
- * @see uima.wikipedia.types.MWSiteinfo
- * @see uima.wikipedia.types.MWArticle
- * @see uima.wikipedia.types.MWRevision
+ * @see org.apache.uima.wikipedia.types.MWSiteinfo
+ * @see org.apache.uima.wikipedia.types.MWArticle
+ * @see org.apache.uima.wikipedia.types.MWRevision
  * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
  */
 public class MWDumpReader {
@@ -64,9 +64,8 @@ public class MWDumpReader {
 		// Process website info
 		// Check if the <siteinfo> tag is there (it's optional)
 		hasSiteInfo = streamReader.getLocalName().toLowerCase().equals("siteinfo");
-		if (hasSiteInfo) {
+		if (hasSiteInfo)
 			computeSiteInfo();
-		}
 		// Initialise Article and Revision factorys
 		thePage = new MWArticleFactory(theInfo);
 		theRevision = new MWRevisionFactory();
@@ -81,7 +80,7 @@ public class MWDumpReader {
 	 * {@link #hasPage()} method.
 	 * 
 	 * @return the last computed page
-	 * @see uima.wikipedia.types.MWArticle
+	 * @see org.apache.uima.wikipedia.types.MWArticle
 	 */
 	public MWArticle getPage() {
 		pageComputed = false;
@@ -94,7 +93,7 @@ public class MWDumpReader {
 	 * default value.
 	 * 
 	 * @return the site info
-	 * @see uima.wikipedia.types.MWSiteinfo
+	 * @see org.apache.uima.wikipedia.types.MWSiteinfo
 	 */
 	public MWSiteinfo getSiteInfo() {
 		return theInfo;
@@ -124,9 +123,8 @@ public class MWDumpReader {
 		// Try to compute a page
 		pageComputed = false;
 		try {
-			while (!pageComputed && !endOfDocumentReached) {
+			while (!pageComputed && !endOfDocumentReached)
 				pageComputed = computePage();
-			}
 		} catch (final MWParseException e) {
 			e.printStackTrace();
 			endOfDocumentReached = true;
@@ -185,9 +183,8 @@ public class MWDumpReader {
 					default: // This happens if we don't process a tag acknoledged in the MWTag enum.
 						endPage = true;
 				}
-				if (!endPage) {
+				if (!endPage)
 					nextOpeningTag(1);
-				}
 			}
 		} catch (final NoSuchElementException e) {
 			// If we reach the end of the document
@@ -229,9 +226,8 @@ public class MWDumpReader {
 					// This is actully a nested element. We are only interrested in the user name.
 					// The user name tag is however optional.
 					nextOpeningTag(1);
-					if (streamReader.getLocalName().equals("username")) {
+					if (streamReader.getLocalName().equals("username"))
 						theRevision.hasContributor(getTagText());
-					}
 					break;
 				case MINOR:
 					// If the tag is <minor /> then it's set to false
@@ -259,9 +255,8 @@ public class MWDumpReader {
 				default:
 					endRevision = true;
 			}
-			if (!endRevision) {
+			if (!endRevision)
 				nextOpeningTag(1);
-			}
 		}
 		// Add the revision to the list
 		thePage.hasRevision(theRevision.newInstance());
@@ -319,9 +314,8 @@ public class MWDumpReader {
 					default:
 						endSiteInfo = true;
 				}
-				if (!endSiteInfo) {
+				if (!endSiteInfo)
 					nextOpeningTag(1);
-				}
 			}
 		} catch (final NoSuchElementException e) {
 			endOfDocumentReached = true;
@@ -347,9 +341,8 @@ public class MWDumpReader {
 		int i = 0;
 		while (i < n) {
 			streamReader.next();
-			if (streamReader.isStartElement()) {
+			if (streamReader.isStartElement())
 				++i;
-			}
 		}
 	}
 
@@ -364,9 +357,8 @@ public class MWDumpReader {
 		boolean endOfTag = false;
 		while (!endOfTag) {
 			streamReader.next();
-			if (streamReader.isEndElement() && streamReader.getLocalName().equals(name)) {
+			if (streamReader.isEndElement() && streamReader.getLocalName().equals(name))
 				endOfTag = true;
-			}
 		}
 	}
 
