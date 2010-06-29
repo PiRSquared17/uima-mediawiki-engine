@@ -3,6 +3,7 @@ package uima.wikipedia.parser;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
 import org.eclipse.mylyn.wikitext.core.parser.markup.Block;
 import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
 import org.eclipse.mylyn.wikitext.mediawiki.core.TemplateResolver;
@@ -33,6 +34,13 @@ public class MWLanguage extends MediaWikiLanguage {
 	}
 
 	@Override
+	public void processContent(MarkupParser parser, String markupContent, boolean asDocument) {
+		if (isEnableMacros())
+			markupContent = preprocessContent(markupContent);
+		super.processContent(parser, markupContent, asDocument);
+	}
+
+	@Override
 	protected void addStandardBlocks(List<Block> blocks, List<Block> paragraphBreakingBlocks) {
 		// IMPORTANT NOTE: Most items below have order dependencies. DO NOT REORDER ITEMS BELOW!!
 
@@ -54,5 +62,9 @@ public class MWLanguage extends MediaWikiLanguage {
 	@Override
 	protected Block createParagraphBlock() {
 		return new MWParagraphBlock();
+	}
+
+	private String preprocessContent(String markupContent) {
+		return new CustomTemplateProcessor(this).processTemplates(markupContent);
 	}
 }
