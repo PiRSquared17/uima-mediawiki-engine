@@ -3,7 +3,6 @@ package uima.wikipedia.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.mylyn.internal.wikitext.mediawiki.core.block.PreformattedBlock;
 import org.eclipse.mylyn.internal.wikitext.mediawiki.core.block.TableBlock;
 import org.eclipse.mylyn.wikitext.core.parser.markup.Block;
 import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
@@ -12,6 +11,7 @@ import org.eclipse.mylyn.wikitext.mediawiki.core.TemplateResolver;
 import uima.wikipedia.parser.block.MWHeaderBlock;
 import uima.wikipedia.parser.block.MWListBlock;
 import uima.wikipedia.parser.block.MWParagraphBlock;
+import uima.wikipedia.parser.block.MWPreformattedBlock;
 import uima.wikipedia.parser.block.MWToCBlock;
 
 public class MWLanguage extends MediaWikiLanguage {
@@ -38,7 +38,7 @@ public class MWLanguage extends MediaWikiLanguage {
 
 		blocks.add(new MWHeaderBlock());
 		blocks.add(new MWListBlock());
-		blocks.add(new PreformattedBlock());
+		blocks.add(new MWPreformattedBlock());
 		blocks.add(new TableBlock());
 		blocks.add(new MWToCBlock());
 

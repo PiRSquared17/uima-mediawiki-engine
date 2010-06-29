@@ -27,11 +27,12 @@ public class MWListBlock extends Block {
 
 	@Override
 	public void setClosed(boolean closed) {
-		while (!listContext.empty()) {
-			builder.endBlock();
-			listContext.pop();
-		}
-		super.setClosed(true);
+		if (closed)
+			while (!listContext.empty()) {
+				builder.endBlock();
+				listContext.pop();
+			}
+		super.setClosed(closed);
 	}
 
 	// NOTE : The first item of the list generates a list event and an item event

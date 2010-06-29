@@ -29,7 +29,8 @@ public class MWParagraphBlock extends Block {
 	 */
 	@Override
 	public void setClosed(boolean closed) {
-		builder.endBlock();
+		if (closed)
+			builder.endBlock();
 		super.setClosed(closed);
 	}
 
