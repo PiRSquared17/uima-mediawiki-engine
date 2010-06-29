@@ -22,13 +22,14 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	// The annotation factory
 	private MWAnnotator			annotator;
 	// A Stack for the section's level we are in
-	private Stack<Integer> sectionsLevel;
+	private Stack<Integer>		sectionsLevel;
 
 	public MWRevisionBuilder(JCas cas) {
 		content = new StringBuilder();
 		blockContext = new Stack<BlockType>();
 		listContext = new Stack<BlockType>();
 		itemCount = new Stack<Integer>();
+		sectionsLevel = new Stack<Integer>();
 		annotator = new MWAnnotator(cas);
 	}
 
@@ -36,22 +37,15 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	public void beginHeading(int level, Attributes attributes) {
 		content.append("\n\n");
 		annotator.newHeader(level, content.length());
-		
-		// verifying wether some sections need to be closed
-		if(sectionsLevel.isEmpty()){
+
+		if (sectionsLevel.isEmpty() || level > sectionsLevel.peek())
 			sectionsLevel.push(level);
-		}else{
-			if(level > sectionsLevel.lastElement()){
-				// the new section is less important than the one we a re already in
-				sectionsLevel.push(level);
-			}else{
-				while(level <= sectionsLevel.pop()){
-					annotator.endSection(content.length());
-				}
-			}
+		else {
+			while (!sectionsLevel.isEmpty() && level <= sectionsLevel.pop())
+				annotator.end("section", content.length());
+			sectionsLevel.push(level);
 		}
-		// adding the new section
-		annotator.newSection(content.length());
+		annotator.newSection(level, content.length());
 	}
 
 	@Override
