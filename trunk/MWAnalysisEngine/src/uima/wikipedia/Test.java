@@ -19,7 +19,7 @@ public class Test {
 	 */
 	public static void main(String[] args) {
 		try {
-			String path = "/Users/Bowbaq/Desktop/Test_cases/def_list.txt";
+			String path = "/Users/Bowbaq/Desktop/Test_cases/table.txt";
 			StringBuilder text = new StringBuilder();
 			String line;
 			TestDocumentBuilder builder = new TestDocumentBuilder();
