@@ -26,16 +26,17 @@ public class AnalysisEngine extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		// Get the flag value for macro processing
-		Boolean enableMacros = (Boolean) context.getConfigParameterValue(PARAM_FLG_ENABLEMACROS);
+		final Boolean enableMacros = (Boolean) context.getConfigParameterValue(PARAM_FLG_ENABLEMACROS);
 		// Get the path of the definition file for the macros
 		File definition = null;
-		String path = (String) context.getConfigParameterValue(PARAM_INP_DEFINITIONPATH);
-		if (path != null && !path.isEmpty())
+		final String path = (String) context.getConfigParameterValue(PARAM_INP_DEFINITIONPATH);
+		if (path != null && !path.isEmpty()) {
 			definition = new File(path);
+		}
 		// Initialize the factory
 		try {
 			MWCasBuilder.initialize("RawWikiText", enableMacros, definition);
-		} catch (CASException e) {
+		} catch (final CASException e) {
 			throw new ResourceInitializationException("There was an error initializin the analysis engine.", null);
 		}
 	}
@@ -44,7 +45,7 @@ public class AnalysisEngine extends JCasAnnotator_ImplBase {
 	public void process(JCas cas) throws AnalysisEngineProcessException {
 		try {
 			MWCasBuilder.build(cas);
-		} catch (CASException e) {
+		} catch (final CASException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
 	}

@@ -55,8 +55,9 @@ public class MWCasBuilder {
 		// Initialize the parser
 		language = new MWLanguage();
 		language.setEnableMacros(enableMacros);
-		if (enableMacros)
+		if (enableMacros) {
 			configureMacros(def);
+		}
 		parser = new MarkupParser(language);
 	}
 
@@ -76,12 +77,12 @@ public class MWCasBuilder {
 		// Initialize the content builder
 		content = new StringBuilder();
 		// An iterator over the revision annotations.
-		FSIterator<Annotation> revisionIterator = rawView.getAnnotationIndex(Revision.type).iterator();
+		final FSIterator<Annotation> revisionIterator = rawView.getAnnotationIndex(Revision.type).iterator();
 
 		while (revisionIterator.hasNext()) {
-			Revision rawRevision = (Revision) revisionIterator.next();
+			final Revision rawRevision = (Revision) revisionIterator.next();
 			// Start of the annotation
-			int start = content.length();
+			final int start = content.length();
 			// Instanciate a new builder
 			revision = new MWRevisionBuilder(main);
 			parser.setBuilder(revision);
@@ -89,12 +90,13 @@ public class MWCasBuilder {
 			parser.parse(rawRevision.getCoveredText());
 			// Add the revision's text to the CAS content
 			content.append(revision.getText());
-			int end = content.length();
+			final int end = content.length();
 			// Add a new revision annotation
 			addRevisionAnnotation(rawRevision, start, end);
 			// Add the content relative annotations
-			for (Annotation a : revision.getAnnotations())
+			for (final Annotation a : revision.getAnnotations()) {
 				a.addToIndexes();
+			}
 		}
 		// Finalize the CAS processing.
 		finalizeCAS();
@@ -107,13 +109,13 @@ public class MWCasBuilder {
 		// Add the document text.
 		main.setDocumentText(content.toString());
 		// Add the article annotation.
-		Article parsedArticle = new Article(main);
-		FSIterator<Annotation> articleIterator = rawView.getAnnotationIndex(Article.type).iterator();
+		final Article parsedArticle = new Article(main);
+		final FSIterator<Annotation> articleIterator = rawView.getAnnotationIndex(Article.type).iterator();
 
 		// We iterate over the Article annotations, there should be only one.
 		while (articleIterator.hasNext()) {
 			// Get the annotation
-			Article rawArticle = (Article) articleIterator.next();
+			final Article rawArticle = (Article) articleIterator.next();
 			// Collect information
 			parsedArticle.setId(rawArticle.getId());
 			parsedArticle.setNamespace(rawArticle.getNamespace());
@@ -135,24 +137,25 @@ public class MWCasBuilder {
 				// Read all the macros from the file, one per line
 				while (line != null) {
 					if (line.contains("->")) {
-						String[] macro = line.split("->");
-						if (macro.length >= 2)
+						final String[] macro = line.split("->");
+						if (macro.length >= 2) {
 							language.addMacro(macro[0].trim(), macro[1].trim());
-						else
+						} else {
 							language.addMacro(macro[0].trim(), "");
+						}
 					}
 					line = input.readLine();
 				}
 				input.close();
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			// This should not happen
 		}
 	}
 
 	private static void addRevisionAnnotation(Revision rawRevision, int start, int end) {
 		// Create a new revision
-		Revision parsedRevision = new Revision(main);
+		final Revision parsedRevision = new Revision(main);
 		// Collect information
 		parsedRevision.setBegin(start);
 		parsedRevision.setEnd(end);
