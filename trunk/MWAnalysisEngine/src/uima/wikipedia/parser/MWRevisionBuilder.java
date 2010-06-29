@@ -41,11 +41,11 @@ public class MWRevisionBuilder extends DocumentBuilder {
 		if(sectionsLevel.isEmpty()){
 			sectionsLevel.push(level);
 		}else{
-			if(level < sectionsLevel.lastElement()){
+			if(level > sectionsLevel.lastElement()){
 				// the new section is less important than the one we a re already in
 				sectionsLevel.push(level);
 			}else{
-				while(level >= sectionsLevel.pop()){
+				while(level <= sectionsLevel.pop()){
 					annotator.endSection(content.length());
 				}
 			}
