@@ -2,41 +2,42 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>uima.wikipedia.AnalysisEngine</annotatorImplementationName>
+  <annotatorImplementationName>org.apache.uima.wikipedia.ae.AnalysisEngine</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>MWAnalysisEngine</name>
-    <description>parse la syntaxe wiki.</description>
+    <description>Parse la syntaxe MediaWiki et génère des annotations.
+</description>
     <version>1.0</version>
     <vendor/>
     <configurationParameters searchStrategy="language_fallback">
-    	<configurationParameter>
-        	<name>enableMacros</name>
-        	<description>Tick it if you want to process macros, don't if you want them left as is.</description>
-       	 	<type>Boolean</type>
-        	<multiValued>false</multiValued>
-        	<mandatory>false</mandatory>
-      	</configurationParameter>
-      	<configurationParameter>
-        	<name>DefinitionFilePath</name>
-        	<description>The path of the file where the macros are defined (More info in the doc)</description>
-       	 	<type>String</type>
-        	<multiValued>false</multiValued>
-        	<mandatory>false</mandatory>
-      	</configurationParameter>
+      <configurationParameter>
+        <name>EnableMacros</name>
+        <description>Tick it if you want to process macros, don't if you want them left as is.</description>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>DefinitionFilePath</name>
+        <description>The path of the file where the macros are defined (More info in the doc)</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
-    	<nameValuePair>
-        	<name>enableMacros</name>
-        	<value>
-          		<boolean>true</boolean>
-        	</value>
-      	</nameValuePair>
-      	<nameValuePair>
-        	<name>DefinitionFilePath</name>
-        	<value>
-          		<string></string>
-        	</value>
-      	</nameValuePair>
+      <nameValuePair>
+        <name>DefinitionFilePath</name>
+        <value>
+          <string/>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>EnableMacros</name>
+        <value>
+          <boolean>true</boolean>
+        </value>
+      </nameValuePair>
     </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
@@ -55,7 +56,7 @@
         <languagesSupported/>
       </capability>
     </capabilities>
-     <operationalProperties>
+    <operationalProperties>
       <modifiesCas>true</modifiesCas>
       <multipleDeploymentAllowed>false</multipleDeploymentAllowed>
       <outputsNewCASes>true</outputsNewCASes>

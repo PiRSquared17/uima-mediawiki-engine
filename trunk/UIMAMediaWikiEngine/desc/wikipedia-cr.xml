@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-  <implementationName>uima.wikipedia.MWCollectionReader</implementationName>
+  <implementationName>org.apache.uima.wikipedia.cr.MWCollectionReader</implementationName>
   <processingResourceMetaData>
-    <name>Wikipedia Collection Reader</name>
+    <name>MediaWiki Collection Reader</name>
     <description>This collection reader is able to load, one article per CAS, the content of a Wikipedia XML dump. 
 
 If the dump is compressed using gzip or bzip, there is no need to uncompress it, it will be done on the fly to save disk space.</description>
-    <version>0.1</version>
+    <version>1.0</version>
     <vendor/>
     <configurationParameters searchStrategy="language_fallback">
       <configurationParameter>
