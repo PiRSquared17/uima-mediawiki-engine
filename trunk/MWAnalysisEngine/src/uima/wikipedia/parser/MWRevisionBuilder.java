@@ -9,7 +9,6 @@ import org.eclipse.mylyn.wikitext.core.parser.Attributes;
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder;
 
 import uima.wikipedia.factory.MWAnnotator;
-import uima.wikipedia.types.Section;
 
 public class MWRevisionBuilder extends DocumentBuilder {
 	// The text builder
