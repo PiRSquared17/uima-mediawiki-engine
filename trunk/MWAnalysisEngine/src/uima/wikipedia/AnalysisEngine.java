@@ -16,6 +16,7 @@ import uima.wikipedia.factory.MWCasBuilder;
  * and add the expected annotations to the default view (
  * 
  * @author Fabien Poulard <fabien.poulard@univ-nantes.fr>
+ * @author Maxime Bury <maxime.bury@univ-nantes.fr>
  * @author Maxime Rihouey <maxime.rihouey@univ-nantes.fr>
  */
 public class AnalysisEngine extends JCasAnnotator_ImplBase {
