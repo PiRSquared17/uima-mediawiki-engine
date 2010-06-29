@@ -21,7 +21,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="var" path="UIMA_HOME/lib/uimaj-bootstrap.jar"/>
-	<classpathentry kind="lib" path="/Users/Bowbaq/Downloads/mylyn-wikitext-standalone-3.5.0.I20100626-2300/org.eclipse.mylyn.wikitext.core_1.4.0.I20100626-2300-e3x.jar"/>
-	<classpathentry kind="lib" path="/Users/Bowbaq/Downloads/mylyn-wikitext-standalone-3.5.0.I20100626-2300/org.eclipse.mylyn.wikitext.mediawiki.core_1.4.0.I20100626-2300-e3x.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.mylyn.wikitext.core_1.4.0.I20100626-2300-e3x.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.mylyn.wikitext.mediawiki.core_1.4.0.I20100626-2300-e3x.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
