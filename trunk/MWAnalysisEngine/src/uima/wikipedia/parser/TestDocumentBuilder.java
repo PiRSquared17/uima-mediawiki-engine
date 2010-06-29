@@ -3,14 +3,11 @@ package uima.wikipedia.parser;
 import java.util.List;
 import java.util.Stack;
 
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.eclipse.mylyn.wikitext.core.parser.Attributes;
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder;
 
-import uima.wikipedia.factory.MWAnnotator;
-
-public class MWRevisionBuilder extends DocumentBuilder {
+public class TestDocumentBuilder extends DocumentBuilder {
 	// The text builder
 	private StringBuilder		content;
 	// A stack for the type of block we are in.
@@ -19,27 +16,24 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	private Stack<BlockType>	listContext;
 	// Item count for the list we are in.
 	private Stack<Integer>		itemCount;
-	// The annotation factory
-	private MWAnnotator			annotator;
 
-	public MWRevisionBuilder(JCas cas) {
+	public TestDocumentBuilder() {
 		content = new StringBuilder();
 		blockContext = new Stack<BlockType>();
 		listContext = new Stack<BlockType>();
 		itemCount = new Stack<Integer>();
-		annotator = new MWAnnotator(cas);
 	}
 
 	@Override
 	public void beginHeading(int level, Attributes attributes) {
 		content.append("\n\n");
-		annotator.newHeader(level, content.length());
 	}
 
 	@Override
 	public void beginBlock(BlockType type, Attributes attributes) {
 		// Keep track of which block we are in
 		blockContext.push(type);
+		// Let the annotator know we have entered a new block.
 		// Process according to the block type
 		switch (type) {
 			case BULLETED_LIST:
@@ -71,15 +65,12 @@ public class MWRevisionBuilder extends DocumentBuilder {
 				break;
 			case PARAGRAPH:
 				content.append("\n\n");
-				// Let the annotator know we have entered a new block.
-				annotator.newBlock(type, content.length());
 				break;
 		}
 	}
 
 	@Override
 	public void beginSpan(SpanType type, Attributes attributes) {
-		annotator.newSpan(type, content.length());
 	}
 
 	@Override
@@ -90,7 +81,6 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	@Override
 	public void endBlock() {
 		BlockType type = blockContext.pop();
-		annotator.end(type, content.length());
 		switch (type) {
 			case TABLE_CELL_HEADER:
 			case TABLE_CELL_NORMAL:
@@ -109,7 +99,6 @@ public class MWRevisionBuilder extends DocumentBuilder {
 
 	@Override
 	public void endHeading() {
-		annotator.end("header", content.length());
 	}
 
 	@Override
@@ -149,6 +138,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	@Override
 	public void imageLink(Attributes arg0, Attributes arg1, String arg2, String arg3) {
 		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -158,16 +148,15 @@ public class MWRevisionBuilder extends DocumentBuilder {
 
 	@Override
 	public void link(Attributes attributes, String href, String label) {
-		annotator.newLink(label, href, content.length());
 		content.append(label);
 	}
 
 	public List<Annotation> getAnnotations() {
-		return annotator.getAnnotations();
+		return null;
 	}
 
 	public String getText() {
-		return content.toString();
+		return content.toString().trim();
 	}
 
 	@Override
