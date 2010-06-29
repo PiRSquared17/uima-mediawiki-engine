@@ -15,7 +15,7 @@ import uima.wikipedia.types.Paragraph;
 import uima.wikipedia.types.Section;
 
 public class MWAnnotator {
-	private JCas					cas;
+	private final JCas				cas;
 	private final List<Header>		headers;
 	private final List<Link>		links;
 	private final List<Paragraph>	paragraphs;
@@ -32,14 +32,14 @@ public class MWAnnotator {
 	}
 
 	public void newHeader(int level, int offset) {
-		Header h = new Header(cas);
+		final Header h = new Header(cas);
 		h.setBegin(offset);
 		h.setLevel(level);
 		headers.add(h);
 	}
 
 	public void newLink(String label, String href, int offset) {
-		Link l = new Link(cas);
+		final Link l = new Link(cas);
 		l.setBegin(offset);
 		l.setLabel(label);
 		l.setLink(href);
@@ -50,7 +50,7 @@ public class MWAnnotator {
 	public void newBlock(BlockType type, int offset) {
 		switch (type) {
 			case PARAGRAPH:
-				Paragraph p = new Paragraph(cas);
+				final Paragraph p = new Paragraph(cas);
 				p.setBegin(offset);
 				paragraphs.add(p);
 				break;
@@ -58,7 +58,7 @@ public class MWAnnotator {
 	}
 
 	public void newSection(int level, int offset) {
-		Section s = new Section(cas);
+		final Section s = new Section(cas);
 		s.setBegin(offset);
 		s.setLevel(level);
 		currentSections.push(s);
@@ -73,14 +73,14 @@ public class MWAnnotator {
 			headers.get(headers.size() - 1).setEnd(offset);
 			currentSections.peek().setTitle(headers.get(headers.size() - 1));
 		} else if (name.equals("section")) {
-			Section s = currentSections.pop();
+			final Section s = currentSections.pop();
 			s.setEnd(offset);
 			s.setParent(currentSections.peek());
 			sections.add(s);
 		} else if (name.equals("unclosed")) {
-			Section root = currentSections.firstElement();
+			final Section root = currentSections.firstElement();
 			currentSections.remove(0);
-			for (Section s : currentSections) {
+			for (final Section s : currentSections) {
 				s.setEnd(offset);
 				s.setParent(root);
 				sections.add(s);
@@ -99,7 +99,7 @@ public class MWAnnotator {
 	}
 
 	public List<Annotation> getAnnotations() {
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		final List<Annotation> annotations = new ArrayList<Annotation>();
 		annotations.addAll(headers);
 		annotations.addAll(links);
 		annotations.addAll(paragraphs);

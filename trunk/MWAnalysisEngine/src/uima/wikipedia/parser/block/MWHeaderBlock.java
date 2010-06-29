@@ -8,7 +8,7 @@ import org.eclipse.mylyn.wikitext.core.parser.markup.Block;
 public class MWHeaderBlock extends Block {
 
 	private static final Pattern	pattern	= Pattern.compile("[ \\t]*+(\\={2,6})([^\\=]++)(?>\\={2,6})?\\s*");
-	private Matcher					matcher;
+	private final Matcher			matcher;
 
 	public MWHeaderBlock() {
 		// Initialize the matcher

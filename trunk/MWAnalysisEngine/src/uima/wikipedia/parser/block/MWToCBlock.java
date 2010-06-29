@@ -11,7 +11,7 @@ import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
 public class MWToCBlock extends AbstractTableOfContentsBlock {
 	static final Pattern	startPattern	= Pattern.compile("\\s*+__TOC__\\s*+(.*?)");
 	private int				blockLineNumber	= 0;
-	private Matcher			matcher			= startPattern.matcher("");
+	private final Matcher	matcher			= startPattern.matcher("");
 
 	@Override
 	public int processLineContent(String line, int offset) {
@@ -27,8 +27,9 @@ public class MWToCBlock extends AbstractTableOfContentsBlock {
 			emitToc(rootItem);
 		}
 		final int start = matcher.start(1);
-		if (start > 0)
+		if (start > 0) {
 			setClosed(true);
+		}
 		return start;
 	}
 

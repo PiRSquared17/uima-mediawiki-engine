@@ -7,8 +7,8 @@ import org.apache.uima.jcas.cas.TOP_Type;
 import org.apache.uima.jcas.tcas.Annotation;
 
 /**
- * A section is a part of the content that is structured in sub-sections or paragraphs. Updated by JCasGen Thu Feb 25
- * 18:30:15 CET 2010 XML source: /tmp/wikipedia-cr/desc/wikipedia-ts.xml
+ * A section is a part of the content that is structured in sub-sections or paragraphs. Updated by JCasGen Thu
+ * Feb 25 18:30:15 CET 2010 XML source: /tmp/wikipedia-cr/desc/wikipedia-ts.xml
  * 
  * @generated
  */

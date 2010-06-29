@@ -13,8 +13,8 @@ import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /**
- * A section is a part of the content that is structured in sub-sections or paragraphs. Updated by JCasGen Thu Feb 25
- * 18:30:15 CET 2010
+ * A section is a part of the content that is structured in sub-sections or paragraphs. Updated by JCasGen Thu
+ * Feb 25 18:30:15 CET 2010
  * 
  * @generated
  */

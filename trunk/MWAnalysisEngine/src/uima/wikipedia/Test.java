@@ -19,13 +19,13 @@ public class Test {
 	 */
 	public static void main(String[] args) {
 		try {
-			String path = "/Users/Bowbaq/Desktop/Test_cases/table.txt";
-			StringBuilder text = new StringBuilder();
+			final String path = "/Users/Bowbaq/Desktop/Test_cases/table.txt";
+			final StringBuilder text = new StringBuilder();
 			String line;
-			TestDocumentBuilder builder = new TestDocumentBuilder();
-			MarkupParser parser = new MarkupParser(new MWLanguage());
+			final TestDocumentBuilder builder = new TestDocumentBuilder();
+			final MarkupParser parser = new MarkupParser(new MWLanguage());
 			parser.setBuilder(builder);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(path))));
+			final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(path))));
 
 			line = reader.readLine();
 			while (line != null) {
@@ -36,9 +36,9 @@ public class Test {
 			parser.parse(text.toString());
 			System.out.println(builder.getText());
 
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			// OSEF
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			// OSEF
 		}
 	}

@@ -21,22 +21,23 @@ public class MWLanguage extends MediaWikiLanguage {
 	public MWLanguage() {
 		super();
 		resolver = new CustomTemplateResolver();
-		List<TemplateResolver> temp = new ArrayList<TemplateResolver>();
+		final List<TemplateResolver> temp = new ArrayList<TemplateResolver>();
 		temp.add(resolver);
 		setTemplateProviders(temp);
 	}
 
 	public void addMacro(String name, String replacement) {
 		resolver.addMacro(name, replacement);
-		List<TemplateResolver> temp = new ArrayList<TemplateResolver>();
+		final List<TemplateResolver> temp = new ArrayList<TemplateResolver>();
 		temp.add(resolver);
 		setTemplateProviders(temp);
 	}
 
 	@Override
 	public void processContent(MarkupParser parser, String markupContent, boolean asDocument) {
-		if (isEnableMacros())
+		if (isEnableMacros()) {
 			markupContent = preprocessContent(markupContent);
+		}
 		super.processContent(parser, markupContent, asDocument);
 	}
 
@@ -52,8 +53,9 @@ public class MWLanguage extends MediaWikiLanguage {
 
 		for (final Block block : blocks) {
 			// Paragraphs cant break themselves
-			if (block instanceof MWParagraphBlock)
+			if (block instanceof MWParagraphBlock) {
 				continue;
+			}
 			// Any other block causes a paragraph to be broken
 			paragraphBreakingBlocks.add(block);
 		}

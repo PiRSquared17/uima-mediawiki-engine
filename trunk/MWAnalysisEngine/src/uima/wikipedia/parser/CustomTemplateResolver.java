@@ -17,9 +17,9 @@ public class CustomTemplateResolver extends TemplateResolver {
 
 	@Override
 	public Template resolveTemplate(String templateName) {
-		String templateText = customTemplates.get(templateName);
+		final String templateText = customTemplates.get(templateName);
 		if (templateText != null) {
-			Template template = new Template();
+			final Template template = new Template();
 			template.setName(templateName);
 			template.setTemplateMarkup(templateText);
 			return template;

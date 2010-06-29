@@ -13,8 +13,8 @@ import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /**
- * A revision is the version of an article by a contributor. It is most likely based on the direct previous revision.
- * Updated by JCasGen Thu Feb 25 18:30:14 CET 2010
+ * A revision is the version of an article by a contributor. It is most likely based on the direct previous
+ * revision. Updated by JCasGen Thu Feb 25 18:30:14 CET 2010
  * 
  * @generated
  */

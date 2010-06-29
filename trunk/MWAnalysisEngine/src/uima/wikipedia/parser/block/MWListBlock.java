@@ -11,7 +11,7 @@ public class MWListBlock extends Block {
 	private static final Pattern	startList		= Pattern.compile("([\\*#;:]++)(.*)?");
 	private static final Matcher	matcher			= startList.matcher("");
 	private int						blockLineCount	= 0;
-	private Stack<BlockType>		listContext		= new Stack<BlockType>();
+	private final Stack<BlockType>	listContext		= new Stack<BlockType>();
 	private boolean					hasDef			= true;
 
 	@Override
@@ -27,11 +27,12 @@ public class MWListBlock extends Block {
 
 	@Override
 	public void setClosed(boolean closed) {
-		if (closed)
+		if (closed) {
 			while (!listContext.empty()) {
 				builder.endBlock();
 				listContext.pop();
 			}
+		}
 		super.setClosed(closed);
 	}
 
@@ -52,17 +53,18 @@ public class MWListBlock extends Block {
 				builder.beginBlock(listType, null);
 				listContext.push(listType);
 			} else {
-				int currentLevel = listContext.size();
+				final int currentLevel = listContext.size();
 				if (level > currentLevel) {
 					// We have a nested list
 					listContext.push(listType);
 					builder.beginBlock(listType, null);
-				} else if (level < currentLevel)
+				} else if (level < currentLevel) {
 					// It's the end of a nested list.
 					for (int i = 0; i < currentLevel - level; i++) {
 						listContext.pop();
 						builder.endBlock();
 					}
+				}
 				if (listType != listContext.peek()) {
 					// Same level but different type of list
 					listContext.pop();
@@ -73,29 +75,33 @@ public class MWListBlock extends Block {
 			}
 			// If we encounter a two part definition list item
 			// Send a list event for indentation sakes.
-			if (!hasDef && itemType == BlockType.DEFINITION_ITEM)
+			if (!hasDef && itemType == BlockType.DEFINITION_ITEM) {
 				builder.beginBlock(BlockType.DEFINITION_LIST, null);
+			}
 
 			// Send the new item event
 			builder.beginBlock(itemType, null);
 
 			// Check for definition item
-			if (itemType == BlockType.DEFINITION_TERM)
+			if (itemType == BlockType.DEFINITION_TERM) {
 				// Look for definition item on the same line
 				definitionOffset = itemContent.indexOf(':');
+			}
 
 			// Process the item
 			if (definitionOffset == -1) {
-				if (itemType == BlockType.DEFINITION_TERM)
+				if (itemType == BlockType.DEFINITION_TERM) {
 					hasDef = false;
+				}
 				markupLanguage.emitMarkupLine(getParser(), state, itemContent, 0);
 				if (itemType == BlockType.DEFINITION_ITEM && !hasDef) {
 					hasDef = true;
 					builder.endBlock();
 				}
-			} else if (itemType == BlockType.DEFINITION_TERM)
+			} else if (itemType == BlockType.DEFINITION_TERM) {
 				// It's a definition list, and we encountered the "; word : some definition" pattern
 				processInlineDef(itemContent, definitionOffset);
+			}
 			// End the item
 			builder.endBlock();
 			// The list block has a new line.

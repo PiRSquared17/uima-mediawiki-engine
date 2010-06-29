@@ -17,15 +17,17 @@ public class MWPreformattedBlock extends Block {
 
 	@Override
 	public void setClosed(boolean closed) {
-		if (closed)
+		if (closed) {
 			builder.endBlock();
+		}
 		super.setClosed(closed);
 	}
 
 	@Override
 	protected int processLineContent(String line, int offset) {
-		if (blockLineCount == 0)
+		if (blockLineCount == 0) {
 			builder.beginBlock(BlockType.PREFORMATTED, null);
+		}
 		if (markupLanguage.isEmptyLine(line)) {
 			setClosed(true);
 			return 0;

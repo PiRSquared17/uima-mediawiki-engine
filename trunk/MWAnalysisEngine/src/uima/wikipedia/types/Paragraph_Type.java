@@ -11,8 +11,8 @@ import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /**
- * A paragraph is a piece of texte composing a section, or an article without sections. Updated by JCasGen Thu Feb 25
- * 18:30:15 CET 2010
+ * A paragraph is a piece of texte composing a section, or an article without sections. Updated by JCasGen Thu
+ * Feb 25 18:30:15 CET 2010
  * 
  * @generated
  */

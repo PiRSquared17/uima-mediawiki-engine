@@ -9,13 +9,13 @@ import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder;
 
 public class TestDocumentBuilder extends DocumentBuilder {
 	// The text builder
-	private StringBuilder		content;
+	private final StringBuilder		content;
 	// A stack for the type of block we are in.
-	private Stack<BlockType>	blockContext;
+	private final Stack<BlockType>	blockContext;
 	// A stack for the type of list we are in.
-	private Stack<BlockType>	listContext;
+	private final Stack<BlockType>	listContext;
 	// Item count for the list we are in.
-	private Stack<Integer>		itemCount;
+	private final Stack<Integer>	itemCount;
 
 	public TestDocumentBuilder() {
 		content = new StringBuilder();
@@ -46,9 +46,10 @@ public class TestDocumentBuilder extends DocumentBuilder {
 			case DEFINITION_TERM:
 			case DEFINITION_ITEM:
 				content.append('\n');
-				for (int level = 0; level < listContext.size() - 1; level++)
+				for (int level = 0; level < listContext.size() - 1; level++) {
 					content.append('\t');
-				int count = itemCount.pop() + 1;
+				}
+				final int count = itemCount.pop() + 1;
 				itemCount.push(count);
 				switch (listContext.peek()) {
 					case BULLETED_LIST:
@@ -80,7 +81,7 @@ public class TestDocumentBuilder extends DocumentBuilder {
 
 	@Override
 	public void endBlock() {
-		BlockType type = blockContext.pop();
+		final BlockType type = blockContext.pop();
 		switch (type) {
 			case TABLE_CELL_HEADER:
 			case TABLE_CELL_NORMAL:

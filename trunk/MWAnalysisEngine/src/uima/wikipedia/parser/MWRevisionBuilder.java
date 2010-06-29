@@ -12,17 +12,17 @@ import uima.wikipedia.factory.MWAnnotator;
 
 public class MWRevisionBuilder extends DocumentBuilder {
 	// The text builder
-	private StringBuilder		content;
+	private final StringBuilder		content;
 	// A stack for the type of block we are in.
-	private Stack<BlockType>	blockContext;
+	private final Stack<BlockType>	blockContext;
 	// A stack for the type of list we are in.
-	private Stack<BlockType>	listContext;
+	private final Stack<BlockType>	listContext;
 	// Item count for the list we are in.
-	private Stack<Integer>		itemCount;
+	private final Stack<Integer>	itemCount;
 	// The annotation factory
-	private MWAnnotator			annotator;
+	private final MWAnnotator		annotator;
 	// A Stack for the section's level we are in
-	private Stack<Integer>		sectionsLevel;
+	private final Stack<Integer>	sectionsLevel;
 
 	public MWRevisionBuilder(JCas cas) {
 		content = new StringBuilder();
@@ -38,9 +38,9 @@ public class MWRevisionBuilder extends DocumentBuilder {
 		content.append("\n\n");
 		annotator.newHeader(level, content.length());
 
-		if (sectionsLevel.isEmpty() || level > sectionsLevel.peek())
+		if (sectionsLevel.isEmpty() || level > sectionsLevel.peek()) {
 			sectionsLevel.push(level);
-		else {
+		} else {
 			while (!sectionsLevel.isEmpty() && level <= sectionsLevel.peek()) {
 				sectionsLevel.pop();
 				annotator.end("section", content.length());
@@ -66,9 +66,10 @@ public class MWRevisionBuilder extends DocumentBuilder {
 			case DEFINITION_TERM:
 			case DEFINITION_ITEM:
 				content.append('\n');
-				for (int level = 0; level < listContext.size() - 1; level++)
+				for (int level = 0; level < listContext.size() - 1; level++) {
 					content.append('\t');
-				int count = itemCount.pop() + 1;
+				}
+				final int count = itemCount.pop() + 1;
 				itemCount.push(count);
 				switch (listContext.peek()) {
 					case BULLETED_LIST:
@@ -103,7 +104,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 
 	@Override
 	public void endBlock() {
-		BlockType type = blockContext.pop();
+		final BlockType type = blockContext.pop();
 		annotator.end(type, content.length());
 		switch (type) {
 			case TABLE_CELL_HEADER:
