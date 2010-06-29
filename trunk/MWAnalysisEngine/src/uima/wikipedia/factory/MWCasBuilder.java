@@ -16,6 +16,15 @@ import uima.wikipedia.parser.MWRevisionBuilder;
 import uima.wikipedia.types.Article;
 import uima.wikipedia.types.Revision;
 
+/**
+ * This class orchestrates all the parsing process without actually parsing the text, 
+ * it takes care of the annotations and the sofa.
+ * 
+ * @author Fabien Poulard <fabien.poulard@univ-nantes.fr>
+ * @author Maxime Bury <maxime.bury@univ-nantes.fr>
+ * @author Maxime Rihouey <maxime.rihouey@univ-nantes.fr>
+ *
+ */
 public class MWCasBuilder {
 	/** The main CAS we will be working on */
 	private static JCas					main;
