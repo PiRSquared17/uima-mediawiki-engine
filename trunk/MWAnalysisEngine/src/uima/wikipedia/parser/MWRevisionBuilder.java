@@ -21,6 +21,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	private Stack<Integer>		itemCount;
 	// The annotation factory
 	private MWAnnotator			annotator;
+	// 
 
 	public MWRevisionBuilder(JCas cas) {
 		content = new StringBuilder();
