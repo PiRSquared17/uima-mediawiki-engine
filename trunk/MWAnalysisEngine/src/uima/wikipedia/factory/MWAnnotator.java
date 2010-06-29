@@ -60,7 +60,7 @@ public class MWAnnotator {
 	public void newSection(int offset){
 		Section s = new Section(cas);
 		s.setBegin(offset);
-		currentSections.add(s);
+		currentSections.push(s);
 	}
 	
 	public void endSection(int offset){
