@@ -21,10 +21,10 @@ import org.apache.uima.util.ProgressImpl;
 import org.apache.uima.wikipedia.cr.factory.MWDumpReaderFactory;
 import org.apache.uima.wikipedia.cr.parser.MWDumpReader;
 import org.apache.uima.wikipedia.cr.parser.MWDumpReader.MWParseException;
+import org.apache.uima.wikipedia.cr.types.MWArticle;
+import org.apache.uima.wikipedia.cr.types.MWRevision;
+import org.apache.uima.wikipedia.cr.types.MWSiteinfo;
 import org.apache.uima.wikipedia.types.Article;
-import org.apache.uima.wikipedia.types.MWArticle;
-import org.apache.uima.wikipedia.types.MWRevision;
-import org.apache.uima.wikipedia.types.MWSiteinfo;
 import org.apache.uima.wikipedia.types.Revision;
 
 /*

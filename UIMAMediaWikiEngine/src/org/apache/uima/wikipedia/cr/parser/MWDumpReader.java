@@ -10,8 +10,8 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.uima.wikipedia.cr.factory.MWArticleFactory;
 import org.apache.uima.wikipedia.cr.factory.MWRevisionFactory;
-import org.apache.uima.wikipedia.types.MWArticle;
-import org.apache.uima.wikipedia.types.MWSiteinfo;
+import org.apache.uima.wikipedia.cr.types.MWArticle;
+import org.apache.uima.wikipedia.cr.types.MWSiteinfo;
 
 /*
  *  Copyright [2010] [Fabien Poulard <fabien.poulard@univ-nantes.fr>, Maxime Bury, Maxime Rihouey] 
@@ -41,9 +41,9 @@ import org.apache.uima.wikipedia.types.MWSiteinfo;
  * allows you to place various filters on the XML stream to exclude or include only certain pages or
  * revisions.
  * 
- * @see org.apache.uima.wikipedia.types.MWSiteinfo
- * @see org.apache.uima.wikipedia.types.MWArticle
- * @see org.apache.uima.wikipedia.types.MWRevision
+ * @see org.apache.uima.wikipedia.cr.types.MWSiteinfo
+ * @see org.apache.uima.wikipedia.cr.types.MWArticle
+ * @see org.apache.uima.wikipedia.cr.types.MWRevision
  * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
  */
 public class MWDumpReader {
@@ -97,7 +97,7 @@ public class MWDumpReader {
 	 * {@link #hasPage()} method.
 	 * 
 	 * @return the last computed page
-	 * @see org.apache.uima.wikipedia.types.MWArticle
+	 * @see org.apache.uima.wikipedia.cr.types.MWArticle
 	 */
 	public MWArticle getPage() {
 		pageComputed = false;
@@ -110,7 +110,7 @@ public class MWDumpReader {
 	 * default value.
 	 * 
 	 * @return the site info
-	 * @see org.apache.uima.wikipedia.types.MWSiteinfo
+	 * @see org.apache.uima.wikipedia.cr.types.MWSiteinfo
 	 */
 	public MWSiteinfo getSiteInfo() {
 		return theInfo;

@@ -26,9 +26,9 @@ import org.apache.uima.wikipedia.cr.parser.MWRevisionFilter;
 import org.apache.uima.wikipedia.cr.parser.MWTimeStampFilter;
 import org.apache.uima.wikipedia.cr.parser.MWTitleFilter;
 import org.apache.uima.wikipedia.cr.parser.MWDumpReader.MWParseException;
+import org.apache.uima.wikipedia.cr.types.MWArticle;
+import org.apache.uima.wikipedia.cr.types.MWSiteinfo;
 import org.apache.uima.wikipedia.cr.util.Tools;
-import org.apache.uima.wikipedia.types.MWArticle;
-import org.apache.uima.wikipedia.types.MWSiteinfo;
 
 /*
  *  Copyright [2010] [Fabien Poulard <fabien.poulard@univ-nantes.fr>, Maxime Bury, Maxime Rihouey] 
