@@ -80,8 +80,9 @@ public class MWCasBuilder {
 		// Initialize the parser
 		language = new MWLanguage();
 		language.setEnableMacros(enableMacros);
-		if (enableMacros)
+		if (enableMacros) {
 			configureMacros(def);
+		}
 		parser = new MarkupParser(language);
 		revision = new MWRevisionBuilder();
 	}
@@ -119,8 +120,9 @@ public class MWCasBuilder {
 			// Add a new revision annotation
 			addRevisionAnnotation(rawRevision, start, end);
 			// Add the content relative annotations
-			for (final Annotation a : revision.getAnnotations())
+			for (final Annotation a : revision.getAnnotations()) {
 				a.addToIndexes();
+			}
 		}
 		// Finalize the CAS processing.
 		finalizeCAS();
@@ -162,10 +164,11 @@ public class MWCasBuilder {
 				while (line != null) {
 					if (line.contains("->")) {
 						final String[] macro = line.split("->");
-						if (macro.length >= 2)
+						if (macro.length >= 2) {
 							language.addMacro(macro[0].trim(), macro[1].trim());
-						else
+						} else {
 							language.addMacro(macro[0].trim(), "");
+						}
 					}
 					line = input.readLine();
 				}

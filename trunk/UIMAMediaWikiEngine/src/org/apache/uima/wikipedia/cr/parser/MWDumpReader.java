@@ -81,8 +81,9 @@ public class MWDumpReader {
 		// Process website info
 		// Check if the <siteinfo> tag is there (it's optional)
 		hasSiteInfo = streamReader.getLocalName().toLowerCase().equals("siteinfo");
-		if (hasSiteInfo)
+		if (hasSiteInfo) {
 			computeSiteInfo();
+		}
 		// Initialise Article and Revision factorys
 		thePage = new MWArticleFactory(theInfo);
 		theRevision = new MWRevisionFactory();
@@ -140,8 +141,9 @@ public class MWDumpReader {
 		// Try to compute a page
 		pageComputed = false;
 		try {
-			while (!pageComputed && !endOfDocumentReached)
+			while (!pageComputed && !endOfDocumentReached) {
 				pageComputed = computePage();
+			}
 		} catch (final MWParseException e) {
 			endOfDocumentReached = true;
 			pageComputed = false;
@@ -199,13 +201,14 @@ public class MWDumpReader {
 					default: // This happens if we don't process a tag acknoledged in the MWTag enum.
 						endPage = true;
 				}
-				if (!endPage)
+				if (!endPage) {
 					nextOpeningTag(1);
+				}
 			}
 		} catch (final XMLStreamException e) {
 			// If we encounter a malformation of some sort
 			throw new MWParseException("The parser encountered a malformation in the input file. " + e.getMessage());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			// We reached the end of the document, last page might me uncomplete
 			endOfDocumentReached = true;
 		}
@@ -241,8 +244,9 @@ public class MWDumpReader {
 					// This is actully a nested element. We are only interrested in the user name.
 					// The user name tag is however optional.
 					nextOpeningTag(1);
-					if (streamReader.getLocalName().equals("username"))
+					if (streamReader.getLocalName().equals("username")) {
 						theRevision.hasContributor(getTagText());
+					}
 					break;
 				case MINOR:
 					// If the tag is <minor /> then it's set to false
@@ -270,8 +274,9 @@ public class MWDumpReader {
 				default:
 					endRevision = true;
 			}
-			if (!endRevision)
+			if (!endRevision) {
 				nextOpeningTag(1);
+			}
 		}
 		// Add the revision to the list
 		thePage.hasRevision(theRevision.newInstance());
@@ -329,8 +334,9 @@ public class MWDumpReader {
 					default:
 						endSiteInfo = true;
 				}
-				if (!endSiteInfo)
+				if (!endSiteInfo) {
 					nextOpeningTag(1);
+				}
 			}
 		} catch (final NoSuchElementException e) {
 			endOfDocumentReached = true;
@@ -356,8 +362,9 @@ public class MWDumpReader {
 		int i = 0;
 		while (i < n) {
 			streamReader.next();
-			if (streamReader.isStartElement() || streamReader.getEventType() == END_DOCUMENT)
+			if (streamReader.isStartElement() || streamReader.getEventType() == END_DOCUMENT) {
 				++i;
+			}
 		}
 	}
 
@@ -372,8 +379,9 @@ public class MWDumpReader {
 		boolean endOfTag = false;
 		while (!endOfTag) {
 			streamReader.next();
-			if (streamReader.isEndElement() && streamReader.getLocalName().equals(name))
+			if (streamReader.isEndElement() && streamReader.getLocalName().equals(name)) {
 				endOfTag = true;
+			}
 		}
 	}
 

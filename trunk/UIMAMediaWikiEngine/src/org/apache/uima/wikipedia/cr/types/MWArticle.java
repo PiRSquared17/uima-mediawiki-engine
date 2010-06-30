@@ -8,8 +8,8 @@ import java.util.List;
  * fields without fearing user's modifications.
  * <p>
  * It holds the title of the article (also know as the page's title), the namespace index associated with that
- * page (for more info on this, see {@link org.apache.uima.wikipedia.cr.types.MWSiteinfo}), the article's id and
- * the list of it's revisions. The revisions contain the actual text.
+ * page (for more info on this, see {@link org.apache.uima.wikipedia.cr.types.MWSiteinfo}), the article's id
+ * and the list of it's revisions. The revisions contain the actual text.
  * <p>
  * Articles are crafted by the article factory . Some fields might be initialized with default values (see
  * {@link org.apache.uima.wikipedia.cr.factory.MWArticleFactory} for more details).

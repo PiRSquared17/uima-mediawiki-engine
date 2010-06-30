@@ -57,15 +57,17 @@ public class Revision_Type extends Annotation_Type {
 
 	/** @generated */
 	public String getUser(int addr) {
-		if (featOkTst && casFeat_user == null)
+		if (featOkTst && casFeat_user == null) {
 			jcas.throwFeatMissing("user", "org.apache.uima.wikipedia.types.Revision");
+		}
 		return ll_cas.ll_getStringValue(addr, casFeatCode_user);
 	}
 
 	/** @generated */
 	public void setUser(int addr, String v) {
-		if (featOkTst && casFeat_user == null)
+		if (featOkTst && casFeat_user == null) {
 			jcas.throwFeatMissing("user", "org.apache.uima.wikipedia.types.Revision");
+		}
 		ll_cas.ll_setStringValue(addr, casFeatCode_user, v);
 	}
 
@@ -76,15 +78,17 @@ public class Revision_Type extends Annotation_Type {
 
 	/** @generated */
 	public String getComment(int addr) {
-		if (featOkTst && casFeat_comment == null)
+		if (featOkTst && casFeat_comment == null) {
 			jcas.throwFeatMissing("comment", "org.apache.uima.wikipedia.types.Revision");
+		}
 		return ll_cas.ll_getStringValue(addr, casFeatCode_comment);
 	}
 
 	/** @generated */
 	public void setComment(int addr, String v) {
-		if (featOkTst && casFeat_comment == null)
+		if (featOkTst && casFeat_comment == null) {
 			jcas.throwFeatMissing("comment", "org.apache.uima.wikipedia.types.Revision");
+		}
 		ll_cas.ll_setStringValue(addr, casFeatCode_comment, v);
 	}
 
@@ -95,15 +99,17 @@ public class Revision_Type extends Annotation_Type {
 
 	/** @generated */
 	public double getTimestamp(int addr) {
-		if (featOkTst && casFeat_timestamp == null)
+		if (featOkTst && casFeat_timestamp == null) {
 			jcas.throwFeatMissing("timestamp", "org.apache.uima.wikipedia.types.Revision");
+		}
 		return ll_cas.ll_getDoubleValue(addr, casFeatCode_timestamp);
 	}
 
 	/** @generated */
 	public void setTimestamp(int addr, double v) {
-		if (featOkTst && casFeat_timestamp == null)
+		if (featOkTst && casFeat_timestamp == null) {
 			jcas.throwFeatMissing("timestamp", "org.apache.uima.wikipedia.types.Revision");
+		}
 		ll_cas.ll_setDoubleValue(addr, casFeatCode_timestamp, v);
 	}
 
@@ -114,15 +120,17 @@ public class Revision_Type extends Annotation_Type {
 
 	/** @generated */
 	public boolean getIsMinor(int addr) {
-		if (featOkTst && casFeat_isMinor == null)
+		if (featOkTst && casFeat_isMinor == null) {
 			jcas.throwFeatMissing("isMinor", "org.apache.uima.wikipedia.types.Revision");
+		}
 		return ll_cas.ll_getBooleanValue(addr, casFeatCode_isMinor);
 	}
 
 	/** @generated */
 	public void setIsMinor(int addr, boolean v) {
-		if (featOkTst && casFeat_isMinor == null)
+		if (featOkTst && casFeat_isMinor == null) {
 			jcas.throwFeatMissing("isMinor", "org.apache.uima.wikipedia.types.Revision");
+		}
 		ll_cas.ll_setBooleanValue(addr, casFeatCode_isMinor, v);
 	}
 
@@ -133,15 +141,17 @@ public class Revision_Type extends Annotation_Type {
 
 	/** @generated */
 	public int getId(int addr) {
-		if (featOkTst && casFeat_id == null)
+		if (featOkTst && casFeat_id == null) {
 			jcas.throwFeatMissing("id", "org.apache.uima.wikipedia.types.Revision");
+		}
 		return ll_cas.ll_getIntValue(addr, casFeatCode_id);
 	}
 
 	/** @generated */
 	public void setId(int addr, int v) {
-		if (featOkTst && casFeat_id == null)
+		if (featOkTst && casFeat_id == null) {
 			jcas.throwFeatMissing("id", "org.apache.uima.wikipedia.types.Revision");
+		}
 		ll_cas.ll_setIntValue(addr, casFeatCode_id, v);
 	}
 
