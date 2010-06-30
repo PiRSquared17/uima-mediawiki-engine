@@ -1,19 +1,3 @@
-package org.apache.uima.wikipedia.ae.parser;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.uima.wikipedia.ae.parser.block.MWHeaderBlock;
-import org.apache.uima.wikipedia.ae.parser.block.MWListBlock;
-import org.apache.uima.wikipedia.ae.parser.block.MWParagraphBlock;
-import org.apache.uima.wikipedia.ae.parser.block.MWPreformattedBlock;
-import org.apache.uima.wikipedia.ae.parser.block.MWTableBlock;
-import org.apache.uima.wikipedia.ae.parser.block.MWToCBlock;
-import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
-import org.eclipse.mylyn.wikitext.core.parser.markup.Block;
-import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
-import org.eclipse.mylyn.wikitext.mediawiki.core.TemplateResolver;
-
 /*
  *  Copyright [2010] [Fabien Poulard &lt;fabien.poulard@univ-nantes.fr&gt;, Maxime Bury, Maxime Rihouey] 
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,17 +13,33 @@ import org.eclipse.mylyn.wikitext.mediawiki.core.TemplateResolver;
  *  limitations under the License.
  *  
  *   This class is based on the work of the Eclipse Mylyn Open Source Project,
- *   wich is realeased under the Eclipse Public License:
+ *   wich is released under the Eclipse Public License:
  *   
- * Copyright (c) 2007, 2009 David Green and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ *  Copyright (c) 2007, 2009 David Green and others.
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *     David Green - initial API and implementation
+ *  Contributors:
+ *      David Green - initial API and implementation
  */
+
+package org.apache.uima.wikipedia.ae.parser;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.uima.wikipedia.ae.parser.block.MWHeaderBlock;
+import org.apache.uima.wikipedia.ae.parser.block.MWListBlock;
+import org.apache.uima.wikipedia.ae.parser.block.MWParagraphBlock;
+import org.apache.uima.wikipedia.ae.parser.block.MWPreformattedBlock;
+import org.apache.uima.wikipedia.ae.parser.block.MWTableBlock;
+import org.apache.uima.wikipedia.ae.parser.block.MWToCBlock;
+import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
+import org.eclipse.mylyn.wikitext.core.parser.markup.Block;
+import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
+import org.eclipse.mylyn.wikitext.mediawiki.core.TemplateResolver;
 
 public class MWLanguage extends MediaWikiLanguage {
 	MWTemplateResolver	resolver;
@@ -61,9 +61,8 @@ public class MWLanguage extends MediaWikiLanguage {
 
 	@Override
 	public void processContent(MarkupParser parser, String markupContent, boolean asDocument) {
-		if (isEnableMacros()) {
+		if (isEnableMacros())
 			markupContent = preprocessContent(markupContent);
-		}
 		super.processContent(parser, markupContent, asDocument);
 	}
 
@@ -79,9 +78,8 @@ public class MWLanguage extends MediaWikiLanguage {
 
 		for (final Block block : blocks) {
 			// Paragraphs cant break themselves
-			if (block instanceof MWParagraphBlock) {
+			if (block instanceof MWParagraphBlock)
 				continue;
-			}
 			// Any other block causes a paragraph to be broken
 			paragraphBreakingBlocks.add(block);
 		}

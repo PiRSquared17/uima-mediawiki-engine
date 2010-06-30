@@ -1,11 +1,3 @@
-package org.apache.uima.wikipedia.cr.factory;
-
-import java.util.ArrayList;
-
-import org.apache.uima.wikipedia.cr.types.MWArticle;
-import org.apache.uima.wikipedia.cr.types.MWRevision;
-import org.apache.uima.wikipedia.cr.types.MWSiteinfo;
-
 /*
  *  Copyright [2010] [Fabien Poulard <fabien.poulard@univ-nantes.fr>, Maxime Bury, Maxime Rihouey] 
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +12,13 @@ import org.apache.uima.wikipedia.cr.types.MWSiteinfo;
  *  See the License for the specific language governing permissions and
  *  limitations under the License. 
  */
+package org.apache.uima.wikipedia.cr.factory;
+
+import java.util.ArrayList;
+
+import org.apache.uima.wikipedia.cr.types.MWArticle;
+import org.apache.uima.wikipedia.cr.types.MWRevision;
+import org.apache.uima.wikipedia.cr.types.MWSiteinfo;
 
 /**
  * This class is a factory for the articles. It is used for two main purposes :
