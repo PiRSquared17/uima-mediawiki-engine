@@ -1,5 +1,7 @@
 package org.apache.uima.wikipedia.cr.parser;
 
+import static javax.xml.stream.XMLStreamConstants.END_DOCUMENT;
+
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
@@ -358,6 +360,9 @@ public class MWDumpReader {
 			streamReader.next();
 			if (streamReader.isStartElement())
 				++i;
+			else if (streamReader.getEventType() == END_DOCUMENT)
+				// Necessary because when the next element is END_DOCUMENT, hasNext() always returns true.
+				throw new NoSuchElementException();
 		}
 	}
 
