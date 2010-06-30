@@ -1,18 +1,3 @@
-package org.apache.uima.wikipedia.cr.parser;
-
-import static javax.xml.stream.XMLStreamConstants.END_DOCUMENT;
-
-import java.util.HashMap;
-import java.util.NoSuchElementException;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
-import org.apache.uima.wikipedia.cr.factory.MWArticleFactory;
-import org.apache.uima.wikipedia.cr.factory.MWRevisionFactory;
-import org.apache.uima.wikipedia.cr.types.MWArticle;
-import org.apache.uima.wikipedia.cr.types.MWSiteinfo;
-
 /*
  *  Copyright [2010] [Fabien Poulard <fabien.poulard@univ-nantes.fr>, Maxime Bury, Maxime Rihouey] 
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +12,20 @@ import org.apache.uima.wikipedia.cr.types.MWSiteinfo;
  *  See the License for the specific language governing permissions and
  *  limitations under the License. 
  */
+package org.apache.uima.wikipedia.cr.parser;
+
+import static javax.xml.stream.XMLStreamConstants.END_DOCUMENT;
+
+import java.util.HashMap;
+import java.util.NoSuchElementException;
+
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
+import org.apache.uima.wikipedia.cr.factory.MWArticleFactory;
+import org.apache.uima.wikipedia.cr.factory.MWRevisionFactory;
+import org.apache.uima.wikipedia.cr.types.MWArticle;
+import org.apache.uima.wikipedia.cr.types.MWSiteinfo;
 
 /**
  * This class is the core of the Collection reader component. It's dedicated to extract the relevant data from

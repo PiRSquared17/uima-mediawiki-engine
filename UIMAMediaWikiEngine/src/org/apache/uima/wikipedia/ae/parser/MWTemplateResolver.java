@@ -1,11 +1,3 @@
-package org.apache.uima.wikipedia.ae.parser;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.eclipse.mylyn.wikitext.mediawiki.core.Template;
-import org.eclipse.mylyn.wikitext.mediawiki.core.TemplateResolver;
-
 /*
  *  Copyright [2010] [Fabien Poulard &lt;fabien.poulard@univ-nantes.fr&gt;, Maxime Bury, Maxime Rihouey] 
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,15 +15,22 @@ import org.eclipse.mylyn.wikitext.mediawiki.core.TemplateResolver;
  *   This class is based on the work of the Eclipse Mylyn Open Source Project,
  *   wich is realeased under the Eclipse Public License:
  *   
- * Copyright (c) 2007, 2009 David Green and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ *  Copyright (c) 2007, 2009 David Green and others.
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *     David Green - initial API and implementation
+ *  Contributors:
+ *      David Green - initial API and implementation
  */
+package org.apache.uima.wikipedia.ae.parser;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.mylyn.wikitext.mediawiki.core.Template;
+import org.eclipse.mylyn.wikitext.mediawiki.core.TemplateResolver;
 
 public class MWTemplateResolver extends TemplateResolver {
 	private static Map<String, String>	customTemplates	= new HashMap<String, String>();

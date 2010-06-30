@@ -1,14 +1,3 @@
-package org.apache.uima.wikipedia.cr.parser;
-
-import static javax.xml.stream.XMLStreamConstants.CHARACTERS;
-import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
-
-import java.util.List;
-
-import javax.xml.stream.StreamFilter;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 /*
  *  Copyright [2010] [Fabien Poulard <fabien.poulard@univ-nantes.fr>, Maxime Bury, Maxime Rihouey] 
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,6 +12,16 @@ import javax.xml.stream.XMLStreamReader;
  *  See the License for the specific language governing permissions and
  *  limitations under the License. 
  */
+package org.apache.uima.wikipedia.cr.parser;
+
+import static javax.xml.stream.XMLStreamConstants.CHARACTERS;
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
+
+import java.util.List;
+
+import javax.xml.stream.StreamFilter;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 /**
  * This abstract class provides the basic revision filtering mechanism.

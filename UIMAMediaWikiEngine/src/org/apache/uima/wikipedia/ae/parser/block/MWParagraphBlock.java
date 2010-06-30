@@ -1,9 +1,3 @@
-package org.apache.uima.wikipedia.ae.parser.block;
-
-import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType;
-import org.eclipse.mylyn.wikitext.core.parser.markup.Block;
-import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
-
 /*
  *  Copyright [2010] [Fabien Poulard &lt;fabien.poulard@univ-nantes.fr&gt;, Maxime Bury, Maxime Rihouey] 
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,17 +13,22 @@ import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
  *  limitations under the License.
  *  
  *   This class is based on the work of the Eclipse Mylyn Open Source Project,
- *   wich is realeased under the Eclipse Public License:
+ *   wich is released under the Eclipse Public License:
  *   
- * Copyright (c) 2007, 2009 David Green and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ *  Copyright (c) 2007, 2009 David Green and others.
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *     David Green - initial API and implementation
+ *  Contributors:
+ *      David Green - initial API and implementation
  */
+package org.apache.uima.wikipedia.ae.parser.block;
+
+import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType;
+import org.eclipse.mylyn.wikitext.core.parser.markup.Block;
+import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
 
 public class MWParagraphBlock extends Block {
 	/** Number of lines this block spans */
@@ -56,9 +55,8 @@ public class MWParagraphBlock extends Block {
 	 */
 	@Override
 	public void setClosed(boolean closed) {
-		if (closed) {
+		if (closed)
 			builder.endBlock();
-		}
 		super.setClosed(closed);
 	}
 
@@ -68,10 +66,10 @@ public class MWParagraphBlock extends Block {
 	 */
 	@Override
 	protected int processLineContent(String line, int offset) {
-		if (blockLineCount == 0) {
+		if (blockLineCount == 0)
 			// Beginning of a paragraph
 			builder.beginBlock(BlockType.PARAGRAPH, null);
-		} else if (line.trim().isEmpty()) {
+		else if (line.trim().isEmpty()) {
 			// End of a paragraph
 			setClosed(true);
 			return 0;
@@ -87,10 +85,9 @@ public class MWParagraphBlock extends Block {
 			}
 		// If not, this block contains one more line
 		++blockLineCount;
-		if (blockLineCount != 1) {
+		if (blockLineCount != 1)
 			// New line
 			builder.characters("\n");
-		}
 		// This line is not any sort of block, process it as a phrase
 		dialect.emitMarkupLine(getParser(), state, line, offset);
 		return -1;

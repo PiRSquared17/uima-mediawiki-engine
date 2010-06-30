@@ -1,15 +1,3 @@
-package org.apache.uima.wikipedia.ae;
-
-import java.io.File;
-
-import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.cas.CASException;
-import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.wikipedia.ae.factory.MWCasBuilder;
-
 /*
  *  Copyright [2010] [Fabien Poulard &lt;fabien.poulard@univ-nantes.fr&gt;, Maxime Bury, Maxime Rihouey] 
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,15 +15,26 @@ import org.apache.uima.wikipedia.ae.factory.MWCasBuilder;
  *   This class is based on the work of the Eclipse Mylyn Open Source Project,
  *   wich is realeased under the Eclipse Public License:
  *   
- * Copyright (c) 2007, 2009 David Green and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ *  Copyright (c) 2007, 2009 David Green and others.
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *     David Green - initial API and implementation
+ *  Contributors:
+ *      David Green - initial API and implementation
  */
+package org.apache.uima.wikipedia.ae;
+
+import java.io.File;
+
+import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.cas.CASException;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.wikipedia.ae.factory.MWCasBuilder;
 
 /**
  * This class aims to recover a raw view of the CAS (RawWikiText) sent by the Collection Reader, analyze it

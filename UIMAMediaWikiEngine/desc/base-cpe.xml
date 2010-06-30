@@ -9,13 +9,7 @@
                 <nameValuePair>
                     <name>InputXmlDump</name>
                     <value>
-                        <string>/Users/Bowbaq/Desktop/ultimetest.xml</string>
-                    </value>
-                </nameValuePair>
-                <nameValuePair>
-                    <name>LatestRevisionOnly</name>
-                    <value>
-                        <boolean>true</boolean>
+                        <string>/Users/Bowbaq/Downloads/frwikinews-20100420-pages-meta-history.xml</string>
                     </value>
                 </nameValuePair>
             </configurationParameterSettings>
