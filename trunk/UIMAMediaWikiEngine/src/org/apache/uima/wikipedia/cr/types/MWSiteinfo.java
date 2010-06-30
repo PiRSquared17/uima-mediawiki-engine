@@ -1,4 +1,4 @@
-package org.apache.uima.wikipedia.types;
+package org.apache.uima.wikipedia.cr.types;
 
 import java.util.Collections;
 import java.util.Map;

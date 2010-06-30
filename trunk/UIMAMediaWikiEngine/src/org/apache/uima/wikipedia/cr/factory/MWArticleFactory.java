@@ -2,9 +2,9 @@ package org.apache.uima.wikipedia.cr.factory;
 
 import java.util.ArrayList;
 
-import org.apache.uima.wikipedia.types.MWArticle;
-import org.apache.uima.wikipedia.types.MWRevision;
-import org.apache.uima.wikipedia.types.MWSiteinfo;
+import org.apache.uima.wikipedia.cr.types.MWArticle;
+import org.apache.uima.wikipedia.cr.types.MWRevision;
+import org.apache.uima.wikipedia.cr.types.MWSiteinfo;
 
 /*
  *  Copyright [2010] [Fabien Poulard <fabien.poulard@univ-nantes.fr>, Maxime Bury, Maxime Rihouey] 
