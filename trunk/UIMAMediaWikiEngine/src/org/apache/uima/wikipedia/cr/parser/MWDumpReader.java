@@ -143,7 +143,6 @@ public class MWDumpReader {
 			while (!pageComputed && !endOfDocumentReached)
 				pageComputed = computePage();
 		} catch (final MWParseException e) {
-			e.printStackTrace();
 			endOfDocumentReached = true;
 			pageComputed = false;
 		}
@@ -205,10 +204,9 @@ public class MWDumpReader {
 			}
 		} catch (final NoSuchElementException e) {
 			// If we reach the end of the document
-			endOfDocumentReached = true;
+			throw new MWParseException("End of document reached");
 		} catch (final XMLStreamException e) {
 			// If we encounter a malformation of some sort
-			endOfDocumentReached = true;
 			throw new MWParseException("The parser encountered a malformation in the input file. " + e.getMessage());
 		}
 		// The page is considered empty when it holds no revisions.
