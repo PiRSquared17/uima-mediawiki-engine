@@ -45,7 +45,7 @@ public class Paragraph_Type extends Annotation_Type {
 	 * @generated
 	 * @modifiable
 	 */
-	public final static boolean	featOkTst	= JCasRegistry.getFeatOkTst("uima.wikipedia.types.Paragraph");
+	public final static boolean	featOkTst	= JCasRegistry.getFeatOkTst("org.apache.uima.wikipedia.types.Paragraph");
 
 	/**
 	 * initialize variables to correspond with Cas Type and Features

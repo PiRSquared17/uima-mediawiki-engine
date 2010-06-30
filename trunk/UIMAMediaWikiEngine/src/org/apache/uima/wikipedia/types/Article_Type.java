@@ -49,7 +49,7 @@ public class Article_Type extends Annotation_Type {
 	 * @generated
 	 * @modifiable
 	 */
-	public final static boolean	featOkTst	= JCasRegistry.getFeatOkTst("uima.wikipedia.types.Article");
+	public final static boolean	featOkTst	= JCasRegistry.getFeatOkTst("org.apache.uima.wikipedia.types.Article");
 
 	/** @generated */
 	final Feature				casFeat_namespace;
@@ -58,17 +58,15 @@ public class Article_Type extends Annotation_Type {
 
 	/** @generated */
 	public int getNamespace(int addr) {
-		if (featOkTst && casFeat_namespace == null) {
-			jcas.throwFeatMissing("namespace", "uima.wikipedia.types.Article");
-		}
+		if (featOkTst && casFeat_namespace == null)
+			jcas.throwFeatMissing("namespace", "org.apache.uima.wikipedia.types.Article");
 		return ll_cas.ll_getIntValue(addr, casFeatCode_namespace);
 	}
 
 	/** @generated */
 	public void setNamespace(int addr, int v) {
-		if (featOkTst && casFeat_namespace == null) {
-			jcas.throwFeatMissing("namespace", "uima.wikipedia.types.Article");
-		}
+		if (featOkTst && casFeat_namespace == null)
+			jcas.throwFeatMissing("namespace", "org.apache.uima.wikipedia.types.Article");
 		ll_cas.ll_setIntValue(addr, casFeatCode_namespace, v);
 	}
 
@@ -79,17 +77,15 @@ public class Article_Type extends Annotation_Type {
 
 	/** @generated */
 	public String getTitle(int addr) {
-		if (featOkTst && casFeat_title == null) {
-			jcas.throwFeatMissing("title", "uima.wikipedia.types.Article");
-		}
+		if (featOkTst && casFeat_title == null)
+			jcas.throwFeatMissing("title", "org.apache.uima.wikipedia.types.Article");
 		return ll_cas.ll_getStringValue(addr, casFeatCode_title);
 	}
 
 	/** @generated */
 	public void setTitle(int addr, String v) {
-		if (featOkTst && casFeat_title == null) {
-			jcas.throwFeatMissing("title", "uima.wikipedia.types.Article");
-		}
+		if (featOkTst && casFeat_title == null)
+			jcas.throwFeatMissing("title", "org.apache.uima.wikipedia.types.Article");
 		ll_cas.ll_setStringValue(addr, casFeatCode_title, v);
 	}
 
@@ -100,17 +96,15 @@ public class Article_Type extends Annotation_Type {
 
 	/** @generated */
 	public double getId(int addr) {
-		if (featOkTst && casFeat_id == null) {
-			jcas.throwFeatMissing("id", "uima.wikipedia.types.Article");
-		}
+		if (featOkTst && casFeat_id == null)
+			jcas.throwFeatMissing("id", "org.apache.uima.wikipedia.types.Article");
 		return ll_cas.ll_getDoubleValue(addr, casFeatCode_id);
 	}
 
 	/** @generated */
 	public void setId(int addr, double v) {
-		if (featOkTst && casFeat_id == null) {
-			jcas.throwFeatMissing("id", "uima.wikipedia.types.Article");
-		}
+		if (featOkTst && casFeat_id == null)
+			jcas.throwFeatMissing("id", "org.apache.uima.wikipedia.types.Article");
 		ll_cas.ll_setDoubleValue(addr, casFeatCode_id, v);
 	}
 
@@ -121,17 +115,15 @@ public class Article_Type extends Annotation_Type {
 
 	/** @generated */
 	public String getPrefix(int addr) {
-		if (featOkTst && casFeat_prefix == null) {
-			jcas.throwFeatMissing("prefix", "uima.wikipedia.types.Article");
-		}
+		if (featOkTst && casFeat_prefix == null)
+			jcas.throwFeatMissing("prefix", "org.apache.uima.wikipedia.types.Article");
 		return ll_cas.ll_getStringValue(addr, casFeatCode_prefix);
 	}
 
 	/** @generated */
 	public void setPrefix(int addr, String v) {
-		if (featOkTst && casFeat_prefix == null) {
-			jcas.throwFeatMissing("prefix", "uima.wikipedia.types.Article");
-		}
+		if (featOkTst && casFeat_prefix == null)
+			jcas.throwFeatMissing("prefix", "org.apache.uima.wikipedia.types.Article");
 		ll_cas.ll_setStringValue(addr, casFeatCode_prefix, v);
 	}
 

@@ -19,7 +19,7 @@ import org.apache.uima.wikipedia.ae.factory.MWCasBuilder;
  * @author Maxime Rihouey <maxime.rihouey@univ-nantes.fr>
  */
 public class AnalysisEngine extends JCasAnnotator_ImplBase {
-	private final static String	PARAM_FLG_ENABLEMACROS		= "enableMacros";
+	private final static String	PARAM_FLG_ENABLEMACROS		= "EnableMacros";
 	private final static String	PARAM_INP_DEFINITIONPATH	= "DefinitionFilePath";
 
 	@Override

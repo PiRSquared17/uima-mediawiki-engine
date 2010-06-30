@@ -46,7 +46,7 @@ public class Link_Type extends Annotation_Type {
 	 * @generated
 	 * @modifiable
 	 */
-	public final static boolean	featOkTst	= JCasRegistry.getFeatOkTst("uima.wikipedia.types.Link");
+	public final static boolean	featOkTst	= JCasRegistry.getFeatOkTst("org.apache.uima.wikipedia.types.Link");
 
 	/** @generated */
 	final Feature				casFeat_label;
@@ -55,17 +55,15 @@ public class Link_Type extends Annotation_Type {
 
 	/** @generated */
 	public String getLabel(int addr) {
-		if (featOkTst && casFeat_label == null) {
-			jcas.throwFeatMissing("label", "uima.wikipedia.types.Link");
-		}
+		if (featOkTst && casFeat_label == null)
+			jcas.throwFeatMissing("label", "org.apache.uima.wikipedia.types.Link");
 		return ll_cas.ll_getStringValue(addr, casFeatCode_label);
 	}
 
 	/** @generated */
 	public void setLabel(int addr, String v) {
-		if (featOkTst && casFeat_label == null) {
-			jcas.throwFeatMissing("label", "uima.wikipedia.types.Link");
-		}
+		if (featOkTst && casFeat_label == null)
+			jcas.throwFeatMissing("label", "org.apache.uima.wikipedia.types.Link");
 		ll_cas.ll_setStringValue(addr, casFeatCode_label, v);
 	}
 
@@ -76,17 +74,15 @@ public class Link_Type extends Annotation_Type {
 
 	/** @generated */
 	public String getLink(int addr) {
-		if (featOkTst && casFeat_link == null) {
-			jcas.throwFeatMissing("link", "uima.wikipedia.types.Link");
-		}
+		if (featOkTst && casFeat_link == null)
+			jcas.throwFeatMissing("link", "org.apache.uima.wikipedia.types.Link");
 		return ll_cas.ll_getStringValue(addr, casFeatCode_link);
 	}
 
 	/** @generated */
 	public void setLink(int addr, String v) {
-		if (featOkTst && casFeat_link == null) {
-			jcas.throwFeatMissing("link", "uima.wikipedia.types.Link");
-		}
+		if (featOkTst && casFeat_link == null)
+			jcas.throwFeatMissing("link", "org.apache.uima.wikipedia.types.Link");
 		ll_cas.ll_setStringValue(addr, casFeatCode_link, v);
 	}
 

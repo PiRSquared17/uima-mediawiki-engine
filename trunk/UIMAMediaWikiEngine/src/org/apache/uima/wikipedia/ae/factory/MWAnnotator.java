@@ -17,35 +17,46 @@ import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType;
  * {@link org.apache.uima.wikipedia.ae.parser.MWRevisionBuilder document builder} calls the method provided by
  * this factory to populate the CAS with annotations while processing the content.
  * <p>
- * For now, we handle {@link org.apache.uima.wikipedia.types.Header},
- * {@link org.apache.uima.wikipedia.types.Section}, {@link org.apache.uima.wikipedia.types.Paragraph} and
- * {@link org.apache.uima.wikipedia.types.Link} annotations.
+ * For now, we handle {@link org.apache.uima.wikipedia.types.Header Header},
+ * {@link org.apache.uima.wikipedia.types.Section Section}, {@link org.apache.uima.wikipedia.types.Paragraph
+ * Paragraph} and {@link org.apache.uima.wikipedia.types.Link Link} annotations.
  * 
  * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
  */
 public class MWAnnotator {
 	/** The CAS we are working on */
-	private final JCas				cas;
+	private static JCas				cas;
 	/** Lists of annotations relative to this CAS */
-	private final List<Header>		headers;
-	private final List<Link>		links;
-	private final List<Paragraph>	paragraphs;
-	private final List<Section>		sections;
-	private final Stack<Section>	currentSections;
+	private static List<Header>		headers;
+	private static List<Link>		links;
+	private static List<Paragraph>	paragraphs;
+	private static List<Section>	sections;
+	private static Stack<Section>	currentSections;
 
 	/**
 	 * Initialize the factory with a new CAS to process.
-	 * 
-	 * @param cas
-	 *            the CAS to process
 	 */
-	public MWAnnotator(JCas cas) {
-		this.cas = cas;
+	public static void init() {
 		headers = new ArrayList<Header>();
 		links = new ArrayList<Link>();
 		paragraphs = new ArrayList<Paragraph>();
 		sections = new ArrayList<Section>();
 		currentSections = new Stack<Section>();
+	}
+
+	/**
+	 * Resets the annotator to it's default values and initialize it with a new CAS. Avoid the overhead of
+	 * creating an object.
+	 * 
+	 * @param cas
+	 */
+	public static void reset(JCas cas) {
+		MWAnnotator.cas = cas;
+		headers.clear();
+		links.clear();
+		paragraphs.clear();
+		sections.clear();
+		currentSections.clear();
 	}
 
 	/**
@@ -57,7 +68,7 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the starting offset
 	 */
-	public void newHeader(int level, int offset) {
+	public static void newHeader(int level, int offset) {
 		final Header h = new Header(cas);
 		h.setBegin(offset);
 		h.setLevel(level);
@@ -74,7 +85,7 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the starting offset
 	 */
-	public void newLink(String label, String href, int offset) {
+	public static void newLink(String label, String href, int offset) {
 		final Link l = new Link(cas);
 		l.setBegin(offset);
 		l.setLabel(label);
@@ -92,7 +103,7 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the starting offset.
 	 */
-	public void newBlock(BlockType type, int offset) {
+	public static void newBlock(BlockType type, int offset) {
 		switch (type) {
 			case PARAGRAPH:
 				final Paragraph p = new Paragraph(cas);
@@ -111,7 +122,7 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the starting offset.
 	 */
-	public void newSection(int level, int offset) {
+	public static void newSection(int level, int offset) {
 		final Section s = new Section(cas);
 		s.setBegin(offset);
 		s.setLevel(level);
@@ -127,7 +138,7 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the ending offset.
 	 */
-	public void end(String type, int offset) {
+	public static void end(String type, int offset) {
 
 		if (type.equals("header")) {
 			headers.get(headers.size() - 1).setEnd(offset);
@@ -158,7 +169,7 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the ending offset.
 	 */
-	public void end(BlockType type, int offset) {
+	public static void end(BlockType type, int offset) {
 		switch (type) {
 			case PARAGRAPH:
 				paragraphs.get(paragraphs.size() - 1).setEnd(offset);
@@ -171,7 +182,7 @@ public class MWAnnotator {
 	 * 
 	 * @return all the annotations gathered by this factory.
 	 */
-	public List<Annotation> getAnnotations() {
+	public static List<Annotation> getAnnotations() {
 		final List<Annotation> annotations = new ArrayList<Annotation>();
 		annotations.addAll(headers);
 		annotations.addAll(links);

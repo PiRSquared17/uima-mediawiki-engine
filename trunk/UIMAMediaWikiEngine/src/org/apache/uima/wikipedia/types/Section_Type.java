@@ -47,7 +47,7 @@ public class Section_Type extends Annotation_Type {
 	 * @generated
 	 * @modifiable
 	 */
-	public final static boolean	featOkTst	= JCasRegistry.getFeatOkTst("uima.wikipedia.types.Section");
+	public final static boolean	featOkTst	= JCasRegistry.getFeatOkTst("org.apache.uima.wikipedia.types.Section");
 
 	/** @generated */
 	final Feature				casFeat_level;
@@ -56,17 +56,15 @@ public class Section_Type extends Annotation_Type {
 
 	/** @generated */
 	public int getLevel(int addr) {
-		if (featOkTst && casFeat_level == null) {
-			jcas.throwFeatMissing("level", "uima.wikipedia.types.Section");
-		}
+		if (featOkTst && casFeat_level == null)
+			jcas.throwFeatMissing("level", "org.apache.uima.wikipedia.types.Section");
 		return ll_cas.ll_getIntValue(addr, casFeatCode_level);
 	}
 
 	/** @generated */
 	public void setLevel(int addr, int v) {
-		if (featOkTst && casFeat_level == null) {
-			jcas.throwFeatMissing("level", "uima.wikipedia.types.Section");
-		}
+		if (featOkTst && casFeat_level == null)
+			jcas.throwFeatMissing("level", "org.apache.uima.wikipedia.types.Section");
 		ll_cas.ll_setIntValue(addr, casFeatCode_level, v);
 	}
 
@@ -77,17 +75,15 @@ public class Section_Type extends Annotation_Type {
 
 	/** @generated */
 	public int getParent(int addr) {
-		if (featOkTst && casFeat_parent == null) {
-			jcas.throwFeatMissing("parent", "uima.wikipedia.types.Section");
-		}
+		if (featOkTst && casFeat_parent == null)
+			jcas.throwFeatMissing("parent", "org.apache.uima.wikipedia.types.Section");
 		return ll_cas.ll_getRefValue(addr, casFeatCode_parent);
 	}
 
 	/** @generated */
 	public void setParent(int addr, int v) {
-		if (featOkTst && casFeat_parent == null) {
-			jcas.throwFeatMissing("parent", "uima.wikipedia.types.Section");
-		}
+		if (featOkTst && casFeat_parent == null)
+			jcas.throwFeatMissing("parent", "org.apache.uima.wikipedia.types.Section");
 		ll_cas.ll_setRefValue(addr, casFeatCode_parent, v);
 	}
 
@@ -98,17 +94,15 @@ public class Section_Type extends Annotation_Type {
 
 	/** @generated */
 	public int getTitle(int addr) {
-		if (featOkTst && casFeat_title == null) {
-			jcas.throwFeatMissing("title", "uima.wikipedia.types.Section");
-		}
+		if (featOkTst && casFeat_title == null)
+			jcas.throwFeatMissing("title", "org.apache.uima.wikipedia.types.Section");
 		return ll_cas.ll_getRefValue(addr, casFeatCode_title);
 	}
 
 	/** @generated */
 	public void setTitle(int addr, int v) {
-		if (featOkTst && casFeat_title == null) {
-			jcas.throwFeatMissing("title", "uima.wikipedia.types.Section");
-		}
+		if (featOkTst && casFeat_title == null)
+			jcas.throwFeatMissing("title", "org.apache.uima.wikipedia.types.Section");
 		ll_cas.ll_setRefValue(addr, casFeatCode_title, v);
 	}
 
@@ -124,10 +118,10 @@ public class Section_Type extends Annotation_Type {
 		casFeat_level = jcas.getRequiredFeatureDE(casType, "level", "uima.cas.Integer", featOkTst);
 		casFeatCode_level = null == casFeat_level ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl) casFeat_level).getCode();
 
-		casFeat_parent = jcas.getRequiredFeatureDE(casType, "parent", "uima.wikipedia.types.Section", featOkTst);
+		casFeat_parent = jcas.getRequiredFeatureDE(casType, "parent", "org.apache.uima.wikipedia.types.Section", featOkTst);
 		casFeatCode_parent = null == casFeat_parent ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl) casFeat_parent).getCode();
 
-		casFeat_title = jcas.getRequiredFeatureDE(casType, "title", "uima.wikipedia.types.Header", featOkTst);
+		casFeat_title = jcas.getRequiredFeatureDE(casType, "title", "org.apache.uima.wikipedia.types.Header", featOkTst);
 		casFeatCode_title = null == casFeat_title ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl) casFeat_title).getCode();
 
 	}

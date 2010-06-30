@@ -17,7 +17,7 @@ import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder;
  */
 public class MWRevisionBuilder extends DocumentBuilder {
 	/** The StringBuilder for the revision's content */
-	private final StringBuilder		content;
+	private StringBuilder			content;
 	/** A stack to keep track of the kind of block we are in */
 	private final Stack<BlockType>	blockContext;
 	/** A more specialized stack for the type of list we are in */
@@ -26,44 +26,58 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	private final Stack<Integer>	itemCount;
 	/** A stack to keep stack of the different sections */
 	private final Stack<Integer>	sectionsLevel;
-	/** The factory to create the annotations */
-	private final MWAnnotator		annotator;
 
 	/**
 	 * Initialize the revision builder.
-	 * 
-	 * @param cas
-	 *            the CAS we are processing
 	 */
-	public MWRevisionBuilder(JCas cas) {
+	public MWRevisionBuilder() {
 		content = new StringBuilder();
 		blockContext = new Stack<BlockType>();
 		listContext = new Stack<BlockType>();
 		itemCount = new Stack<Integer>();
 		sectionsLevel = new Stack<Integer>();
-		annotator = new MWAnnotator(cas);
+		MWAnnotator.init();
 	}
 
 	/**
+	 * Resets the Revision builder to it's default values and initialize it with a new CAS. Avoid the overhead
+	 * of creating a new object.
 	 * 
+	 * @param cas
+	 *            the CAS we are processing
+	 */
+	public void reset(JCas cas) {
+		content = new StringBuilder();
+		blockContext.clear();
+		listContext.clear();
+		itemCount.clear();
+		sectionsLevel.clear();
+		MWAnnotator.reset(cas);
+	}
+
+	/**
+	 * Handles the beginning of a title and it's corresponding section.
 	 */
 	@Override
 	public void beginHeading(int level, Attributes attributes) {
 		content.append("\n\n");
-		annotator.newHeader(level, content.length());
+		MWAnnotator.newHeader(level, content.length());
 
 		if (sectionsLevel.isEmpty() || level > sectionsLevel.peek())
 			sectionsLevel.push(level);
 		else {
 			while (!sectionsLevel.isEmpty() && level <= sectionsLevel.peek()) {
 				sectionsLevel.pop();
-				annotator.end("section", content.length());
+				MWAnnotator.end("section", content.length());
 			}
 			sectionsLevel.push(level);
 		}
-		annotator.newSection(level, content.length());
+		MWAnnotator.newSection(level, content.length());
 	}
 
+	/**
+	 * Handles the beginning of various types of blocks (lists, tables, ...) and process accordingly.
+	 */
 	@Override
 	public void beginBlock(BlockType type, Attributes attributes) {
 		// Keep track of which block we are in
@@ -100,24 +114,34 @@ public class MWRevisionBuilder extends DocumentBuilder {
 			case PARAGRAPH:
 				content.append("\n\n");
 				// Let the annotator know we have entered a new block.
-				annotator.newBlock(type, content.length());
+				MWAnnotator.newBlock(type, content.length());
 				break;
 		}
 	}
 
+	/**
+	 * For now we do nothing with the span (embedded in a line) elements.
+	 */
 	@Override
 	public void beginSpan(SpanType type, Attributes attributes) {
 	}
 
+	/**
+	 * Starts a global section annotation that will be used as a kind of default parent for all the unclosed
+	 * sections.
+	 */
 	@Override
 	public void beginDocument() {
-		annotator.newSection(1, content.length());
+		MWAnnotator.newSection(1, content.length());
 	}
 
+	/**
+	 * Handles the end of various types of blocks, especially table cells and lists.
+	 */
 	@Override
 	public void endBlock() {
 		final BlockType type = blockContext.pop();
-		annotator.end(type, content.length());
+		MWAnnotator.end(type, content.length());
 		switch (type) {
 			case TABLE_CELL_HEADER:
 			case TABLE_CELL_NORMAL:
@@ -129,41 +153,65 @@ public class MWRevisionBuilder extends DocumentBuilder {
 				listContext.pop();
 				itemCount.pop();
 				break;
-			default:
-				break;
 		}
 	}
 
+	/**
+	 * Indicate the end of a title to the annotator.
+	 */
 	@Override
 	public void endHeading() {
-		annotator.end("header", content.length());
+		MWAnnotator.end("header", content.length());
 	}
 
+	/**
+	 * For now we do nothing with the span elements
+	 */
 	@Override
 	public void endSpan() {
-		// TODO Auto-generated method stub
+	}
 
+	/**
+	 * Close all the unclosed sections before the revision is shipped to the CAS builder.
+	 */
+	@Override
+	public void endDocument() {
+		MWAnnotator.end("unclosed", content.length());
 	}
 
 	@Override
-	public void endDocument() {
-		annotator.end("unclosed", content.length());
+	public void link(Attributes attributes, String href, String label) {
+		MWAnnotator.newLink(label, href, content.length());
+		content.append(label);
 	}
 
+	/**
+	 * Appends the provided <code>text</code> to the content.
+	 */
 	@Override
 	public void characters(String text) {
 		content.append(text);
 	}
 
+	/** Appends the provided <code>literal</code> to the content. */
 	@Override
 	public void charactersUnescaped(String literal) {
 		content.append(literal);
 	}
 
 	@Override
+	public void lineBreak() {
+		content.append('\n');
+	}
+
+	@Override
+	public void acronym(String arg0, String arg1) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
 	public void entityReference(String arg0) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -177,27 +225,11 @@ public class MWRevisionBuilder extends DocumentBuilder {
 		// TODO Auto-generated method stub
 	}
 
-	@Override
-	public void lineBreak() {
-		content.append('\n');
-	}
-
-	@Override
-	public void link(Attributes attributes, String href, String label) {
-		annotator.newLink(label, href, content.length());
-		content.append(label);
-	}
-
 	public List<Annotation> getAnnotations() {
-		return annotator.getAnnotations();
+		return MWAnnotator.getAnnotations();
 	}
 
 	public String getText() {
 		return content.toString();
-	}
-
-	@Override
-	public void acronym(String arg0, String arg1) {
-		// TODO Auto-generated method stub
 	}
 }

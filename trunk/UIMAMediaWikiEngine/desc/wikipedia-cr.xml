@@ -107,8 +107,8 @@ The namespaces vary from 0 to 8.</description>
       <capability>
         <inputs/>
         <outputs>
-          <type allAnnotatorFeatures="true">uima.wikipedia.types.Revision</type>
-          <type allAnnotatorFeatures="true">uima.wikipedia.types.Article</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.wikipedia.types.Revision</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.wikipedia.types.Article</type>
         </outputs>
         <languagesSupported/>
       </capability>

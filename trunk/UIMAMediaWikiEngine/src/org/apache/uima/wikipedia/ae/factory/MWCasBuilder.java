@@ -56,6 +56,7 @@ public class MWCasBuilder {
 		if (enableMacros)
 			configureMacros(def);
 		parser = new MarkupParser(language);
+		revision = new MWRevisionBuilder();
 	}
 
 	/**
@@ -81,7 +82,7 @@ public class MWCasBuilder {
 			// Start of the annotation
 			final int start = content.length();
 			// Instanciate a new builder
-			revision = new MWRevisionBuilder(main);
+			revision.reset(main);
 			parser.setBuilder(revision);
 			// Parse the revision
 			parser.parse(rawRevision.getCoveredText());
