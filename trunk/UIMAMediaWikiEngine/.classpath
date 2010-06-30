@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="desc"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="var" path="UIMA_HOME/lib/uima-core.jar" sourcepath="/uima_core">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/Program Files/apache-uima/docs/api"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="UIMA_HOME/lib/uima-cpe.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/Program Files/apache-uima/docs/api"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="UIMA_HOME/lib/uima-document-annotation.jar"/>
+	<classpathentry kind="var" path="UIMA_HOME/lib/uima-examples.jar"/>
+	<classpathentry kind="var" path="UIMA_HOME/lib/uima-tools.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/Program Files/apache-uima/docs/api"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="UIMA_HOME/lib/uimaj-bootstrap.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.mylyn.wikitext.core_1.4.0.I20100626-2300-e3x.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.mylyn.wikitext.mediawiki.core_1.4.0.I20100626-2300-e3x.jar"/>
+	<classpathentry kind="lib" path="/Users/Bowbaq/Downloads/commons-compress-1.0/commons-compress-1.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
