@@ -11,8 +11,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 
-import org.apache.tools.bzip2.CBZip2InputStream;
-import org.apache.tools.bzip2.CBZip2OutputStream;
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
 
 public class Tools {
 	static final int			IN_BUF_SZ	= 1024 * 1024;
@@ -39,11 +39,7 @@ public class Tools {
 	}
 
 	static InputStream openBZip2Stream(InputStream infile) throws IOException {
-		final int first = infile.read();
-		final int second = infile.read();
-		if (first != 'B' || second != 'Z')
-			throw new IOException("Didn't find BZ file signature in .bz2 file");
-		return new CBZip2InputStream(infile);
+		return new BZip2CompressorInputStream(infile);
 	}
 
 	static OutputStream openStandardOutput() {
@@ -52,10 +48,7 @@ public class Tools {
 
 	static OutputStream createBZip2File(String param) throws IOException, FileNotFoundException {
 		final OutputStream outfile = createOutputFile(param);
-		// bzip2 expects a two-byte 'BZ' signature header
-		outfile.write('B');
-		outfile.write('Z');
-		return new CBZip2OutputStream(outfile);
+		return new BZip2CompressorOutputStream(outfile);
 	}
 
 	static OutputStream createOutputFile(String param) throws IOException, FileNotFoundException {

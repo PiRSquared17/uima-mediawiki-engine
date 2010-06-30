@@ -9,7 +9,7 @@
                 <nameValuePair>
                     <name>InputXmlDump</name>
                     <value>
-                        <string>/Users/Bowbaq/Downloads/frwiki-20100401-pages-meta-current.xml</string>
+                        <string>/Users/Bowbaq/Downloads/tswiki-20100630-pages-meta-history.xml.bz2</string>
                     </value>
                 </nameValuePair>
                 <nameValuePair>
@@ -63,7 +63,7 @@
                 <nameValuePair>
                     <name>OutputDirectory</name>
                     <value>
-                        <string>/Users/Bowbaq/Desktop/test</string>
+                        <string>/Users/Bowbaq/Desktop/test2</string>
                     </value>
                 </nameValuePair>
             </configurationParameterSettings>
