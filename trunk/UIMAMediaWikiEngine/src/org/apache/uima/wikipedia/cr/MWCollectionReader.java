@@ -87,7 +87,7 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 		// Retrieve the XMLDump file
 		theXMLDump = new File((String) getConfigParameterValue(PARAM_XMLDUMP));
 		// Check if the XML dump file exists
-		if (theXMLDump.exists() && theXMLDump.isFile())
+		if (theXMLDump.exists() && theXMLDump.isFile()) {
 			try {
 				// Initialize the factory
 				factory = new MWDumpReaderFactory(theXMLDump);
@@ -115,8 +115,10 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 			} catch (final XMLStreamException e) {
 				throw new ResourceInitializationException("The underlying XML document appears to be malformed", null);
 			}
-		// Initialize the progress counter.
-		cCasProduced = 0;
+			// Initialize the progress counter.
+			cCasProduced = 0;
+		} else
+			throw new ResourceInitializationException("The path to the XML dump does not point to a valid file", null);
 	}
 
 	/**
