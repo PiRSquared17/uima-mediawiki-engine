@@ -202,12 +202,12 @@ public class MWDumpReader {
 				if (!endPage)
 					nextOpeningTag(1);
 			}
-		} catch (final NoSuchElementException e) {
-			// If we reach the end of the document
-			throw new MWParseException("End of document reached");
 		} catch (final XMLStreamException e) {
 			// If we encounter a malformation of some sort
 			throw new MWParseException("The parser encountered a malformation in the input file. " + e.getMessage());
+		} catch (Exception e) {
+			// We reached the end of the document, last page might me uncomplete
+			endOfDocumentReached = true;
 		}
 		// The page is considered empty when it holds no revisions.
 		// This can happen when some filters are set.
@@ -356,11 +356,8 @@ public class MWDumpReader {
 		int i = 0;
 		while (i < n) {
 			streamReader.next();
-			if (streamReader.isStartElement())
+			if (streamReader.isStartElement() || streamReader.getEventType() == END_DOCUMENT)
 				++i;
-			else if (streamReader.getEventType() == END_DOCUMENT)
-				// Necessary because when the next element is END_DOCUMENT, hasNext() always returns true.
-				throw new NoSuchElementException();
 		}
 	}
 

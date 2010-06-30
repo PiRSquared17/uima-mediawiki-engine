@@ -53,6 +53,8 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	private final Stack<Integer>	itemCount;
 	/** A stack to keep stack of the different sections */
 	private final Stack<Integer>	sectionsLevel;
+	/** Some flag */
+	private boolean					firstLine;
 
 	/**
 	 * Initialize the revision builder.
@@ -63,6 +65,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 		listContext = new Stack<BlockType>();
 		itemCount = new Stack<Integer>();
 		sectionsLevel = new Stack<Integer>();
+		firstLine = true;
 		MWAnnotator.init();
 	}
 
@@ -79,6 +82,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 		listContext.clear();
 		itemCount.clear();
 		sectionsLevel.clear();
+		firstLine = true;
 		MWAnnotator.reset(cas);
 	}
 
@@ -87,7 +91,10 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	 */
 	@Override
 	public void beginHeading(int level, Attributes attributes) {
-		content.append("\n\n");
+		if (!firstLine)
+			content.append("\n\n");
+		else
+			firstLine = false;
 		MWAnnotator.newHeader(level, content.length());
 
 		if (sectionsLevel.isEmpty() || level > sectionsLevel.peek())
@@ -139,7 +146,10 @@ public class MWRevisionBuilder extends DocumentBuilder {
 				content.append('\n');
 				break;
 			case PARAGRAPH:
-				content.append("\n\n");
+				if (!firstLine)
+					content.append("\n\n");
+				else
+					firstLine = false;
 				// Let the annotator know we have entered a new block.
 				MWAnnotator.newBlock(type, content.length());
 				break;
