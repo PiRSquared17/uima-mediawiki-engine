@@ -55,15 +55,17 @@ public class Header_Type extends Annotation_Type {
 
 	/** @generated */
 	public int getLevel(int addr) {
-		if (featOkTst && casFeat_Level == null)
+		if (featOkTst && casFeat_Level == null) {
 			jcas.throwFeatMissing("Level", "org.apache.uima.wikipedia.types.Header");
+		}
 		return ll_cas.ll_getIntValue(addr, casFeatCode_Level);
 	}
 
 	/** @generated */
 	public void setLevel(int addr, int v) {
-		if (featOkTst && casFeat_Level == null)
+		if (featOkTst && casFeat_Level == null) {
 			jcas.throwFeatMissing("Level", "org.apache.uima.wikipedia.types.Header");
+		}
 		ll_cas.ll_setIntValue(addr, casFeatCode_Level, v);
 	}
 

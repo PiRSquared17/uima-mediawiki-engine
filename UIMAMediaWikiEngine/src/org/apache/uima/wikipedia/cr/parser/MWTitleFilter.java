@@ -55,29 +55,33 @@ public abstract class MWTitleFilter implements StreamFilter {
 	public final boolean accept(XMLStreamReader reader) {
 		if (!foundTitle) {
 			// If we encounter an opening <title> tag, we set the flag to true.
-			if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("title"))
+			if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("title")) {
 				foundTitle = true;
+			}
 		} else if (reader.getEventType() == CHARACTERS && !titleMatch(reader.getText())) {
 			// If the foundTitle flag is set to true, we found a <title> tag on the previous call.
 			// <title> tags are mandatory, and can't be empty. This event should be a CHARACTERS one (we check
 			// nevertheless)
 			// If the title doesn't pass the check, we iterate to the next <page> opening tag.
 			boolean pageSkipped = false;
-			while (!pageSkipped)
+			while (!pageSkipped) {
 				try {
 					reader.next();
-					if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("page"))
+					if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("page")) {
 						// When we reach the next <page> opening tag, we stop iterating
 						pageSkipped = true;
+					}
 				} catch (final XMLStreamException e) {
 					// We do nothing, this should not happen.
 					// If it does, the next call to next() in the main parser will raise it again anyway.
 				}
+			}
 			// We are processing a new page, so we set the flag back to false.
 			foundTitle = false;
-		} else
+		} else {
 			// The page passed the title check, we set the flag back to false until the next page.
 			foundTitle = false;
+		}
 		// We always return true, since the events we want to filter are simply skipped by the above code.
 		return true;
 	}
