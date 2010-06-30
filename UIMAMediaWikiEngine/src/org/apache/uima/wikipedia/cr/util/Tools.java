@@ -39,10 +39,6 @@ public class Tools {
 	}
 
 	static InputStream openBZip2Stream(InputStream infile) throws IOException {
-		final int first = infile.read();
-		final int second = infile.read();
-		if (first != 'B' || second != 'Z')
-			throw new IOException("Didn't find BZ file signature in .bz2 file");
 		return new BZip2CompressorInputStream(infile);
 	}
 
@@ -52,9 +48,6 @@ public class Tools {
 
 	static OutputStream createBZip2File(String param) throws IOException, FileNotFoundException {
 		final OutputStream outfile = createOutputFile(param);
-		// bzip2 expects a two-byte 'BZ' signature header
-		outfile.write('B');
-		outfile.write('Z');
 		return new BZip2CompressorOutputStream(outfile);
 	}
 

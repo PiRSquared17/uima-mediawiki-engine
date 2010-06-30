@@ -18,12 +18,6 @@
                         <boolean>true</boolean>
                     </value>
                 </nameValuePair>
-                <nameValuePair>
-                    <name>IgnoreTalks</name>
-                    <value>
-                        <boolean>true</boolean>
-                    </value>
-                </nameValuePair>
             </configurationParameterSettings>
         </collectionIterator>
     </collectionReader>
