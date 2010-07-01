@@ -12,8 +12,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *  
- *   This class is based on the work of the Eclipse Mylyn Open Source Project,
- *   wich is released under the Eclipse Public License:
+ *  This class is based on the work of the Eclipse Mylyn Open Source Project,
+ *  wich is released under the Eclipse Public License:
  *   
  *  Copyright (c) 2007, 2009 David Green and others.
  *  All rights reserved. This program and the accompanying materials
@@ -36,8 +36,15 @@ import org.apache.uima.wikipedia.ae.parser.block.MWParagraphBlock;
 import org.apache.uima.wikipedia.ae.parser.block.MWPreformattedBlock;
 import org.apache.uima.wikipedia.ae.parser.block.MWTableBlock;
 import org.apache.uima.wikipedia.ae.parser.block.MWToCBlock;
+import org.apache.uima.wikipedia.ae.parser.token.MWLineBreakToken;
+import org.eclipse.mylyn.internal.wikitext.mediawiki.core.token.HyperlinkExternalReplacementToken;
+import org.eclipse.mylyn.internal.wikitext.mediawiki.core.token.HyperlinkInternalReplacementToken;
+import org.eclipse.mylyn.internal.wikitext.mediawiki.core.token.ImageReplacementToken;
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
 import org.eclipse.mylyn.wikitext.core.parser.markup.Block;
+import org.eclipse.mylyn.wikitext.core.parser.markup.token.EntityReferenceReplacementToken;
+import org.eclipse.mylyn.wikitext.core.parser.markup.token.ImpliedHyperlinkReplacementToken;
+import org.eclipse.mylyn.wikitext.core.parser.markup.token.PatternLiteralReplacementToken;
 import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
 import org.eclipse.mylyn.wikitext.mediawiki.core.TemplateResolver;
 
@@ -83,6 +90,23 @@ public class MWLanguage extends MediaWikiLanguage {
 			// Any other block causes a paragraph to be broken
 			paragraphBreakingBlocks.add(block);
 		}
+	}
+
+	@Override
+	protected void addStandardTokens(PatternBasedSyntax tokenSyntax) {
+		tokenSyntax.add(new MWLineBreakToken());
+		tokenSyntax.add(new EntityReferenceReplacementToken("(tm)", "#8482")); //$NON-NLS-1$ //$NON-NLS-2$
+		tokenSyntax.add(new EntityReferenceReplacementToken("(TM)", "#8482")); //$NON-NLS-1$ //$NON-NLS-2$
+		tokenSyntax.add(new EntityReferenceReplacementToken("(c)", "#169")); //$NON-NLS-1$ //$NON-NLS-2$
+		tokenSyntax.add(new EntityReferenceReplacementToken("(C)", "#169")); //$NON-NLS-1$ //$NON-NLS-2$
+		tokenSyntax.add(new EntityReferenceReplacementToken("(r)", "#174")); //$NON-NLS-1$ //$NON-NLS-2$
+		tokenSyntax.add(new EntityReferenceReplacementToken("(R)", "#174")); //$NON-NLS-1$ //$NON-NLS-2$
+		tokenSyntax.add(new ImageReplacementToken());
+		tokenSyntax.add(new HyperlinkInternalReplacementToken());
+		tokenSyntax.add(new HyperlinkExternalReplacementToken());
+		tokenSyntax.add(new ImpliedHyperlinkReplacementToken());
+		tokenSyntax.add(new PatternLiteralReplacementToken("(?:(?<=\\w\\s)(----)(?=\\s\\w))", "<hr/>")); // horizontal rule //$NON-NLS-1$ //$NON-NLS-2$
+		tokenSyntax.add(new org.eclipse.mylyn.internal.wikitext.mediawiki.core.token.EntityReferenceReplacementToken());
 	}
 
 	@Override
