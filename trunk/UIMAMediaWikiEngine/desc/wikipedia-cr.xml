@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-  <implementationName>org.apache.uima.wikipedia.cr.MWCollectionReader</implementationName>
+  <implementationName>org.apache.uima.mediawiki.cr.MWCollectionReader</implementationName>
   <processingResourceMetaData>
     <name>MediaWiki Collection Reader</name>
     <description>This collection reader is able to load, one article per CAS, the content of a Wikipedia XML dump. 
@@ -107,8 +107,8 @@ The namespaces vary from 0 to 8.</description>
       <capability>
         <inputs/>
         <outputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.wikipedia.types.Revision</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.wikipedia.types.Article</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.mediawiki.types.Revision</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.mediawiki.types.Article</type>
         </outputs>
         <languagesSupported/>
       </capability>

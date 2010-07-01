@@ -55,8 +55,8 @@ function windowTitle()
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../../../org/apache/uima/wikipedia/types/MWArticle.html" title="class in org.apache.uima.wikipedia.types"><B>PREV CLASS</B></A>&nbsp;
-&nbsp;<A HREF="../../../../../org/apache/uima/wikipedia/types/MWSiteinfo.html" title="class in org.apache.uima.wikipedia.types"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../../../org/apache/uima/wikipedia/types/MWArticle.html" title="class in org.apache.uima.mediawiki.types"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../../org/apache/uima/wikipedia/types/MWSiteinfo.html" title="class in org.apache.uima.mediawiki.types"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../../../index.html?org/apache/uima/wikipedia/types/MWRevision.html" target="_top"><B>FRAMES</B></A>  &nbsp;
 &nbsp;<A HREF="MWRevision.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
@@ -88,19 +88,19 @@ DETAIL:&nbsp;<A HREF="#field_detail">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor
 <!-- ======== START OF CLASS DATA ======== -->
 <H2>
 <FONT SIZE="-1">
-org.apache.uima.wikipedia.types</FONT>
+org.apache.uima.mediawiki.types</FONT>
 <BR>
 Class MWRevision</H2>
 <PRE>
 java.lang.Object
-  <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>org.apache.uima.wikipedia.types.MWRevision</B>
+  <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>org.apache.uima.mediawiki.types.MWRevision</B>
 </PRE>
 <DL>
-<DT><B>All Implemented Interfaces:</B> <DD>java.lang.Comparable&lt;<A HREF="../../../../../org/apache/uima/wikipedia/types/MWRevision.html" title="class in org.apache.uima.wikipedia.types">MWRevision</A>&gt;</DD>
+<DT><B>All Implemented Interfaces:</B> <DD>java.lang.Comparable&lt;<A HREF="../../../../../org/apache/uima/wikipedia/types/MWRevision.html" title="class in org.apache.uima.mediawiki.types">MWRevision</A>&gt;</DD>
 </DL>
 <HR>
 <DL>
-<DT><PRE>public class <B>MWRevision</B><DT>extends java.lang.Object<DT>implements java.lang.Comparable&lt;<A HREF="../../../../../org/apache/uima/wikipedia/types/MWRevision.html" title="class in org.apache.uima.wikipedia.types">MWRevision</A>&gt;</DL>
+<DT><PRE>public class <B>MWRevision</B><DT>extends java.lang.Object<DT>implements java.lang.Comparable&lt;<A HREF="../../../../../org/apache/uima/wikipedia/types/MWRevision.html" title="class in org.apache.uima.mediawiki.types">MWRevision</A>&gt;</DL>
 </PRE>
 
 <P>
@@ -110,7 +110,7 @@ This class represents an article's revision. It is designed to be immutable, thu
  Revisions are crafted by the revision factory. Some of the tags we consider in our analysis are optional,
  the corresponding field will be initialized with a default value if the tag is not present. We also only
  consider the contributor's username. For more details on this see
- <A HREF="../../../../../org/apache/uima/wikipedia/cr/factory/MWRevisionFactory.html" title="class in org.apache.uima.wikipedia.cr.factory"><CODE>MWRevisionFactory</CODE></A>.
+ <A HREF="../../../../../org/apache/uima/wikipedia/cr/factory/MWRevisionFactory.html" title="class in org.apache.uima.mediawiki.cr.factory"><CODE>MWRevisionFactory</CODE></A>.
  <p>
  Revisions can be ordered according to their timestamp. Newer revisions are considered greater than older
  ones.
@@ -120,7 +120,7 @@ This class represents an article's revision. It is designed to be immutable, thu
 <DL>
 <DT><B>Author:</B></DT>
   <DD>Maxime Bury &lt;Maxime.bury@gmail.com&gt;</DD>
-<DT><B>See Also:</B><DD><A HREF="../../../../../org/apache/uima/wikipedia/types/MWArticle.html" title="class in org.apache.uima.wikipedia.types"><CODE>MWArticle</CODE></A></DL>
+<DT><B>See Also:</B><DD><A HREF="../../../../../org/apache/uima/wikipedia/types/MWArticle.html" title="class in org.apache.uima.mediawiki.types"><CODE>MWArticle</CODE></A></DL>
 <HR>
 
 <P>
@@ -214,7 +214,7 @@ This class represents an article's revision. It is designed to be immutable, thu
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;int</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/apache/uima/wikipedia/types/MWRevision.html#compareTo(org.apache.uima.wikipedia.types.MWRevision)">compareTo</A></B>(<A HREF="../../../../../org/apache/uima/wikipedia/types/MWRevision.html" title="class in org.apache.uima.wikipedia.types">MWRevision</A>&nbsp;o)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/apache/uima/wikipedia/types/MWRevision.html#compareTo(org.apache.uima.mediawiki.types.MWRevision)">compareTo</A></B>(<A HREF="../../../../../org/apache/uima/wikipedia/types/MWRevision.html" title="class in org.apache.uima.mediawiki.types">MWRevision</A>&nbsp;o)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Compares a MWRevision object to another based on their timestamp, newer is greater.</TD>
@@ -338,15 +338,15 @@ public <B>MWRevision</B>(int&nbsp;id,
 </TR>
 </TABLE>
 
-<A NAME="compareTo(org.apache.uima.wikipedia.types.MWRevision)"><!-- --></A><H3>
+<A NAME="compareTo(org.apache.uima.mediawiki.types.MWRevision)"><!-- --></A><H3>
 compareTo</H3>
 <PRE>
-public int <B>compareTo</B>(<A HREF="../../../../../org/apache/uima/wikipedia/types/MWRevision.html" title="class in org.apache.uima.wikipedia.types">MWRevision</A>&nbsp;o)</PRE>
+public int <B>compareTo</B>(<A HREF="../../../../../org/apache/uima/wikipedia/types/MWRevision.html" title="class in org.apache.uima.mediawiki.types">MWRevision</A>&nbsp;o)</PRE>
 <DL>
 <DD>Compares a MWRevision object to another based on their timestamp, newer is greater.
 <P>
 <DD><DL>
-<DT><B>Specified by:</B><DD><CODE>compareTo</CODE> in interface <CODE>java.lang.Comparable&lt;<A HREF="../../../../../org/apache/uima/wikipedia/types/MWRevision.html" title="class in org.apache.uima.wikipedia.types">MWRevision</A>&gt;</CODE></DL>
+<DT><B>Specified by:</B><DD><CODE>compareTo</CODE> in interface <CODE>java.lang.Comparable&lt;<A HREF="../../../../../org/apache/uima/wikipedia/types/MWRevision.html" title="class in org.apache.uima.mediawiki.types">MWRevision</A>&gt;</CODE></DL>
 </DD>
 <DD><DL>
 </DL>
@@ -383,8 +383,8 @@ public int <B>compareTo</B>(<A HREF="../../../../../org/apache/uima/wikipedia/ty
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../../../org/apache/uima/wikipedia/types/MWArticle.html" title="class in org.apache.uima.wikipedia.types"><B>PREV CLASS</B></A>&nbsp;
-&nbsp;<A HREF="../../../../../org/apache/uima/wikipedia/types/MWSiteinfo.html" title="class in org.apache.uima.wikipedia.types"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../../../org/apache/uima/wikipedia/types/MWArticle.html" title="class in org.apache.uima.mediawiki.types"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../../org/apache/uima/wikipedia/types/MWSiteinfo.html" title="class in org.apache.uima.mediawiki.types"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../../../index.html?org/apache/uima/wikipedia/types/MWRevision.html" target="_top"><B>FRAMES</B></A>  &nbsp;
 &nbsp;<A HREF="MWRevision.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
