@@ -48,9 +48,27 @@ import org.eclipse.mylyn.wikitext.core.parser.markup.token.PatternLiteralReplace
 import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
 import org.eclipse.mylyn.wikitext.mediawiki.core.TemplateResolver;
 
+/**
+ * This class subclasses the default MediaWiki language implementation provided by MyLyn WikiText in order to
+ * finely tune the behaviour for our application.
+ * <p>
+ * Most of the blocks constituting the MediaWiki language have been rewritten and replaced by new ones. In
+ * particular, our blocks do not take care of the CSS attributes (it gets stripped) as our target output is
+ * raw text.
+ * <p>
+ * We also enabled the use of a customized template processor (the RegEx have been tuned) in order to
+ * hopefully improve performance and also accept a wider set of valid tokens as templates.
+ * 
+ * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
+ */
 public class MWLanguage extends MediaWikiLanguage {
-	MWTemplateResolver	resolver;
+	private MWTemplateResolver	resolver;
 
+	/**
+	 * Constructs a new MWLanguage with the custom template resolver.
+	 * 
+	 * @see MWTemplateResolver
+	 */
 	public MWLanguage() {
 		super();
 		resolver = new MWTemplateResolver();
@@ -59,13 +77,35 @@ public class MWLanguage extends MediaWikiLanguage {
 		setTemplateProviders(temp);
 	}
 
+	/**
+	 * Add a new macro (template) to the language.
+	 * <p>
+	 * There is several kinds of macro. See <a href="http://www.mediawiki.org/wiki/Help:Templates">here</a>
+	 * for more details on the syntaxe.
+	 * <p>
+	 * What you need to know here, is that the identifier is the lower case version of the template name. It
+	 * may be composed of several words, and contain any character except '}' and '|'. The replacement text
+	 * can be anything of your liking. If you want to take in account parameters, <code>{{{1}}}</code> will be
+	 * replaced by the first parameter value. Alternatively, if the parameters are named, you can use
+	 * <code>{{{name}}}</code>.
+	 * <p>
+	 * For more intelligent processing of the macros, one can improve the
+	 * {@link org.apache.uima.wikipedia.ae.parser.MWTemplateResolver template resolver}.
+	 * 
+	 * @param name
+	 *            the macro identifier
+	 * @param replacement
+	 *            the text replacement for the macro
+	 */
 	public void addMacro(String name, String replacement) {
 		resolver.addMacro(name, replacement);
-		final List<TemplateResolver> temp = new ArrayList<TemplateResolver>();
-		temp.add(resolver);
-		setTemplateProviders(temp);
 	}
 
+	/**
+	 * If macros are enabled, pre process the markup to make the replacements. Unknown macros will be
+	 * stripped. Only then the markup is processed. Events are sent to the document builder until the end of
+	 * the document is reached.
+	 */
 	@Override
 	public void processContent(MarkupParser parser, String markupContent, boolean asDocument) {
 		if (isEnableMacros())
@@ -73,6 +113,10 @@ public class MWLanguage extends MediaWikiLanguage {
 		super.processContent(parser, markupContent, asDocument);
 	}
 
+	/**
+	 * Adds to the language the different kinds of blocks we consider, and indicate if they are
+	 * paragraph-breaking or not.
+	 */
 	@Override
 	protected void addStandardBlocks(List<Block> blocks, List<Block> paragraphBreakingBlocks) {
 		// IMPORTANT NOTE: Most items below have order dependencies. DO NOT REORDER ITEMS BELOW!!
@@ -92,6 +136,9 @@ public class MWLanguage extends MediaWikiLanguage {
 		}
 	}
 
+	/**
+	 * Add some token that are to be replaced to the language.
+	 */
 	@Override
 	protected void addStandardTokens(PatternBasedSyntax tokenSyntax) {
 		tokenSyntax.add(new MWLineBreakToken());
@@ -109,11 +156,21 @@ public class MWLanguage extends MediaWikiLanguage {
 		tokenSyntax.add(new org.eclipse.mylyn.internal.wikitext.mediawiki.core.token.EntityReferenceReplacementToken());
 	}
 
+	/**
+	 * Returns an instance of the default paragraph implementation we consider.
+	 */
 	@Override
 	protected Block createParagraphBlock() {
 		return new MWParagraphBlock();
 	}
 
+	/**
+	 * Takes care of all the macros in the text. Known ones are replaced, unknown ones are stripped out.
+	 * 
+	 * @param markupContent
+	 *            the text to process
+	 * @return the same text with the macros taken care of.
+	 */
 	private String preprocessContent(String markupContent) {
 		return new MWTemplateProcessor(this).processTemplates(markupContent);
 	}
