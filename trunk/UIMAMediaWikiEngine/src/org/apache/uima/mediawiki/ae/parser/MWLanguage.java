@@ -62,7 +62,7 @@ import org.eclipse.mylyn.wikitext.mediawiki.core.TemplateResolver;
  * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
  */
 public class MWLanguage extends MediaWikiLanguage {
-	private MWTemplateResolver	resolver;
+	private final MWTemplateResolver	resolver;
 
 	/**
 	 * Constructs a new MWLanguage with the custom template resolver.
@@ -108,8 +108,9 @@ public class MWLanguage extends MediaWikiLanguage {
 	 */
 	@Override
 	public void processContent(MarkupParser parser, String markupContent, boolean asDocument) {
-		if (isEnableMacros())
+		if (isEnableMacros()) {
 			markupContent = preprocessContent(markupContent);
+		}
 		super.processContent(parser, markupContent, asDocument);
 	}
 
@@ -129,8 +130,9 @@ public class MWLanguage extends MediaWikiLanguage {
 
 		for (final Block block : blocks) {
 			// Paragraphs cant break themselves
-			if (block instanceof MWParagraphBlock)
+			if (block instanceof MWParagraphBlock) {
 				continue;
+			}
 			// Any other block causes a paragraph to be broken
 			paragraphBreakingBlocks.add(block);
 		}

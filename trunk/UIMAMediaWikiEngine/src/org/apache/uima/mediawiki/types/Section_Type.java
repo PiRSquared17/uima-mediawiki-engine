@@ -21,23 +21,26 @@ import org.apache.uima.jcas.tcas.Annotation_Type;
 public class Section_Type extends Annotation_Type {
 	/** @generated */
 	@Override
-	protected FSGenerator getFSGenerator() {return fsGenerator;}
+	protected FSGenerator getFSGenerator() {
+		return fsGenerator;
+	}
+
 	/** @generated */
-	private final FSGenerator	fsGenerator	= 
-    new FSGenerator() {
-      public FeatureStructure createFS(int addr, CASImpl cas) {
-  			 if (Section_Type.this.useExistingInstance) {
-  			   // Return eq fs instance if already created
-  		     FeatureStructure fs = Section_Type.this.jcas.getJfsFromCaddr(addr);
-  		     if (null == fs) {
-  		       fs = new Section(addr, Section_Type.this);
-  			   Section_Type.this.jcas.putJfsFromCaddr(addr, fs);
-  			   return fs;
-  		     }
-  		     return fs;
-        } else return new Section(addr, Section_Type.this);
-  	  }
-    };
+	private final FSGenerator	fsGenerator	= new FSGenerator() {
+												public FeatureStructure createFS(int addr, CASImpl cas) {
+													if (Section_Type.this.useExistingInstance) {
+														// Return eq fs instance if already created
+														FeatureStructure fs = Section_Type.this.jcas.getJfsFromCaddr(addr);
+														if (null == fs) {
+															fs = new Section(addr, Section_Type.this);
+															Section_Type.this.jcas.putJfsFromCaddr(addr, fs);
+															return fs;
+														}
+														return fs;
+													} else
+														return new Section(addr, Section_Type.this);
+												}
+											};
 	/** @generated */
 	public final static int		typeIndexID	= Section.typeIndexID;
 	/**
@@ -53,18 +56,20 @@ public class Section_Type extends Annotation_Type {
 
 	/** @generated */
 	public int getLevel(int addr) {
-        if (featOkTst && casFeat_level == null)
-      jcas.throwFeatMissing("level", "org.apache.uima.mediawiki.types.Section");
-    return ll_cas.ll_getIntValue(addr, casFeatCode_level);
-  }
+		if (featOkTst && casFeat_level == null) {
+			jcas.throwFeatMissing("level", "org.apache.uima.mediawiki.types.Section");
+		}
+		return ll_cas.ll_getIntValue(addr, casFeatCode_level);
+	}
+
 	/** @generated */
 	public void setLevel(int addr, int v) {
-        if (featOkTst && casFeat_level == null)
-      jcas.throwFeatMissing("level", "org.apache.uima.mediawiki.types.Section");
-    ll_cas.ll_setIntValue(addr, casFeatCode_level, v);}
-    
-  
- 
+		if (featOkTst && casFeat_level == null) {
+			jcas.throwFeatMissing("level", "org.apache.uima.mediawiki.types.Section");
+		}
+		ll_cas.ll_setIntValue(addr, casFeatCode_level, v);
+	}
+
 	/** @generated */
 	final Feature	casFeat_parent;
 	/** @generated */
@@ -72,18 +77,20 @@ public class Section_Type extends Annotation_Type {
 
 	/** @generated */
 	public int getParent(int addr) {
-        if (featOkTst && casFeat_parent == null)
-      jcas.throwFeatMissing("parent", "org.apache.uima.mediawiki.types.Section");
-    return ll_cas.ll_getRefValue(addr, casFeatCode_parent);
-  }
+		if (featOkTst && casFeat_parent == null) {
+			jcas.throwFeatMissing("parent", "org.apache.uima.mediawiki.types.Section");
+		}
+		return ll_cas.ll_getRefValue(addr, casFeatCode_parent);
+	}
+
 	/** @generated */
 	public void setParent(int addr, int v) {
-        if (featOkTst && casFeat_parent == null)
-      jcas.throwFeatMissing("parent", "org.apache.uima.mediawiki.types.Section");
-    ll_cas.ll_setRefValue(addr, casFeatCode_parent, v);}
-    
-  
- 
+		if (featOkTst && casFeat_parent == null) {
+			jcas.throwFeatMissing("parent", "org.apache.uima.mediawiki.types.Section");
+		}
+		ll_cas.ll_setRefValue(addr, casFeatCode_parent, v);
+	}
+
 	/** @generated */
 	final Feature	casFeat_title;
 	/** @generated */
@@ -91,19 +98,19 @@ public class Section_Type extends Annotation_Type {
 
 	/** @generated */
 	public int getTitle(int addr) {
-        if (featOkTst && casFeat_title == null)
-      jcas.throwFeatMissing("title", "org.apache.uima.mediawiki.types.Section");
-    return ll_cas.ll_getRefValue(addr, casFeatCode_title);
-  }
+		if (featOkTst && casFeat_title == null) {
+			jcas.throwFeatMissing("title", "org.apache.uima.mediawiki.types.Section");
+		}
+		return ll_cas.ll_getRefValue(addr, casFeatCode_title);
+	}
+
 	/** @generated */
 	public void setTitle(int addr, int v) {
-        if (featOkTst && casFeat_title == null)
-      jcas.throwFeatMissing("title", "org.apache.uima.mediawiki.types.Section");
-    ll_cas.ll_setRefValue(addr, casFeatCode_title, v);}
-    
-  
-
-
+		if (featOkTst && casFeat_title == null) {
+			jcas.throwFeatMissing("title", "org.apache.uima.mediawiki.types.Section");
+		}
+		ll_cas.ll_setRefValue(addr, casFeatCode_title, v);
+	}
 
 	/**
 	 * initialize variables to correspond with Cas Type and Features
@@ -111,20 +118,17 @@ public class Section_Type extends Annotation_Type {
 	 * @generated
 	 */
 	public Section_Type(JCas jcas, Type casType) {
-    super(jcas, casType);
-    casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
+		super(jcas, casType);
+		casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl) this.casType, getFSGenerator());
 
- 
-    casFeat_level = jcas.getRequiredFeatureDE(casType, "level", "uima.cas.Integer", featOkTst);
-    casFeatCode_level  = (null == casFeat_level) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_level).getCode();
+		casFeat_level = jcas.getRequiredFeatureDE(casType, "level", "uima.cas.Integer", featOkTst);
+		casFeatCode_level = null == casFeat_level ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl) casFeat_level).getCode();
 
- 
-    casFeat_parent = jcas.getRequiredFeatureDE(casType, "parent", "org.apache.uima.mediawiki.types.Section", featOkTst);
-    casFeatCode_parent  = (null == casFeat_parent) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_parent).getCode();
+		casFeat_parent = jcas.getRequiredFeatureDE(casType, "parent", "org.apache.uima.mediawiki.types.Section", featOkTst);
+		casFeatCode_parent = null == casFeat_parent ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl) casFeat_parent).getCode();
 
- 
-    casFeat_title = jcas.getRequiredFeatureDE(casType, "title", "org.apache.uima.mediawiki.types.Header", featOkTst);
-    casFeatCode_title  = (null == casFeat_title) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_title).getCode();
+		casFeat_title = jcas.getRequiredFeatureDE(casType, "title", "org.apache.uima.mediawiki.types.Header", featOkTst);
+		casFeatCode_title = null == casFeat_title ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl) casFeat_title).getCode();
 
-  }
+	}
 }

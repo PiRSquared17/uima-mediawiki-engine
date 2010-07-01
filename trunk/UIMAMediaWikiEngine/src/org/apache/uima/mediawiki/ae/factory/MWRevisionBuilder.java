@@ -52,7 +52,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	/** A stack to keep stack of the different sections */
 	private final Stack<Integer>	sectionsLevel;
 	/** An annotator to build the annotations */
-	private MWAnnotator				annotator;
+	private final MWAnnotator		annotator;
 	/** Some flag */
 	private boolean					firstLine;
 
@@ -91,15 +91,16 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	 */
 	@Override
 	public void beginHeading(int level, Attributes attributes) {
-		if (!firstLine)
+		if (!firstLine) {
 			content.append("\n\n");
-		else
+		} else {
 			firstLine = false;
+		}
 		annotator.newHeader(level, content.length());
 
-		if (sectionsLevel.isEmpty() || level > sectionsLevel.peek())
+		if (sectionsLevel.isEmpty() || level > sectionsLevel.peek()) {
 			sectionsLevel.push(level);
-		else {
+		} else {
 			while (!sectionsLevel.isEmpty() && level <= sectionsLevel.peek()) {
 				sectionsLevel.pop();
 				annotator.end("section", content.length());
@@ -132,8 +133,9 @@ public class MWRevisionBuilder extends DocumentBuilder {
 			case DEFINITION_TERM:
 			case DEFINITION_ITEM:
 				content.append('\n');
-				for (int level = 0; level < listContext.size() - 1; level++)
+				for (int level = 0; level < listContext.size() - 1; level++) {
 					content.append('\t');
+				}
 				final int count = itemCount.pop() + 1;
 				itemCount.push(count);
 				switch (listContext.peek()) {
@@ -153,10 +155,11 @@ public class MWRevisionBuilder extends DocumentBuilder {
 				content.append('\n');
 				break;
 			case PARAGRAPH:
-				if (!firstLine)
+				if (!firstLine) {
 					content.append("\n\n");
-				else
+				} else {
 					firstLine = false;
+				}
 				// Let the annotator know we have entered a new block.
 				annotator.newBlock(type, content.length());
 				break;
