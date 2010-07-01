@@ -11,7 +11,7 @@
         	noindex="false" 
         	nonavbar="false" 
         	notree="false" 
-        	packagenames="org.apache.uima.wikipedia.cr.parser,org.apache.uima.wikipedia.cr.factory,org.apache.uima.wikipedia.types,org.apache.uima.wikipedia.ae.factory,org.apache.uima.wikipedia.ae,org.apache.uima.wikipedia.cr,org.apache.uima.wikipedia.ae.parser.block,org.apache.tools.bzip2,org.apache.uima.wikipedia.cr.util,org.apache.uima.wikipedia.ae.parser" 
+        	packagenames="org.apache.uima.mediawiki.cr.parser,org.apache.uima.mediawiki.cr.factory,org.apache.uima.mediawiki.types,org.apache.uima.mediawiki.ae.factory,org.apache.uima.mediawiki.ae,org.apache.uima.mediawiki.cr,org.apache.uima.mediawiki.ae.parser.block,org.apache.tools.bzip2,org.apache.uima.mediawiki.cr.util,org.apache.uima.mediawiki.ae.parser" 
         	source="1.6" 
         	sourcepath="src:desc" 
         	splitindex="true" 

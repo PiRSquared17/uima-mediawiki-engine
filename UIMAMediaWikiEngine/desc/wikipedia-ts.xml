@@ -6,7 +6,7 @@
   <vendor/>
   <types>
     <typeDescription>
-      <name>org.apache.uima.wikipedia.types.Article</name>
+      <name>org.apache.uima.mediawiki.types.Article</name>
       <description>An article is the unity describing a concept or an idea in the Wikipedia. It is composed of several revisions, each of which proposing a content for the article.</description>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -33,7 +33,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.wikipedia.types.Revision</name>
+      <name>org.apache.uima.mediawiki.types.Revision</name>
       <description>A revision is the version of an article by a contributor. It is most likely based on the direct previous revision.</description>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -65,7 +65,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.wikipedia.types.Section</name>
+      <name>org.apache.uima.mediawiki.types.Section</name>
       <description>A section is a part of the content that is structured in sub-sections or paragraphs.</description>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -77,22 +77,22 @@
         <featureDescription>
           <name>parent</name>
           <description>The parent section, if any, of this current one.</description>
-          <rangeTypeName>org.apache.uima.wikipedia.types.Section</rangeTypeName>
+          <rangeTypeName>org.apache.uima.mediawiki.types.Section</rangeTypeName>
         </featureDescription>
         <featureDescription>
           <name>title</name>
           <description>The title of this section, if any.</description>
-          <rangeTypeName>org.apache.uima.wikipedia.types.Header</rangeTypeName>
+          <rangeTypeName>org.apache.uima.mediawiki.types.Header</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.wikipedia.types.Paragraph</name>
+      <name>org.apache.uima.mediawiki.types.Paragraph</name>
       <description>A paragraph is a piece of texte composing a section, or an article without sections.</description>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.wikipedia.types.Header</name>
+      <name>org.apache.uima.mediawiki.types.Header</name>
       <description>Header of a section</description>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -104,7 +104,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.wikipedia.types.Link</name>
+      <name>org.apache.uima.mediawiki.types.Link</name>
       <description>A link (internal or external).</description>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>

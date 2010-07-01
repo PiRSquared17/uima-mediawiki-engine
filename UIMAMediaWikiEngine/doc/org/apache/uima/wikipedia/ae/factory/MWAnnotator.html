@@ -56,7 +56,7 @@ function windowTitle()
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
 &nbsp;PREV CLASS&nbsp;
-&nbsp;<A HREF="../../../../../../org/apache/uima/wikipedia/ae/factory/MWCasBuilder.html" title="class in org.apache.uima.wikipedia.ae.factory"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../../../../org/apache/uima/wikipedia/ae/factory/MWCasBuilder.html" title="class in org.apache.uima.mediawiki.ae.factory"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../../../../index.html?org/apache/uima/wikipedia/ae/factory/MWAnnotator.html" target="_top"><B>FRAMES</B></A>  &nbsp;
 &nbsp;<A HREF="MWAnnotator.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
@@ -88,12 +88,12 @@ DETAIL:&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&n
 <!-- ======== START OF CLASS DATA ======== -->
 <H2>
 <FONT SIZE="-1">
-org.apache.uima.wikipedia.ae.factory</FONT>
+org.apache.uima.mediawiki.ae.factory</FONT>
 <BR>
 Class MWAnnotator</H2>
 <PRE>
 <A HREF="http://java.sun.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</A>
-  <IMG SRC="../../../../../../resources/inherit.gif" ALT="extended by "><B>org.apache.uima.wikipedia.ae.factory.MWAnnotator</B>
+  <IMG SRC="../../../../../../resources/inherit.gif" ALT="extended by "><B>org.apache.uima.mediawiki.ae.factory.MWAnnotator</B>
 </PRE>
 <HR>
 <DL>
@@ -102,11 +102,11 @@ Class MWAnnotator</H2>
 
 <P>
 This class handles the creation of all the annotations for the CAS. The
- <A HREF="../../../../../../org/apache/uima/wikipedia/ae/parser/MWRevisionBuilder.html" title="class in org.apache.uima.wikipedia.ae.parser"><CODE>document builder</CODE></A> calls the method provided by
+ <A HREF="../../../../../../org/apache/uima/wikipedia/ae/parser/MWRevisionBuilder.html" title="class in org.apache.uima.mediawiki.ae.parser"><CODE>document builder</CODE></A> calls the method provided by
  this factory to populate the CAS with annotations while processing the content.
  <p>
- For now, we handle <A HREF="../../../../../../org/apache/uima/wikipedia/types/Header.html" title="class in org.apache.uima.wikipedia.types"><CODE>Header</CODE></A>,
- <A HREF="../../../../../../org/apache/uima/wikipedia/types/Section.html" title="class in org.apache.uima.wikipedia.types"><CODE>Section</CODE></A>, <A HREF="../../../../../../org/apache/uima/wikipedia/types/Paragraph.html" title="class in org.apache.uima.wikipedia.types"><CODE>Paragraph</CODE></A> and <A HREF="../../../../../../org/apache/uima/wikipedia/types/Link.html" title="class in org.apache.uima.wikipedia.types"><CODE>Link</CODE></A> annotations.
+ For now, we handle <A HREF="../../../../../../org/apache/uima/wikipedia/types/Header.html" title="class in org.apache.uima.mediawiki.types"><CODE>Header</CODE></A>,
+ <A HREF="../../../../../../org/apache/uima/wikipedia/types/Section.html" title="class in org.apache.uima.mediawiki.types"><CODE>Section</CODE></A>, <A HREF="../../../../../../org/apache/uima/wikipedia/types/Paragraph.html" title="class in org.apache.uima.mediawiki.types"><CODE>Paragraph</CODE></A> and <A HREF="../../../../../../org/apache/uima/wikipedia/types/Link.html" title="class in org.apache.uima.mediawiki.types"><CODE>Link</CODE></A> annotations.
 <P>
 
 <P>
@@ -192,7 +192,7 @@ This class handles the creation of all the annotations for the CAS. The
           int&nbsp;offset)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a new <A HREF="../../../../../../org/apache/uima/wikipedia/types/Header.html" title="class in org.apache.uima.wikipedia.types"><CODE>Header</CODE></A> annotation of level <code>level</code>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a new <A HREF="../../../../../../org/apache/uima/wikipedia/types/Header.html" title="class in org.apache.uima.mediawiki.types"><CODE>Header</CODE></A> annotation of level <code>level</code>
  starting at <code>offset</code>.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
@@ -203,7 +203,7 @@ This class handles the creation of all the annotations for the CAS. The
         int&nbsp;offset)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a new <A HREF="../../../../../../org/apache/uima/wikipedia/types/Link.html" title="class in org.apache.uima.wikipedia.types"><CODE>Link</CODE></A> annotation.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a new <A HREF="../../../../../../org/apache/uima/wikipedia/types/Link.html" title="class in org.apache.uima.mediawiki.types"><CODE>Link</CODE></A> annotation.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -212,7 +212,7 @@ This class handles the creation of all the annotations for the CAS. The
            int&nbsp;offset)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a new <A HREF="../../../../../../org/apache/uima/wikipedia/types/Section.html" title="class in org.apache.uima.wikipedia.types"><CODE>Section</CODE></A> annotation.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a new <A HREF="../../../../../../org/apache/uima/wikipedia/types/Section.html" title="class in org.apache.uima.mediawiki.types"><CODE>Section</CODE></A> annotation.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -295,7 +295,7 @@ newHeader</H3>
 public static void <B>newHeader</B>(int&nbsp;level,
                              int&nbsp;offset)</PRE>
 <DL>
-<DD>Creates a new <A HREF="../../../../../../org/apache/uima/wikipedia/types/Header.html" title="class in org.apache.uima.wikipedia.types"><CODE>Header</CODE></A> annotation of level <code>level</code>
+<DD>Creates a new <A HREF="../../../../../../org/apache/uima/wikipedia/types/Header.html" title="class in org.apache.uima.mediawiki.types"><CODE>Header</CODE></A> annotation of level <code>level</code>
  starting at <code>offset</code>.
 <P>
 <DD><DL>
@@ -311,7 +311,7 @@ public static void <B>newLink</B>(<A HREF="http://java.sun.com/javase/6/docs/api
                            <A HREF="http://java.sun.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;href,
                            int&nbsp;offset)</PRE>
 <DL>
-<DD>Creates a new <A HREF="../../../../../../org/apache/uima/wikipedia/types/Link.html" title="class in org.apache.uima.wikipedia.types"><CODE>Link</CODE></A> annotation.
+<DD>Creates a new <A HREF="../../../../../../org/apache/uima/wikipedia/types/Link.html" title="class in org.apache.uima.mediawiki.types"><CODE>Link</CODE></A> annotation.
 <P>
 <DD><DL>
 <DT><B>Parameters:</B><DD><CODE>label</CODE> - the link's label (name)<DD><CODE>href</CODE> - the link's adress<DD><CODE>offset</CODE> - the starting offset</DL>
@@ -326,7 +326,7 @@ public static void <B>newBlock</B>(<A HREF="file:/Users/Bowbaq/Downloads/mylyn-w
                             int&nbsp;offset)</PRE>
 <DL>
 <DD>Creates a new block annotation of the provided type. Currently, only
- <A HREF="../../../../../../org/apache/uima/wikipedia/types/Paragraph.html" title="class in org.apache.uima.wikipedia.types"><CODE>Paragraph</CODE></A> are supported.
+ <A HREF="../../../../../../org/apache/uima/wikipedia/types/Paragraph.html" title="class in org.apache.uima.mediawiki.types"><CODE>Paragraph</CODE></A> are supported.
 <P>
 <DD><DL>
 <DT><B>Parameters:</B><DD><CODE>type</CODE> - the block's type.<DD><CODE>offset</CODE> - the starting offset.</DL>
@@ -340,7 +340,7 @@ newSection</H3>
 public static void <B>newSection</B>(int&nbsp;level,
                               int&nbsp;offset)</PRE>
 <DL>
-<DD>Creates a new <A HREF="../../../../../../org/apache/uima/wikipedia/types/Section.html" title="class in org.apache.uima.wikipedia.types"><CODE>Section</CODE></A> annotation. The section's level is the
+<DD>Creates a new <A HREF="../../../../../../org/apache/uima/wikipedia/types/Section.html" title="class in org.apache.uima.mediawiki.types"><CODE>Section</CODE></A> annotation. The section's level is the
  same as the corresponding header's.
 <P>
 <DD><DL>
@@ -422,7 +422,7 @@ public static <A HREF="http://java.sun.com/javase/6/docs/api/java/util/List.html
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
 &nbsp;PREV CLASS&nbsp;
-&nbsp;<A HREF="../../../../../../org/apache/uima/wikipedia/ae/factory/MWCasBuilder.html" title="class in org.apache.uima.wikipedia.ae.factory"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../../../../org/apache/uima/wikipedia/ae/factory/MWCasBuilder.html" title="class in org.apache.uima.mediawiki.ae.factory"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../../../../index.html?org/apache/uima/wikipedia/ae/factory/MWAnnotator.html" target="_top"><B>FRAMES</B></A>  &nbsp;
 &nbsp;<A HREF="MWAnnotator.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
