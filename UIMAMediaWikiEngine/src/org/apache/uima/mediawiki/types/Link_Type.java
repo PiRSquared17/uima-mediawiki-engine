@@ -20,26 +20,23 @@ import org.apache.uima.jcas.tcas.Annotation_Type;
 public class Link_Type extends Annotation_Type {
 	/** @generated */
 	@Override
-	protected FSGenerator getFSGenerator() {
-		return fsGenerator;
-	}
-
+	protected FSGenerator getFSGenerator() {return fsGenerator;}
 	/** @generated */
-	private final FSGenerator	fsGenerator	= new FSGenerator() {
-												public FeatureStructure createFS(int addr, CASImpl cas) {
-													if (Link_Type.this.useExistingInstance) {
-														// Return eq fs instance if already created
-														FeatureStructure fs = Link_Type.this.jcas.getJfsFromCaddr(addr);
-														if (null == fs) {
-															fs = new Link(addr, Link_Type.this);
-															Link_Type.this.jcas.putJfsFromCaddr(addr, fs);
-															return fs;
-														}
-														return fs;
-													} else
-														return new Link(addr, Link_Type.this);
-												}
-											};
+	private final FSGenerator	fsGenerator	= 
+    new FSGenerator() {
+      public FeatureStructure createFS(int addr, CASImpl cas) {
+  			 if (Link_Type.this.useExistingInstance) {
+  			   // Return eq fs instance if already created
+  		     FeatureStructure fs = Link_Type.this.jcas.getJfsFromCaddr(addr);
+  		     if (null == fs) {
+  		       fs = new Link(addr, Link_Type.this);
+  			   Link_Type.this.jcas.putJfsFromCaddr(addr, fs);
+  			   return fs;
+  		     }
+  		     return fs;
+        } else return new Link(addr, Link_Type.this);
+  	  }
+    };
 	/** @generated */
 	public final static int		typeIndexID	= Link.typeIndexID;
 	/**
@@ -55,20 +52,18 @@ public class Link_Type extends Annotation_Type {
 
 	/** @generated */
 	public String getLabel(int addr) {
-		if (featOkTst && casFeat_label == null) {
-			jcas.throwFeatMissing("label", "org.apache.uima.mediawiki.types.Link");
-		}
-		return ll_cas.ll_getStringValue(addr, casFeatCode_label);
-	}
-
+        if (featOkTst && casFeat_label == null)
+      jcas.throwFeatMissing("label", "org.apache.uima.mediawiki.types.Link");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_label);
+  }
 	/** @generated */
 	public void setLabel(int addr, String v) {
-		if (featOkTst && casFeat_label == null) {
-			jcas.throwFeatMissing("label", "org.apache.uima.mediawiki.types.Link");
-		}
-		ll_cas.ll_setStringValue(addr, casFeatCode_label, v);
-	}
-
+        if (featOkTst && casFeat_label == null)
+      jcas.throwFeatMissing("label", "org.apache.uima.mediawiki.types.Link");
+    ll_cas.ll_setStringValue(addr, casFeatCode_label, v);}
+    
+  
+ 
 	/** @generated */
 	final Feature	casFeat_link;
 	/** @generated */
@@ -76,19 +71,19 @@ public class Link_Type extends Annotation_Type {
 
 	/** @generated */
 	public String getLink(int addr) {
-		if (featOkTst && casFeat_link == null) {
-			jcas.throwFeatMissing("link", "org.apache.uima.mediawiki.types.Link");
-		}
-		return ll_cas.ll_getStringValue(addr, casFeatCode_link);
-	}
-
+        if (featOkTst && casFeat_link == null)
+      jcas.throwFeatMissing("link", "org.apache.uima.mediawiki.types.Link");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_link);
+  }
 	/** @generated */
 	public void setLink(int addr, String v) {
-		if (featOkTst && casFeat_link == null) {
-			jcas.throwFeatMissing("link", "org.apache.uima.mediawiki.types.Link");
-		}
-		ll_cas.ll_setStringValue(addr, casFeatCode_link, v);
-	}
+        if (featOkTst && casFeat_link == null)
+      jcas.throwFeatMissing("link", "org.apache.uima.mediawiki.types.Link");
+    ll_cas.ll_setStringValue(addr, casFeatCode_link, v);}
+    
+  
+
+
 
 	/**
 	 * initialize variables to correspond with Cas Type and Features
@@ -96,14 +91,16 @@ public class Link_Type extends Annotation_Type {
 	 * @generated
 	 */
 	public Link_Type(JCas jcas, Type casType) {
-		super(jcas, casType);
-		casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl) this.casType, getFSGenerator());
+    super(jcas, casType);
+    casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
-		casFeat_label = jcas.getRequiredFeatureDE(casType, "label", "uima.cas.String", featOkTst);
-		casFeatCode_label = null == casFeat_label ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl) casFeat_label).getCode();
+ 
+    casFeat_label = jcas.getRequiredFeatureDE(casType, "label", "uima.cas.String", featOkTst);
+    casFeatCode_label  = (null == casFeat_label) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_label).getCode();
 
-		casFeat_link = jcas.getRequiredFeatureDE(casType, "link", "uima.cas.String", featOkTst);
-		casFeatCode_link = null == casFeat_link ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl) casFeat_link).getCode();
+ 
+    casFeat_link = jcas.getRequiredFeatureDE(casType, "link", "uima.cas.String", featOkTst);
+    casFeatCode_link  = (null == casFeat_link) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_link).getCode();
 
-	}
+  }
 }

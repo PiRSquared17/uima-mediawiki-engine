@@ -21,27 +21,23 @@ import org.apache.uima.jcas.tcas.Annotation_Type;
 public class Revision_Type extends Annotation_Type {
 	/** @generated */
 	@Override
-	protected FSGenerator getFSGenerator() {
-		return fsGenerator;
-	}
-
+	protected FSGenerator getFSGenerator() {return fsGenerator;}
 	/** @generated */
-	private final FSGenerator	fsGenerator	= new FSGenerator() {
-												public FeatureStructure createFS(int addr, CASImpl cas) {
-													if (Revision_Type.this.useExistingInstance) {
-														// Return eq fs instance
-														// if already created
-														FeatureStructure fs = Revision_Type.this.jcas.getJfsFromCaddr(addr);
-														if (null == fs) {
-															fs = new Revision(addr, Revision_Type.this);
-															Revision_Type.this.jcas.putJfsFromCaddr(addr, fs);
-															return fs;
-														}
-														return fs;
-													} else
-														return new Revision(addr, Revision_Type.this);
-												}
-											};
+	private final FSGenerator	fsGenerator	= 
+    new FSGenerator() {
+      public FeatureStructure createFS(int addr, CASImpl cas) {
+  			 if (Revision_Type.this.useExistingInstance) {
+  			   // Return eq fs instance if already created
+  		     FeatureStructure fs = Revision_Type.this.jcas.getJfsFromCaddr(addr);
+  		     if (null == fs) {
+  		       fs = new Revision(addr, Revision_Type.this);
+  			   Revision_Type.this.jcas.putJfsFromCaddr(addr, fs);
+  			   return fs;
+  		     }
+  		     return fs;
+        } else return new Revision(addr, Revision_Type.this);
+  	  }
+    };
 	/** @generated */
 	public final static int		typeIndexID	= Revision.typeIndexID;
 	/**
@@ -57,20 +53,18 @@ public class Revision_Type extends Annotation_Type {
 
 	/** @generated */
 	public String getUser(int addr) {
-		if (featOkTst && casFeat_user == null) {
-			jcas.throwFeatMissing("user", "org.apache.uima.mediawiki.types.Revision");
-		}
-		return ll_cas.ll_getStringValue(addr, casFeatCode_user);
-	}
-
+        if (featOkTst && casFeat_user == null)
+      jcas.throwFeatMissing("user", "org.apache.uima.mediawiki.types.Revision");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_user);
+  }
 	/** @generated */
 	public void setUser(int addr, String v) {
-		if (featOkTst && casFeat_user == null) {
-			jcas.throwFeatMissing("user", "org.apache.uima.mediawiki.types.Revision");
-		}
-		ll_cas.ll_setStringValue(addr, casFeatCode_user, v);
-	}
-
+        if (featOkTst && casFeat_user == null)
+      jcas.throwFeatMissing("user", "org.apache.uima.mediawiki.types.Revision");
+    ll_cas.ll_setStringValue(addr, casFeatCode_user, v);}
+    
+  
+ 
 	/** @generated */
 	final Feature	casFeat_comment;
 	/** @generated */
@@ -78,20 +72,18 @@ public class Revision_Type extends Annotation_Type {
 
 	/** @generated */
 	public String getComment(int addr) {
-		if (featOkTst && casFeat_comment == null) {
-			jcas.throwFeatMissing("comment", "org.apache.uima.mediawiki.types.Revision");
-		}
-		return ll_cas.ll_getStringValue(addr, casFeatCode_comment);
-	}
-
+        if (featOkTst && casFeat_comment == null)
+      jcas.throwFeatMissing("comment", "org.apache.uima.mediawiki.types.Revision");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_comment);
+  }
 	/** @generated */
 	public void setComment(int addr, String v) {
-		if (featOkTst && casFeat_comment == null) {
-			jcas.throwFeatMissing("comment", "org.apache.uima.mediawiki.types.Revision");
-		}
-		ll_cas.ll_setStringValue(addr, casFeatCode_comment, v);
-	}
-
+        if (featOkTst && casFeat_comment == null)
+      jcas.throwFeatMissing("comment", "org.apache.uima.mediawiki.types.Revision");
+    ll_cas.ll_setStringValue(addr, casFeatCode_comment, v);}
+    
+  
+ 
 	/** @generated */
 	final Feature	casFeat_timestamp;
 	/** @generated */
@@ -99,20 +91,18 @@ public class Revision_Type extends Annotation_Type {
 
 	/** @generated */
 	public double getTimestamp(int addr) {
-		if (featOkTst && casFeat_timestamp == null) {
-			jcas.throwFeatMissing("timestamp", "org.apache.uima.mediawiki.types.Revision");
-		}
-		return ll_cas.ll_getDoubleValue(addr, casFeatCode_timestamp);
-	}
-
+        if (featOkTst && casFeat_timestamp == null)
+      jcas.throwFeatMissing("timestamp", "org.apache.uima.mediawiki.types.Revision");
+    return ll_cas.ll_getDoubleValue(addr, casFeatCode_timestamp);
+  }
 	/** @generated */
 	public void setTimestamp(int addr, double v) {
-		if (featOkTst && casFeat_timestamp == null) {
-			jcas.throwFeatMissing("timestamp", "org.apache.uima.mediawiki.types.Revision");
-		}
-		ll_cas.ll_setDoubleValue(addr, casFeatCode_timestamp, v);
-	}
-
+        if (featOkTst && casFeat_timestamp == null)
+      jcas.throwFeatMissing("timestamp", "org.apache.uima.mediawiki.types.Revision");
+    ll_cas.ll_setDoubleValue(addr, casFeatCode_timestamp, v);}
+    
+  
+ 
 	/** @generated */
 	final Feature	casFeat_isMinor;
 	/** @generated */
@@ -120,20 +110,18 @@ public class Revision_Type extends Annotation_Type {
 
 	/** @generated */
 	public boolean getIsMinor(int addr) {
-		if (featOkTst && casFeat_isMinor == null) {
-			jcas.throwFeatMissing("isMinor", "org.apache.uima.mediawiki.types.Revision");
-		}
-		return ll_cas.ll_getBooleanValue(addr, casFeatCode_isMinor);
-	}
-
+        if (featOkTst && casFeat_isMinor == null)
+      jcas.throwFeatMissing("isMinor", "org.apache.uima.mediawiki.types.Revision");
+    return ll_cas.ll_getBooleanValue(addr, casFeatCode_isMinor);
+  }
 	/** @generated */
 	public void setIsMinor(int addr, boolean v) {
-		if (featOkTst && casFeat_isMinor == null) {
-			jcas.throwFeatMissing("isMinor", "org.apache.uima.mediawiki.types.Revision");
-		}
-		ll_cas.ll_setBooleanValue(addr, casFeatCode_isMinor, v);
-	}
-
+        if (featOkTst && casFeat_isMinor == null)
+      jcas.throwFeatMissing("isMinor", "org.apache.uima.mediawiki.types.Revision");
+    ll_cas.ll_setBooleanValue(addr, casFeatCode_isMinor, v);}
+    
+  
+ 
 	/** @generated */
 	final Feature	casFeat_id;
 	/** @generated */
@@ -141,19 +129,19 @@ public class Revision_Type extends Annotation_Type {
 
 	/** @generated */
 	public int getId(int addr) {
-		if (featOkTst && casFeat_id == null) {
-			jcas.throwFeatMissing("id", "org.apache.uima.mediawiki.types.Revision");
-		}
-		return ll_cas.ll_getIntValue(addr, casFeatCode_id);
-	}
-
+        if (featOkTst && casFeat_id == null)
+      jcas.throwFeatMissing("id", "org.apache.uima.mediawiki.types.Revision");
+    return ll_cas.ll_getIntValue(addr, casFeatCode_id);
+  }
 	/** @generated */
 	public void setId(int addr, int v) {
-		if (featOkTst && casFeat_id == null) {
-			jcas.throwFeatMissing("id", "org.apache.uima.mediawiki.types.Revision");
-		}
-		ll_cas.ll_setIntValue(addr, casFeatCode_id, v);
-	}
+        if (featOkTst && casFeat_id == null)
+      jcas.throwFeatMissing("id", "org.apache.uima.mediawiki.types.Revision");
+    ll_cas.ll_setIntValue(addr, casFeatCode_id, v);}
+    
+  
+
+
 
 	/**
 	 * initialize variables to correspond with Cas Type and Features
@@ -161,23 +149,28 @@ public class Revision_Type extends Annotation_Type {
 	 * @generated
 	 */
 	public Revision_Type(JCas jcas, Type casType) {
-		super(jcas, casType);
-		casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl) this.casType, getFSGenerator());
+    super(jcas, casType);
+    casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
-		casFeat_user = jcas.getRequiredFeatureDE(casType, "user", "uima.cas.String", featOkTst);
-		casFeatCode_user = null == casFeat_user ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl) casFeat_user).getCode();
+ 
+    casFeat_user = jcas.getRequiredFeatureDE(casType, "user", "uima.cas.String", featOkTst);
+    casFeatCode_user  = (null == casFeat_user) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_user).getCode();
 
-		casFeat_comment = jcas.getRequiredFeatureDE(casType, "comment", "uima.cas.String", featOkTst);
-		casFeatCode_comment = null == casFeat_comment ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl) casFeat_comment).getCode();
+ 
+    casFeat_comment = jcas.getRequiredFeatureDE(casType, "comment", "uima.cas.String", featOkTst);
+    casFeatCode_comment  = (null == casFeat_comment) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_comment).getCode();
 
-		casFeat_timestamp = jcas.getRequiredFeatureDE(casType, "timestamp", "uima.cas.Double", featOkTst);
-		casFeatCode_timestamp = null == casFeat_timestamp ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl) casFeat_timestamp).getCode();
+ 
+    casFeat_timestamp = jcas.getRequiredFeatureDE(casType, "timestamp", "uima.cas.Double", featOkTst);
+    casFeatCode_timestamp  = (null == casFeat_timestamp) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_timestamp).getCode();
 
-		casFeat_isMinor = jcas.getRequiredFeatureDE(casType, "isMinor", "uima.cas.Boolean", featOkTst);
-		casFeatCode_isMinor = null == casFeat_isMinor ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl) casFeat_isMinor).getCode();
+ 
+    casFeat_isMinor = jcas.getRequiredFeatureDE(casType, "isMinor", "uima.cas.Boolean", featOkTst);
+    casFeatCode_isMinor  = (null == casFeat_isMinor) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_isMinor).getCode();
 
-		casFeat_id = jcas.getRequiredFeatureDE(casType, "id", "uima.cas.Integer", featOkTst);
-		casFeatCode_id = null == casFeat_id ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl) casFeat_id).getCode();
+ 
+    casFeat_id = jcas.getRequiredFeatureDE(casType, "id", "uima.cas.Integer", featOkTst);
+    casFeatCode_id  = (null == casFeat_id) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_id).getCode();
 
-	}
+  }
 }

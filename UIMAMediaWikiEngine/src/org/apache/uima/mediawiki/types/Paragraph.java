@@ -26,47 +26,41 @@ public class Paragraph extends Annotation {
 
 	/** @generated */
 	@Override
-	public int getTypeIndexID() {
-		return typeIndexID;
-	}
-
+	public int getTypeIndexID() {return typeIndexID;}
+ 
 	/**
 	 * Never called. Disable default constructor
 	 * 
 	 * @generated
 	 */
-	protected Paragraph() {
-	}
-
+	protected Paragraph() {}
+    
 	/**
 	 * Internal - constructor used by generator
 	 * 
 	 * @generated
 	 */
 	public Paragraph(int addr, TOP_Type type) {
-		super(addr, type);
-		readObject();
-	}
-
+    super(addr, type);
+    readObject();
+  }
+  
 	/** @generated */
 	public Paragraph(JCas jcas) {
-		super(jcas);
-		readObject();
-	}
+    super(jcas);
+    readObject();   
+  } 
 
 	/** @generated */
 	public Paragraph(JCas jcas, int begin, int end) {
-		super(jcas);
-		setBegin(begin);
-		setEnd(end);
-		readObject();
-	}
+    super(jcas);
+    setBegin(begin);
+    setEnd(end);
+    readObject();
+  }   
 
-	/**
-	 * <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
-	 * 
-	 * @generated modifiable
-	 */
+  /** <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
+  @generated modifiable */
 	private void readObject() {
 	}
 

@@ -108,6 +108,10 @@ public class MWRevisionBuilder extends DocumentBuilder {
 		MWAnnotator.newSection(level, content.length());
 	}
 
+	public void beginToC() {
+		MWAnnotator.newToC(content.length());
+	}
+
 	/**
 	 * Handles the beginning of various types of blocks (lists, tables, ...) and process accordingly.
 	 */
@@ -141,6 +145,9 @@ public class MWRevisionBuilder extends DocumentBuilder {
 				}
 				break;
 			case TABLE:
+				MWAnnotator.newBlock(type, content.length());
+				content.append('\n');
+				break;
 			case TABLE_ROW:
 				content.append('\n');
 				break;
@@ -172,6 +179,18 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	}
 
 	/**
+	 * Indicate the end of a title to the annotator.
+	 */
+	@Override
+	public void endHeading() {
+		MWAnnotator.end("header", content.length());
+	}
+
+	public void endToC() {
+		MWAnnotator.end("tableofcontent", content.length());
+	}
+
+	/**
 	 * Handles the end of various types of blocks, especially table cells and lists.
 	 */
 	@Override
@@ -190,14 +209,6 @@ public class MWRevisionBuilder extends DocumentBuilder {
 				itemCount.pop();
 				break;
 		}
-	}
-
-	/**
-	 * Indicate the end of a title to the annotator.
-	 */
-	@Override
-	public void endHeading() {
-		MWAnnotator.end("header", content.length());
 	}
 
 	/**
