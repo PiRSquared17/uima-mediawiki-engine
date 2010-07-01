@@ -29,6 +29,7 @@ package org.apache.uima.mediawiki.ae.parser.block;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.uima.mediawiki.ae.factory.MWRevisionBuilder;
 import org.eclipse.mylyn.internal.wikitext.mediawiki.core.block.AbstractTableOfContentsBlock;
 import org.eclipse.mylyn.wikitext.core.parser.outline.OutlineItem;
 import org.eclipse.mylyn.wikitext.core.parser.outline.OutlineParser;
@@ -50,14 +51,13 @@ public class MWToCBlock extends AbstractTableOfContentsBlock {
 			final OutlineParser outlineParser = new OutlineParser(new MediaWikiLanguage());
 			final OutlineItem rootItem = outlineParser.parse(state.getMarkupContent());
 
-			// ((MWRevisionBuilder) builder).beginToC();
+			((MWRevisionBuilder) builder).beginToC();
 			emitToc(rootItem);
-			// ((MWRevisionBuilder) builder).endToC();
+			((MWRevisionBuilder) builder).endToC();
 		}
 		final int start = matcher.start(1);
-		if (start > 0) {
+		if (start > 0)
 			setClosed(true);
-		}
 		return start;
 	}
 

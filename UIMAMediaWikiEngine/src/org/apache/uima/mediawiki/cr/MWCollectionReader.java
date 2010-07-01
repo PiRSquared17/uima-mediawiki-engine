@@ -2,6 +2,7 @@ package org.apache.uima.mediawiki.cr;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 
 import javax.xml.stream.FactoryConfigurationError;
@@ -93,9 +94,9 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 				factory = new MWDumpReaderFactory(theXMLDump);
 				// Get a first parser to compute the website info, in particular the namespaces.
 				parser = factory.getParser();
-				if (parser.hasSiteInfo()) {
+				if (parser.hasSiteInfo())
 					theSiteInfo = parser.getSiteInfo();
-				} else {
+				else {
 					// Default empty website info.
 					theSiteInfo = new MWSiteinfo("", "", "", "", new HashMap<Integer, String>());
 					theLogger.log(Level.INFO, "The website info is unavailable, we know nothing about the namespaces.");
@@ -260,7 +261,13 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 	private void addSourceDocumentAnnotation(JCas newJCas, MWArticle page, int start, int end) {
 		final SourceDocumentInformation info = new SourceDocumentInformation(newJCas);
 		info.setBegin(start);
-		info.setUri(page.namespace + "_-_" + page.title);
+		File temp = new File(theXMLDump, "NS_" + page.namespace + "_" + page.title.replace('/', '.'));
+		try {
+			String uri = temp.toURI().toURL().toString().replaceAll("%20", "_");
+			info.setUri(uri);
+		} catch (MalformedURLException e) {
+			info.setUri(temp.getAbsolutePath());
+		}
 		info.setEnd(end);
 		info.addToIndexes();
 	}

@@ -55,9 +55,8 @@ public class MWTableBlock extends Block {
 
 	@Override
 	public void setClosed(boolean closed) {
-		if (closed) {
+		if (closed)
 			builder.endBlock();
-		}
 		super.setClosed(closed);
 	}
 
@@ -69,20 +68,20 @@ public class MWTableBlock extends Block {
 			builder.beginBlock(BlockType.TABLE, null);
 			builder.beginBlock(BlockType.TABLE_ROW, null);
 			blockLineCount++;
-		} else if (line.startsWith(T_CAPTION) && blockLineCount == 1) {
+		} else if (line.startsWith(T_CAPTION) && blockLineCount == 1)
 			// Table caption can only occur right after the table opening.
 			markupLanguage.emitMarkupLine(getParser(), state, 0, line, T_CAPTION.length());
-		} else if (line.startsWith(T_ROW)) {
+		else if (line.startsWith(T_ROW)) {
 			// First row is automatically created at the start of the table.
 			builder.endBlock();
 			builder.beginBlock(BlockType.TABLE_ROW, null);
-		} else if (containsCells(line)) {
+		} else if (containsCells(line))
 			// We have one or several cells on this line
 			processCells(line);
-		} else if (line.startsWith(T_END)) {
+		else if (line.startsWith(T_END)) {
 			// End of the table reached. Close the last row
-			builder.endBlock();
 			setClosed(true);
+			builder.endBlock();
 		} else {
 			// Probably some list or embedded table
 			// TODO : handle it smoothly
@@ -104,11 +103,10 @@ public class MWTableBlock extends Block {
 			match.reset(line);
 			while (match.find()) {
 				builder.beginBlock(BlockType.TABLE_CELL_NORMAL, null);
-				if (match.group(3) == null) {
+				if (match.group(3) == null)
 					markupLanguage.emitMarkupLine(getParser(), state, match.group(2).trim(), 0);
-				} else {
+				else
 					markupLanguage.emitMarkupLine(getParser(), state, match.group(5).trim(), 0);
-				}
 				builder.endBlock();
 			}
 		}

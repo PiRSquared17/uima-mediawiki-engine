@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
+import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.mediawiki.ae.parser.MWLanguage;
@@ -66,9 +67,8 @@ public class MWCasBuilder {
 		// Initialize the parser
 		language = new MWLanguage();
 		language.setEnableMacros(enableMacros);
-		if (enableMacros) {
+		if (enableMacros)
 			configureMacros(def);
-		}
 		parser = new MarkupParser(language);
 		revision = new MWRevisionBuilder();
 	}
@@ -108,9 +108,8 @@ public class MWCasBuilder {
 			// Add a new revision annotation
 			addRevisionAnnotation(rawRevision, start, end);
 			// Add the content relative annotations
-			for (final Annotation a : revision.getAnnotations()) {
+			for (final Annotation a : revision.getAnnotations())
 				a.addToIndexes();
-			}
 		}
 		// Finalize the CAS processing.
 		finalizeCAS();
@@ -140,6 +139,16 @@ public class MWCasBuilder {
 			// Add it to the index
 			parsedArticle.addToIndexes();
 		}
+
+		final FSIterator<Annotation> infoIt = rawView.getAnnotationIndex(SourceDocumentInformation.type).iterator();
+		while (infoIt.hasNext()) {
+			final SourceDocumentInformation oldInfo = (SourceDocumentInformation) infoIt.next();
+			final SourceDocumentInformation newInfo = new SourceDocumentInformation(main);
+			newInfo.setBegin(0);
+			newInfo.setEnd(content.length());
+			newInfo.setUri(oldInfo.getUri());
+			newInfo.addToIndexes();
+		}
 	}
 
 	private static void configureMacros(File def) {
@@ -152,11 +161,10 @@ public class MWCasBuilder {
 				while (line != null) {
 					if (line.contains("->")) {
 						final String[] macro = line.split("->");
-						if (macro.length >= 2) {
+						if (macro.length >= 2)
 							language.addMacro(macro[0].trim(), macro[1].trim());
-						} else {
+						else
 							language.addMacro(macro[0].trim(), "");
-						}
 					}
 					line = input.readLine();
 				}

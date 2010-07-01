@@ -24,6 +24,8 @@ import org.apache.uima.mediawiki.types.Header;
 import org.apache.uima.mediawiki.types.Link;
 import org.apache.uima.mediawiki.types.Paragraph;
 import org.apache.uima.mediawiki.types.Section;
+import org.apache.uima.mediawiki.types.Table;
+import org.apache.uima.mediawiki.types.TableOfContent;
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType;
 
 /**
@@ -45,8 +47,8 @@ public class MWAnnotator {
 	private final List<Link>		links;
 	private final List<Paragraph>	paragraphs;
 	private final List<Section>		sections;
-	// private List<Table> tables;
-	// private TableOfContent toc;
+	private final List<Table>		tables;
+	private TableOfContent			toc;
 	private final Stack<Section>	currentSections;
 
 	/**
@@ -58,8 +60,8 @@ public class MWAnnotator {
 		paragraphs = new ArrayList<Paragraph>();
 		sections = new ArrayList<Section>();
 		currentSections = new Stack<Section>();
-		// tables = new ArrayList<Table>();
-		// toc = null;
+		tables = new ArrayList<Table>();
+		toc = null;
 	}
 
 	/**
@@ -75,6 +77,8 @@ public class MWAnnotator {
 		paragraphs.clear();
 		sections.clear();
 		currentSections.clear();
+		tables.clear();
+		toc = null;
 	}
 
 	/**
@@ -100,10 +104,10 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the starting offset.
 	 */
-	// public void newToC(int offset) {
-	// toc = new TableOfContent(cas);
-	// toc.setBegin(offset);
-	// }
+	public void newToC(int offset) {
+		toc = new TableOfContent(cas);
+		toc.setBegin(offset);
+	}
 
 	/**
 	 * Creates a new {@link org.apache.uima.mediawiki.types.Section} annotation. The section's level is the
@@ -138,11 +142,11 @@ public class MWAnnotator {
 				p.setBegin(offset);
 				paragraphs.add(p);
 				break;
-			// case TABLE:
-			// Table t = new Table(cas);
-			// t.setBegin(offset);
-			// tables.add(t);
-			// break;
+			case TABLE:
+				Table t = new Table(cas);
+				t.setBegin(offset);
+				tables.add(t);
+				break;
 		}
 	}
 
@@ -194,8 +198,8 @@ public class MWAnnotator {
 			}
 			root.setEnd(offset);
 			sections.add(root);
-		}// else if (type.equals("tableofcontent"))
-		// toc.setEnd(offset);
+		} else if (type.equals("tableofcontent"))
+			toc.setEnd(offset);
 	}
 
 	/**
@@ -212,9 +216,9 @@ public class MWAnnotator {
 			case PARAGRAPH:
 				paragraphs.get(paragraphs.size() - 1).setEnd(offset);
 				break;
-			// case TABLE:
-			// tables.get(tables.size() - 1).setEnd(offset);
-			// break;
+			case TABLE:
+				tables.get(tables.size() - 1).setEnd(offset);
+				break;
 		}
 	}
 
@@ -229,11 +233,9 @@ public class MWAnnotator {
 		annotations.addAll(links);
 		annotations.addAll(paragraphs);
 		annotations.addAll(sections);
-		// annotations.addAll(tables);
-		// if (toc != null) {
-		// System.out.println("not toc");
-		// annotations.add(toc);
-		// }
+		annotations.addAll(tables);
+		if (toc != null)
+			annotations.add(toc);
 		return annotations;
 	}
 }
