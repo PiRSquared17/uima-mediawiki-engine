@@ -24,14 +24,12 @@ import org.apache.uima.mediawiki.types.Header;
 import org.apache.uima.mediawiki.types.Link;
 import org.apache.uima.mediawiki.types.Paragraph;
 import org.apache.uima.mediawiki.types.Section;
-import org.apache.uima.mediawiki.types.Table;
-import org.apache.uima.mediawiki.types.TableOfContent;
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType;
 
 /**
  * This class handles the creation of all the annotations for the CAS. The
- * {@link org.apache.uima.mediawiki.ae.parser.MWRevisionBuilder document builder} calls the method provided by
- * this factory to populate the CAS with annotations while processing the content.
+ * {@link org.apache.uima.mediawiki.ae.factory.MWRevisionBuilder document builder} calls the method provided
+ * by this factory to populate the CAS with annotations while processing the content.
  * <p>
  * For now, we handle {@link org.apache.uima.mediawiki.types.Header Header},
  * {@link org.apache.uima.mediawiki.types.Section Section}, {@link org.apache.uima.mediawiki.types.Paragraph
@@ -41,27 +39,27 @@ import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType;
  */
 public class MWAnnotator {
 	/** The CAS we are working on */
-	private static JCas				cas;
+	private JCas			cas;
 	/** Lists of annotations relative to this CAS */
-	private static List<Header>		headers;
-	private static List<Link>		links;
-	private static List<Paragraph>	paragraphs;
-	private static List<Section>	sections;
-	private static List<Table>		tables;
-	private static TableOfContent	toc;
-	private static Stack<Section>	currentSections;
+	private List<Header>	headers;
+	private List<Link>		links;
+	private List<Paragraph>	paragraphs;
+	private List<Section>	sections;
+	// private List<Table> tables;
+	// private TableOfContent toc;
+	private Stack<Section>	currentSections;
 
 	/**
 	 * Initialize the factory with a new CAS to process.
 	 */
-	public static void init() {
+	public MWAnnotator() {
 		headers = new ArrayList<Header>();
 		links = new ArrayList<Link>();
 		paragraphs = new ArrayList<Paragraph>();
 		sections = new ArrayList<Section>();
 		currentSections = new Stack<Section>();
-		tables = new ArrayList<Table>();
-		toc = null;
+		// tables = new ArrayList<Table>();
+		// toc = null;
 	}
 
 	/**
@@ -70,8 +68,8 @@ public class MWAnnotator {
 	 * 
 	 * @param cas
 	 */
-	public static void reset(JCas cas) {
-		MWAnnotator.cas = cas;
+	public void reset(JCas cas) {
+		this.cas = cas;
 		headers.clear();
 		links.clear();
 		paragraphs.clear();
@@ -88,7 +86,7 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the starting offset
 	 */
-	public static void newHeader(int level, int offset) {
+	public void newHeader(int level, int offset) {
 		final Header h = new Header(cas);
 		h.setBegin(offset);
 		h.setLevel(level);
@@ -102,10 +100,10 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the starting offset.
 	 */
-	public static void newToC(int offset) {
-		toc = new TableOfContent(cas);
-		toc.setBegin(offset);
-	}
+	// public void newToC(int offset) {
+	// toc = new TableOfContent(cas);
+	// toc.setBegin(offset);
+	// }
 
 	/**
 	 * Creates a new {@link org.apache.uima.mediawiki.types.Section} annotation. The section's level is the
@@ -116,7 +114,7 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the starting offset.
 	 */
-	public static void newSection(int level, int offset) {
+	public void newSection(int level, int offset) {
 		final Section s = new Section(cas);
 		s.setBegin(offset);
 		s.setLevel(level);
@@ -133,18 +131,18 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the starting offset.
 	 */
-	public static void newBlock(BlockType type, int offset) {
+	public void newBlock(BlockType type, int offset) {
 		switch (type) {
 			case PARAGRAPH:
 				final Paragraph p = new Paragraph(cas);
 				p.setBegin(offset);
 				paragraphs.add(p);
 				break;
-			case TABLE:
-				Table t = new Table(cas);
-				t.setBegin(offset);
-				tables.add(t);
-				break;
+			// case TABLE:
+			// Table t = new Table(cas);
+			// t.setBegin(offset);
+			// tables.add(t);
+			// break;
 		}
 	}
 
@@ -158,7 +156,7 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the starting offset
 	 */
-	public static void newLink(String label, String href, int offset) {
+	public void newLink(String label, String href, int offset) {
 		final Link l = new Link(cas);
 		l.setBegin(offset);
 		l.setLabel(label);
@@ -176,7 +174,7 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the ending offset.
 	 */
-	public static void end(String type, int offset) {
+	public void end(String type, int offset) {
 
 		if (type.equals("header")) {
 			headers.get(headers.size() - 1).setEnd(offset);
@@ -196,8 +194,8 @@ public class MWAnnotator {
 			}
 			root.setEnd(offset);
 			sections.add(root);
-		} else if (type.equals("tableofcontent"))
-			toc.setEnd(offset);
+		}// else if (type.equals("tableofcontent"))
+		// toc.setEnd(offset);
 	}
 
 	/**
@@ -209,14 +207,14 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the ending offset.
 	 */
-	public static void end(BlockType type, int offset) {
+	public void end(BlockType type, int offset) {
 		switch (type) {
 			case PARAGRAPH:
 				paragraphs.get(paragraphs.size() - 1).setEnd(offset);
 				break;
-			case TABLE:
-				tables.get(tables.size() - 1).setEnd(offset);
-				break;
+			// case TABLE:
+			// tables.get(tables.size() - 1).setEnd(offset);
+			// break;
 		}
 	}
 
@@ -225,15 +223,17 @@ public class MWAnnotator {
 	 * 
 	 * @return all the annotations gathered by this factory.
 	 */
-	public static List<Annotation> getAnnotations() {
+	public List<Annotation> getAnnotations() {
 		final List<Annotation> annotations = new ArrayList<Annotation>();
 		annotations.addAll(headers);
 		annotations.addAll(links);
 		annotations.addAll(paragraphs);
 		annotations.addAll(sections);
-		annotations.addAll(tables);
-		if (toc != null)
-			annotations.add(toc);
+		// annotations.addAll(tables);
+		// if (toc != null) {
+		// System.out.println("not toc");
+		// annotations.add(toc);
+		// }
 		return annotations;
 	}
 }

@@ -131,4 +131,7 @@
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
   </types>
+  <imports>
+        <import name="org.apache.uima.examples.SourceDocumentInformation"/>
+  </imports>
 </typeSystemDescription>
