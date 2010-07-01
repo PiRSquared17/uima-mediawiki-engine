@@ -31,6 +31,12 @@ import java.util.regex.Pattern;
 
 import org.eclipse.mylyn.wikitext.core.parser.markup.Block;
 
+/**
+ * Very much alike the default MyLyn MediaWiki implementation. Slightly modified RegEx, and implemented
+ * reusing the matcher instead of instanciating a new one.
+ * 
+ * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
+ */
 public class MWHeaderBlock extends Block {
 
 	private static final Pattern	pattern	= Pattern.compile("[ \\t]*+(\\={2,6})([^\\=]++)(?>\\={2,6})?\\s*");
