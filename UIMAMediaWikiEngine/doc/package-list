@@ -2,10 +2,8 @@ org.apache.uima.mediawiki.ae
 org.apache.uima.mediawiki.ae.factory
 org.apache.uima.mediawiki.ae.parser
 org.apache.uima.mediawiki.ae.parser.block
-org.apache.uima.mediawiki.ae.parser.token
 org.apache.uima.mediawiki.cr
 org.apache.uima.mediawiki.cr.factory
 org.apache.uima.mediawiki.cr.parser
-org.apache.uima.mediawiki.cr.types
 org.apache.uima.mediawiki.cr.util
 org.apache.uima.mediawiki.types

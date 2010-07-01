@@ -125,7 +125,8 @@ public class MWAnnotator {
 
 	/**
 	 * Creates a new block annotation of the provided type. Currently, only
-	 * {@link org.apache.uima.mediawiki.types.Paragraph} are supported.
+	 * {@link org.apache.uima.mediawiki.types.Paragraph} and {@link org.apache.uima.mediawiki.types.Table} are
+	 * supported.
 	 * 
 	 * @param type
 	 *            the block's type.
@@ -167,8 +168,8 @@ public class MWAnnotator {
 	}
 
 	/**
-	 * This method handles the closing of various annotations. For now, it handles closing headers, sections
-	 * and it also closes the unclosed section when we reach the end of the document.
+	 * This method handles the closing of various annotations. For now, it handles closing headers, sections,
+	 * tables and it also closes the unclosed section when we reach the end of the document.
 	 * 
 	 * @param type
 	 *            the type of the annotation we are closing.
@@ -200,7 +201,8 @@ public class MWAnnotator {
 	}
 
 	/**
-	 * This method handles the closing of block annotations. For the moment, only paragraphs are considered.
+	 * This method handles the closing of block annotations. For the moment, only paragraphs and tables are
+	 * considered.
 	 * 
 	 * @param type
 	 *            the block annotation type.

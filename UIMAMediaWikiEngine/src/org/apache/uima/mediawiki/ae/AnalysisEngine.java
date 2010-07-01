@@ -39,6 +39,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 /**
  * This class aims to recover a raw view of the CAS (RawWikiText) sent by the Collection Reader, analyze it
  * and add the expected annotations to the default view.
+ * <p>
+ * It's also the UIMA frontend for this part of the component.
  * 
  * @author Fabien Poulard <fabien.poulard@univ-nantes.fr>
  * @author Maxime Bury &lt;maxime.bury@gmail.com&gt;
@@ -48,6 +50,11 @@ public class AnalysisEngine extends JCasAnnotator_ImplBase {
 	private final static String	PARAM_FLG_ENABLEMACROS		= "EnableMacros";
 	private final static String	PARAM_INP_DEFINITIONPATH	= "DefinitionFilePath";
 
+	/**
+	 * Takes care of the parameters, and configures the CAS factory.
+	 * 
+	 * @see MWCasBuilder
+	 */
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		// Get the flag value for macro processing
@@ -55,9 +62,8 @@ public class AnalysisEngine extends JCasAnnotator_ImplBase {
 		// Get the path of the definition file for the macros
 		File definition = null;
 		final String path = (String) context.getConfigParameterValue(PARAM_INP_DEFINITIONPATH);
-		if (path != null && !path.isEmpty()) {
+		if (path != null && !path.isEmpty())
 			definition = new File(path);
-		}
 		// Initialize the factory
 		try {
 			MWCasBuilder.initialize("RawWikiText", enableMacros, definition);
@@ -66,6 +72,11 @@ public class AnalysisEngine extends JCasAnnotator_ImplBase {
 		}
 	}
 
+	/**
+	 * Tells the factory to process the CAS.
+	 * 
+	 * @see MWCasBuilder
+	 */
 	@Override
 	public void process(JCas cas) throws AnalysisEngineProcessException {
 		try {
