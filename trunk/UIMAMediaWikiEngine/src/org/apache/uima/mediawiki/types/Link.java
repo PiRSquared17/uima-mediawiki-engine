@@ -26,47 +26,41 @@ public class Link extends Annotation {
 
 	/** @generated */
 	@Override
-	public int getTypeIndexID() {
-		return typeIndexID;
-	}
-
+	public int getTypeIndexID() {return typeIndexID;}
+ 
 	/**
 	 * Never called. Disable default constructor
 	 * 
 	 * @generated
 	 */
-	protected Link() {
-	}
-
+	protected Link() {}
+    
 	/**
 	 * Internal - constructor used by generator
 	 * 
 	 * @generated
 	 */
 	public Link(int addr, TOP_Type type) {
-		super(addr, type);
-		readObject();
-	}
-
+    super(addr, type);
+    readObject();
+  }
+  
 	/** @generated */
 	public Link(JCas jcas) {
-		super(jcas);
-		readObject();
-	}
+    super(jcas);
+    readObject();   
+  } 
 
 	/** @generated */
 	public Link(JCas jcas, int begin, int end) {
-		super(jcas);
-		setBegin(begin);
-		setEnd(end);
-		readObject();
-	}
+    super(jcas);
+    setBegin(begin);
+    setEnd(end);
+    readObject();
+  }   
 
-	/**
-	 * <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
-	 * 
-	 * @generated modifiable
-	 */
+  /** <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
+  @generated modifiable */
 	private void readObject() {
 	}
 
@@ -79,24 +73,21 @@ public class Link extends Annotation {
 	 * @generated
 	 */
 	public String getLabel() {
-		if (Link_Type.featOkTst && ((Link_Type) jcasType).casFeat_label == null) {
-			jcasType.jcas.throwFeatMissing("label", "uima.wikipedia.types.Link");
-		}
-		return jcasType.ll_cas.ll_getStringValue(addr, ((Link_Type) jcasType).casFeatCode_label);
-	}
-
+    if (Link_Type.featOkTst && ((Link_Type)jcasType).casFeat_label == null)
+      jcasType.jcas.throwFeatMissing("label", "org.apache.uima.mediawiki.types.Link");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((Link_Type)jcasType).casFeatCode_label);}
+    
 	/**
 	 * setter for label - sets The link label.
 	 * 
 	 * @generated
 	 */
 	public void setLabel(String v) {
-		if (Link_Type.featOkTst && ((Link_Type) jcasType).casFeat_label == null) {
-			jcasType.jcas.throwFeatMissing("label", "uima.wikipedia.types.Link");
-		}
-		jcasType.ll_cas.ll_setStringValue(addr, ((Link_Type) jcasType).casFeatCode_label, v);
-	}
-
+    if (Link_Type.featOkTst && ((Link_Type)jcasType).casFeat_label == null)
+      jcasType.jcas.throwFeatMissing("label", "org.apache.uima.mediawiki.types.Link");
+    jcasType.ll_cas.ll_setStringValue(addr, ((Link_Type)jcasType).casFeatCode_label, v);}    
+   
+    
 	// *--------------*
 	// * Feature: link
 
@@ -106,21 +97,17 @@ public class Link extends Annotation {
 	 * @generated
 	 */
 	public String getLink() {
-		if (Link_Type.featOkTst && ((Link_Type) jcasType).casFeat_link == null) {
-			jcasType.jcas.throwFeatMissing("link", "uima.wikipedia.types.Link");
-		}
-		return jcasType.ll_cas.ll_getStringValue(addr, ((Link_Type) jcasType).casFeatCode_link);
-	}
-
+    if (Link_Type.featOkTst && ((Link_Type)jcasType).casFeat_link == null)
+      jcasType.jcas.throwFeatMissing("link", "org.apache.uima.mediawiki.types.Link");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((Link_Type)jcasType).casFeatCode_link);}
+    
 	/**
 	 * setter for link - sets The address the link is pointing to.
 	 * 
 	 * @generated
 	 */
 	public void setLink(String v) {
-		if (Link_Type.featOkTst && ((Link_Type) jcasType).casFeat_link == null) {
-			jcasType.jcas.throwFeatMissing("link", "uima.wikipedia.types.Link");
-		}
-		jcasType.ll_cas.ll_setStringValue(addr, ((Link_Type) jcasType).casFeatCode_link, v);
-	}
-}
+    if (Link_Type.featOkTst && ((Link_Type)jcasType).casFeat_link == null)
+      jcasType.jcas.throwFeatMissing("link", "org.apache.uima.mediawiki.types.Link");
+    jcasType.ll_cas.ll_setStringValue(addr, ((Link_Type)jcasType).casFeatCode_link, v);}    
+  }

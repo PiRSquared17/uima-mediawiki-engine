@@ -19,26 +19,23 @@ import org.apache.uima.jcas.tcas.Annotation_Type;
 public class Paragraph_Type extends Annotation_Type {
 	/** @generated */
 	@Override
-	protected FSGenerator getFSGenerator() {
-		return fsGenerator;
-	}
-
+	protected FSGenerator getFSGenerator() {return fsGenerator;}
 	/** @generated */
-	private final FSGenerator	fsGenerator	= new FSGenerator() {
-												public FeatureStructure createFS(int addr, CASImpl cas) {
-													if (Paragraph_Type.this.useExistingInstance) {
-														// Return eq fs instance if already created
-														FeatureStructure fs = Paragraph_Type.this.jcas.getJfsFromCaddr(addr);
-														if (null == fs) {
-															fs = new Paragraph(addr, Paragraph_Type.this);
-															Paragraph_Type.this.jcas.putJfsFromCaddr(addr, fs);
-															return fs;
-														}
-														return fs;
-													} else
-														return new Paragraph(addr, Paragraph_Type.this);
-												}
-											};
+	private final FSGenerator	fsGenerator	= 
+    new FSGenerator() {
+      public FeatureStructure createFS(int addr, CASImpl cas) {
+  			 if (Paragraph_Type.this.useExistingInstance) {
+  			   // Return eq fs instance if already created
+  		     FeatureStructure fs = Paragraph_Type.this.jcas.getJfsFromCaddr(addr);
+  		     if (null == fs) {
+  		       fs = new Paragraph(addr, Paragraph_Type.this);
+  			   Paragraph_Type.this.jcas.putJfsFromCaddr(addr, fs);
+  			   return fs;
+  		     }
+  		     return fs;
+        } else return new Paragraph(addr, Paragraph_Type.this);
+  	  }
+    };
 	/** @generated */
 	public final static int		typeIndexID	= Paragraph.typeIndexID;
 	/**
@@ -53,8 +50,8 @@ public class Paragraph_Type extends Annotation_Type {
 	 * @generated
 	 */
 	public Paragraph_Type(JCas jcas, Type casType) {
-		super(jcas, casType);
-		casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl) this.casType, getFSGenerator());
+    super(jcas, casType);
+    casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
-	}
+  }
 }

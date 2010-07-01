@@ -24,6 +24,8 @@ import org.apache.uima.mediawiki.types.Header;
 import org.apache.uima.mediawiki.types.Link;
 import org.apache.uima.mediawiki.types.Paragraph;
 import org.apache.uima.mediawiki.types.Section;
+import org.apache.uima.mediawiki.types.Table;
+import org.apache.uima.mediawiki.types.TableOfContent;
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType;
 
 /**
@@ -45,6 +47,8 @@ public class MWAnnotator {
 	private static List<Link>		links;
 	private static List<Paragraph>	paragraphs;
 	private static List<Section>	sections;
+	private static List<Table>		tables;
+	private static TableOfContent	toc;
 	private static Stack<Section>	currentSections;
 
 	/**
@@ -56,6 +60,8 @@ public class MWAnnotator {
 		paragraphs = new ArrayList<Paragraph>();
 		sections = new ArrayList<Section>();
 		currentSections = new Stack<Section>();
+		tables = new ArrayList<Table>();
+		toc = null;
 	}
 
 	/**
@@ -90,22 +96,31 @@ public class MWAnnotator {
 	}
 
 	/**
-	 * Creates a new {@link org.apache.uima.mediawiki.types.Link} annotation.
+	 * Creates a new {@link org.apache.uima.mediawiki.types.TableOfContent} annotation. There should be only
+	 * one per revision.
 	 * 
-	 * @param label
-	 *            the link's label (name)
-	 * @param href
-	 *            the link's adress
 	 * @param offset
-	 *            the starting offset
+	 *            the starting offset.
 	 */
-	public static void newLink(String label, String href, int offset) {
-		final Link l = new Link(cas);
-		l.setBegin(offset);
-		l.setLabel(label);
-		l.setLink(href);
-		l.setEnd(offset + label.length());
-		links.add(l);
+	public static void newToC(int offset) {
+		toc = new TableOfContent(cas);
+		toc.setBegin(offset);
+	}
+
+	/**
+	 * Creates a new {@link org.apache.uima.mediawiki.types.Section} annotation. The section's level is the
+	 * same as the corresponding header's.
+	 * 
+	 * @param level
+	 *            the section's level.
+	 * @param offset
+	 *            the starting offset.
+	 */
+	public static void newSection(int level, int offset) {
+		final Section s = new Section(cas);
+		s.setBegin(offset);
+		s.setLevel(level);
+		currentSections.push(s);
 	}
 
 	/**
@@ -124,23 +139,31 @@ public class MWAnnotator {
 				p.setBegin(offset);
 				paragraphs.add(p);
 				break;
+			case TABLE:
+				Table t = new Table(cas);
+				t.setBegin(offset);
+				tables.add(t);
+				break;
 		}
 	}
 
 	/**
-	 * Creates a new {@link org.apache.uima.mediawiki.types.Section} annotation. The section's level is the
-	 * same as the corresponding header's.
+	 * Creates a new {@link org.apache.uima.mediawiki.types.Link} annotation.
 	 * 
-	 * @param level
-	 *            the section's level.
+	 * @param label
+	 *            the link's label (name)
+	 * @param href
+	 *            the link's adress
 	 * @param offset
-	 *            the starting offset.
+	 *            the starting offset
 	 */
-	public static void newSection(int level, int offset) {
-		final Section s = new Section(cas);
-		s.setBegin(offset);
-		s.setLevel(level);
-		currentSections.push(s);
+	public static void newLink(String label, String href, int offset) {
+		final Link l = new Link(cas);
+		l.setBegin(offset);
+		l.setLabel(label);
+		l.setLink(href);
+		l.setEnd(offset + label.length());
+		links.add(l);
 	}
 
 	/**
@@ -172,7 +195,8 @@ public class MWAnnotator {
 			}
 			root.setEnd(offset);
 			sections.add(root);
-		}
+		} else if (type.equals("tableofcontent"))
+			toc.setEnd(offset);
 	}
 
 	/**
@@ -188,6 +212,9 @@ public class MWAnnotator {
 			case PARAGRAPH:
 				paragraphs.get(paragraphs.size() - 1).setEnd(offset);
 				break;
+			case TABLE:
+				tables.get(tables.size() - 1).setEnd(offset);
+				break;
 		}
 	}
 
@@ -202,6 +229,9 @@ public class MWAnnotator {
 		annotations.addAll(links);
 		annotations.addAll(paragraphs);
 		annotations.addAll(sections);
+		annotations.addAll(tables);
+		if (toc != null)
+			annotations.add(toc);
 		return annotations;
 	}
 }

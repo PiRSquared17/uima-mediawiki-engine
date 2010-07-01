@@ -26,47 +26,41 @@ public class Header extends Annotation {
 
 	/** @generated */
 	@Override
-	public int getTypeIndexID() {
-		return typeIndexID;
-	}
-
+	public int getTypeIndexID() {return typeIndexID;}
+ 
 	/**
 	 * Never called. Disable default constructor
 	 * 
 	 * @generated
 	 */
-	protected Header() {
-	}
-
+	protected Header() {}
+    
 	/**
 	 * Internal - constructor used by generator
 	 * 
 	 * @generated
 	 */
 	public Header(int addr, TOP_Type type) {
-		super(addr, type);
-		readObject();
-	}
-
+    super(addr, type);
+    readObject();
+  }
+  
 	/** @generated */
 	public Header(JCas jcas) {
-		super(jcas);
-		readObject();
-	}
+    super(jcas);
+    readObject();   
+  } 
 
 	/** @generated */
 	public Header(JCas jcas, int begin, int end) {
-		super(jcas);
-		setBegin(begin);
-		setEnd(end);
-		readObject();
-	}
+    super(jcas);
+    setBegin(begin);
+    setEnd(end);
+    readObject();
+  }   
 
-	/**
-	 * <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
-	 * 
-	 * @generated modifiable
-	 */
+  /** <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
+  @generated modifiable */
 	private void readObject() {
 	}
 
@@ -79,21 +73,17 @@ public class Header extends Annotation {
 	 * @generated
 	 */
 	public int getLevel() {
-		if (Header_Type.featOkTst && ((Header_Type) jcasType).casFeat_Level == null) {
-			jcasType.jcas.throwFeatMissing("Level", "uima.wikipedia.types.Header");
-		}
-		return jcasType.ll_cas.ll_getIntValue(addr, ((Header_Type) jcasType).casFeatCode_Level);
-	}
-
+    if (Header_Type.featOkTst && ((Header_Type)jcasType).casFeat_Level == null)
+      jcasType.jcas.throwFeatMissing("Level", "org.apache.uima.mediawiki.types.Header");
+    return jcasType.ll_cas.ll_getIntValue(addr, ((Header_Type)jcasType).casFeatCode_Level);}
+    
 	/**
 	 * setter for Level - sets The header level : 1 is the highest (main title)
 	 * 
 	 * @generated
 	 */
 	public void setLevel(int v) {
-		if (Header_Type.featOkTst && ((Header_Type) jcasType).casFeat_Level == null) {
-			jcasType.jcas.throwFeatMissing("Level", "uima.wikipedia.types.Header");
-		}
-		jcasType.ll_cas.ll_setIntValue(addr, ((Header_Type) jcasType).casFeatCode_Level, v);
-	}
-}
+    if (Header_Type.featOkTst && ((Header_Type)jcasType).casFeat_Level == null)
+      jcasType.jcas.throwFeatMissing("Level", "org.apache.uima.mediawiki.types.Header");
+    jcasType.ll_cas.ll_setIntValue(addr, ((Header_Type)jcasType).casFeatCode_Level, v);}    
+  }

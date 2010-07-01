@@ -120,5 +120,15 @@
         </featureDescription>
       </features>
     </typeDescription>
+    <typeDescription>
+      <name>org.apache.uima.mediawiki.types.Table</name>
+      <description>Indicate the presence of a table.</description>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>org.apache.uima.mediawiki.types.TableOfContent</name>
+      <description>Indicate a Table of Content block.</description>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+    </typeDescription>
   </types>
 </typeSystemDescription>
