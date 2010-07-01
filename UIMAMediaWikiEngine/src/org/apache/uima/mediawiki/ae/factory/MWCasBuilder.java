@@ -24,7 +24,6 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.mediawiki.ae.parser.MWLanguage;
-import org.apache.uima.mediawiki.ae.parser.MWRevisionBuilder;
 import org.apache.uima.mediawiki.types.Article;
 import org.apache.uima.mediawiki.types.Revision;
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;

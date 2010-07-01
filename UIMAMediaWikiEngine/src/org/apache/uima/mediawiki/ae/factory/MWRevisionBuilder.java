@@ -24,14 +24,13 @@
  *  Contributors:
  *      David Green - initial API and implementation
  */
-package org.apache.uima.mediawiki.ae.parser;
+package org.apache.uima.mediawiki.ae.factory;
 
 import java.util.List;
 import java.util.Stack;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.mediawiki.ae.factory.MWAnnotator;
 import org.eclipse.mylyn.wikitext.core.parser.Attributes;
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder;
 
@@ -52,6 +51,8 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	private final Stack<Integer>	itemCount;
 	/** A stack to keep stack of the different sections */
 	private final Stack<Integer>	sectionsLevel;
+	/** An annotator to build the annotations */
+	private MWAnnotator				annotator;
 	/** Some flag */
 	private boolean					firstLine;
 
@@ -65,7 +66,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 		itemCount = new Stack<Integer>();
 		sectionsLevel = new Stack<Integer>();
 		firstLine = true;
-		MWAnnotator.init();
+		annotator = new MWAnnotator();
 	}
 
 	/**
@@ -82,7 +83,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 		itemCount.clear();
 		sectionsLevel.clear();
 		firstLine = true;
-		MWAnnotator.reset(cas);
+		annotator.reset(cas);
 	}
 
 	/**
@@ -94,23 +95,23 @@ public class MWRevisionBuilder extends DocumentBuilder {
 			content.append("\n\n");
 		else
 			firstLine = false;
-		MWAnnotator.newHeader(level, content.length());
+		annotator.newHeader(level, content.length());
 
 		if (sectionsLevel.isEmpty() || level > sectionsLevel.peek())
 			sectionsLevel.push(level);
 		else {
 			while (!sectionsLevel.isEmpty() && level <= sectionsLevel.peek()) {
 				sectionsLevel.pop();
-				MWAnnotator.end("section", content.length());
+				annotator.end("section", content.length());
 			}
 			sectionsLevel.push(level);
 		}
-		MWAnnotator.newSection(level, content.length());
+		annotator.newSection(level, content.length());
 	}
 
-	public void beginToC() {
-		MWAnnotator.newToC(content.length());
-	}
+	// public void beginToC() {
+	// annotator.newToC(content.length());
+	// }
 
 	/**
 	 * Handles the beginning of various types of blocks (lists, tables, ...) and process accordingly.
@@ -145,7 +146,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 				}
 				break;
 			case TABLE:
-				MWAnnotator.newBlock(type, content.length());
+				// annotator.newBlock(type, content.length());
 				content.append('\n');
 				break;
 			case TABLE_ROW:
@@ -157,7 +158,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 				else
 					firstLine = false;
 				// Let the annotator know we have entered a new block.
-				MWAnnotator.newBlock(type, content.length());
+				annotator.newBlock(type, content.length());
 				break;
 		}
 	}
@@ -175,7 +176,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	 */
 	@Override
 	public void beginDocument() {
-		MWAnnotator.newSection(1, content.length());
+		annotator.newSection(1, content.length());
 	}
 
 	/**
@@ -183,12 +184,12 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	 */
 	@Override
 	public void endHeading() {
-		MWAnnotator.end("header", content.length());
+		annotator.end("header", content.length());
 	}
 
-	public void endToC() {
-		MWAnnotator.end("tableofcontent", content.length());
-	}
+	// public void endToC() {
+	// annotator.end("tableofcontent", content.length());
+	// }
 
 	/**
 	 * Handles the end of various types of blocks, especially table cells and lists.
@@ -196,7 +197,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	@Override
 	public void endBlock() {
 		final BlockType type = blockContext.pop();
-		MWAnnotator.end(type, content.length());
+		annotator.end(type, content.length());
 		switch (type) {
 			case TABLE_CELL_HEADER:
 			case TABLE_CELL_NORMAL:
@@ -223,7 +224,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	 */
 	@Override
 	public void endDocument() {
-		MWAnnotator.end("unclosed", content.length());
+		annotator.end("unclosed", content.length());
 	}
 
 	/**
@@ -231,7 +232,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	 */
 	@Override
 	public void link(Attributes attributes, String href, String label) {
-		MWAnnotator.newLink(label, href, content.length());
+		annotator.newLink(label, href, content.length());
 		content.append(label);
 	}
 
@@ -284,7 +285,7 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	 * @return all the annotations gathered by the annotator
 	 */
 	public List<Annotation> getAnnotations() {
-		return MWAnnotator.getAnnotations();
+		return annotator.getAnnotations();
 	}
 
 	/**

@@ -93,9 +93,9 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 				factory = new MWDumpReaderFactory(theXMLDump);
 				// Get a first parser to compute the website info, in particular the namespaces.
 				parser = factory.getParser();
-				if (parser.hasSiteInfo()) {
+				if (parser.hasSiteInfo())
 					theSiteInfo = parser.getSiteInfo();
-				} else {
+				else {
 					// Default empty website info.
 					theSiteInfo = new MWSiteinfo("", "", "", "", new HashMap<Integer, String>());
 					theLogger.log(Level.INFO, "The website info is unavailable, we know nothing about the namespaces.");
@@ -244,6 +244,19 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 		addSourceDocumentAnnotation(newJCas, page, 0, casContent.length());
 	}
 
+	/**
+	 * Adds a new source document annotation. We hope the CAS consumer component will use this to rename the
+	 * files.
+	 * 
+	 * @param newJCas
+	 *            the JCas on which the annotation is indexed
+	 * @param page
+	 *            the MWPage instance on which is based the Article
+	 * @param start
+	 *            the beginning offset of the annotation
+	 * @param end
+	 *            the ending offset of the annotation
+	 */
 	private void addSourceDocumentAnnotation(JCas newJCas, MWArticle page, int start, int end) {
 		final SourceDocumentInformation info = new SourceDocumentInformation(newJCas);
 		info.setBegin(start);
@@ -261,9 +274,9 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 	 * @param thePage
 	 *            the MWPage instance on which is based the Article
 	 * @param start
-	 *            the index of the annotation beginning
+	 *            the beginning offset of the annotation
 	 * @param end
-	 *            the index of the annotation ending
+	 *            the ending offset of the annotation
 	 */
 	private void addArticleAnnotation(JCas cas, MWArticle thePage, int start, int end) {
 		final Article myArticle = new Article(cas);
@@ -287,9 +300,9 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 	 * @param rev
 	 *            the MWRevision instance on which is based the Revision annotation
 	 * @param start
-	 *            the index of the annotation beginning
+	 *            the beginning offset of the annotation
 	 * @param end
-	 *            the index of the annotation ending
+	 *            the ending offset of the annotation
 	 */
 	private void addRevisionAnnotation(JCas cas, MWRevision rev, Integer start, Integer end) {
 		final Revision myRevision = new Revision(cas);
