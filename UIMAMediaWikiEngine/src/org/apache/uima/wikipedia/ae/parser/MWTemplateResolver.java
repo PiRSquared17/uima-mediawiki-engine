@@ -32,6 +32,11 @@ import java.util.Map;
 import org.eclipse.mylyn.wikitext.mediawiki.core.Template;
 import org.eclipse.mylyn.wikitext.mediawiki.core.TemplateResolver;
 
+/**
+ * This class aims at replacing macros, identified by their name, by a replacement text.
+ * 
+ * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
+ */
 public class MWTemplateResolver extends TemplateResolver {
 	private static Map<String, String>	customTemplates	= new HashMap<String, String>();
 	static {
@@ -41,6 +46,11 @@ public class MWTemplateResolver extends TemplateResolver {
 		customTemplates.put("endash", "&nbsp;&ndash; "); //$NON-NLS-1$//$NON-NLS-2$
 	}
 
+	/**
+	 * Checks if the macro is known and returns the corresponding Template object. If it's known, the provided
+	 * replacement text is used to build the Template object. Else, the method returns null, indicating the
+	 * parser that this macro should be replaced by an empty string.
+	 */
 	@Override
 	public Template resolveTemplate(String templateName) {
 		final String templateText = customTemplates.get(templateName);
@@ -53,6 +63,15 @@ public class MWTemplateResolver extends TemplateResolver {
 		return null;
 	}
 
+	/**
+	 * Adds a new macro to the known set. For more insight on syntax, see
+	 * {@link org.apache.uima.wikipedia.ae.parser.MWLanguage#addMacro(String, String) here}.
+	 * 
+	 * @param name
+	 *            the macro identifier (lower case)
+	 * @param replacement
+	 *            the replacement text.
+	 */
 	public void addMacro(String name, String replacement) {
 		customTemplates.put(name, replacement);
 	}
