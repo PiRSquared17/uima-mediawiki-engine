@@ -90,16 +90,15 @@ public class MWRevisionBuilder extends DocumentBuilder {
 	 */
 	@Override
 	public void beginHeading(int level, Attributes attributes) {
-		if (!firstLine) {
+		if (!firstLine)
 			content.append("\n\n");
-		} else {
+		else
 			firstLine = false;
-		}
 		MWAnnotator.newHeader(level, content.length());
 
-		if (sectionsLevel.isEmpty() || level > sectionsLevel.peek()) {
+		if (sectionsLevel.isEmpty() || level > sectionsLevel.peek())
 			sectionsLevel.push(level);
-		} else {
+		else {
 			while (!sectionsLevel.isEmpty() && level <= sectionsLevel.peek()) {
 				sectionsLevel.pop();
 				MWAnnotator.end("section", content.length());
@@ -128,9 +127,8 @@ public class MWRevisionBuilder extends DocumentBuilder {
 			case DEFINITION_TERM:
 			case DEFINITION_ITEM:
 				content.append('\n');
-				for (int level = 0; level < listContext.size() - 1; level++) {
+				for (int level = 0; level < listContext.size() - 1; level++)
 					content.append('\t');
-				}
 				final int count = itemCount.pop() + 1;
 				itemCount.push(count);
 				switch (listContext.peek()) {
@@ -147,11 +145,10 @@ public class MWRevisionBuilder extends DocumentBuilder {
 				content.append('\n');
 				break;
 			case PARAGRAPH:
-				if (!firstLine) {
+				if (!firstLine)
 					content.append("\n\n");
-				} else {
+				else
 					firstLine = false;
-				}
 				// Let the annotator know we have entered a new block.
 				MWAnnotator.newBlock(type, content.length());
 				break;
@@ -218,6 +215,9 @@ public class MWRevisionBuilder extends DocumentBuilder {
 		MWAnnotator.end("unclosed", content.length());
 	}
 
+	/**
+	 * Adds the label of the link to the content and indicate a new Link to the annotator.
+	 */
 	@Override
 	public void link(Attributes attributes, String href, String label) {
 		MWAnnotator.newLink(label, href, content.length());
@@ -238,36 +238,47 @@ public class MWRevisionBuilder extends DocumentBuilder {
 		content.append(literal);
 	}
 
+	/** Appends a linefeed to the content. */
 	@Override
 	public void lineBreak() {
 		content.append('\n');
 	}
 
+	/** For now we do nothing with this */
 	@Override
 	public void acronym(String arg0, String arg1) {
 		// TODO Auto-generated method stub
 	}
 
+	/** For now we do nothing with this */
 	@Override
 	public void entityReference(String arg0) {
 		// TODO Auto-generated method stub
 	}
 
+	/** For now we do nothing with this */
 	@Override
 	public void image(Attributes arg0, String arg1) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/** For now we do nothing with this */
 	@Override
 	public void imageLink(Attributes arg0, Attributes arg1, String arg2, String arg3) {
 		// TODO Auto-generated method stub
 	}
 
+	/**
+	 * @return all the annotations gathered by the annotator
+	 */
 	public List<Annotation> getAnnotations() {
 		return MWAnnotator.getAnnotations();
 	}
 
+	/**
+	 * @return the textual content of this revision.
+	 */
 	public String getText() {
 		return content.toString();
 	}
