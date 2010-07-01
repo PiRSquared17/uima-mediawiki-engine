@@ -93,9 +93,9 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 				factory = new MWDumpReaderFactory(theXMLDump);
 				// Get a first parser to compute the website info, in particular the namespaces.
 				parser = factory.getParser();
-				if (parser.hasSiteInfo())
+				if (parser.hasSiteInfo()) {
 					theSiteInfo = parser.getSiteInfo();
-				else {
+				} else {
 					// Default empty website info.
 					theSiteInfo = new MWSiteinfo("", "", "", "", new HashMap<Integer, String>());
 					theLogger.log(Level.INFO, "The website info is unavailable, we know nothing about the namespaces.");

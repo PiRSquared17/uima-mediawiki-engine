@@ -39,15 +39,15 @@ import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType;
  */
 public class MWAnnotator {
 	/** The CAS we are working on */
-	private JCas			cas;
+	private JCas					cas;
 	/** Lists of annotations relative to this CAS */
-	private List<Header>	headers;
-	private List<Link>		links;
-	private List<Paragraph>	paragraphs;
-	private List<Section>	sections;
+	private final List<Header>		headers;
+	private final List<Link>		links;
+	private final List<Paragraph>	paragraphs;
+	private final List<Section>		sections;
 	// private List<Table> tables;
 	// private TableOfContent toc;
-	private Stack<Section>	currentSections;
+	private final Stack<Section>	currentSections;
 
 	/**
 	 * Initialize the factory with a new CAS to process.

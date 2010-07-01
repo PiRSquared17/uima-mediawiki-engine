@@ -55,8 +55,9 @@ public class MWToCBlock extends AbstractTableOfContentsBlock {
 			// ((MWRevisionBuilder) builder).endToC();
 		}
 		final int start = matcher.start(1);
-		if (start > 0)
+		if (start > 0) {
 			setClosed(true);
+		}
 		return start;
 	}
 

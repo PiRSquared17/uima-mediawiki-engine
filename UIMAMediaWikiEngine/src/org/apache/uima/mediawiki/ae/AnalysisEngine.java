@@ -62,8 +62,9 @@ public class AnalysisEngine extends JCasAnnotator_ImplBase {
 		// Get the path of the definition file for the macros
 		File definition = null;
 		final String path = (String) context.getConfigParameterValue(PARAM_INP_DEFINITIONPATH);
-		if (path != null && !path.isEmpty())
+		if (path != null && !path.isEmpty()) {
 			definition = new File(path);
+		}
 		// Initialize the factory
 		try {
 			MWCasBuilder.initialize("RawWikiText", enableMacros, definition);

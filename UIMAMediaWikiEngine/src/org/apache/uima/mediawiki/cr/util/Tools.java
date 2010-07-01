@@ -39,8 +39,9 @@ public class Tools {
 	}
 
 	public static InputStream openInputFile(String arg) throws IOException {
-		if (arg.equals("-"))
+		if (arg.equals("-")) {
 			new BufferedInputStream(System.in, IN_BUF_SZ);
+		}
 		final InputStream infile = new BufferedInputStream(new FileInputStream(arg), IN_BUF_SZ);
 		if (arg.endsWith(".gz"))
 			return new GZIPInputStream(infile);

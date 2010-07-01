@@ -27,41 +27,47 @@ public class Article extends Annotation {
 
 	/** @generated */
 	@Override
-	public int getTypeIndexID() {return typeIndexID;}
- 
+	public int getTypeIndexID() {
+		return typeIndexID;
+	}
+
 	/**
 	 * Never called. Disable default constructor
 	 * 
 	 * @generated
 	 */
-	protected Article() {}
-    
+	protected Article() {
+	}
+
 	/**
 	 * Internal - constructor used by generator
 	 * 
 	 * @generated
 	 */
 	public Article(int addr, TOP_Type type) {
-    super(addr, type);
-    readObject();
-  }
-  
+		super(addr, type);
+		readObject();
+	}
+
 	/** @generated */
 	public Article(JCas jcas) {
-    super(jcas);
-    readObject();   
-  } 
+		super(jcas);
+		readObject();
+	}
 
 	/** @generated */
 	public Article(JCas jcas, int begin, int end) {
-    super(jcas);
-    setBegin(begin);
-    setEnd(end);
-    readObject();
-  }   
+		super(jcas);
+		setBegin(begin);
+		setEnd(end);
+		readObject();
+	}
 
-  /** <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
-  @generated modifiable */
+	/**
+	 * <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
+	 * 
+	 * @generated modifiable
+	 */
 	private void readObject() {
 	}
 
@@ -75,10 +81,12 @@ public class Article extends Annotation {
 	 * @generated
 	 */
 	public int getNamespace() {
-    if (Article_Type.featOkTst && ((Article_Type)jcasType).casFeat_namespace == null)
-      jcasType.jcas.throwFeatMissing("namespace", "org.apache.uima.mediawiki.types.Article");
-    return jcasType.ll_cas.ll_getIntValue(addr, ((Article_Type)jcasType).casFeatCode_namespace);}
-    
+		if (Article_Type.featOkTst && ((Article_Type) jcasType).casFeat_namespace == null) {
+			jcasType.jcas.throwFeatMissing("namespace", "org.apache.uima.mediawiki.types.Article");
+		}
+		return jcasType.ll_cas.ll_getIntValue(addr, ((Article_Type) jcasType).casFeatCode_namespace);
+	}
+
 	/**
 	 * setter for namespace - sets There are potentially several namespaces in a MediaWiki. However this
 	 * feature is not really used in the Wikipedia.
@@ -86,11 +94,12 @@ public class Article extends Annotation {
 	 * @generated
 	 */
 	public void setNamespace(int v) {
-    if (Article_Type.featOkTst && ((Article_Type)jcasType).casFeat_namespace == null)
-      jcasType.jcas.throwFeatMissing("namespace", "org.apache.uima.mediawiki.types.Article");
-    jcasType.ll_cas.ll_setIntValue(addr, ((Article_Type)jcasType).casFeatCode_namespace, v);}    
-   
-    
+		if (Article_Type.featOkTst && ((Article_Type) jcasType).casFeat_namespace == null) {
+			jcasType.jcas.throwFeatMissing("namespace", "org.apache.uima.mediawiki.types.Article");
+		}
+		jcasType.ll_cas.ll_setIntValue(addr, ((Article_Type) jcasType).casFeatCode_namespace, v);
+	}
+
 	// *--------------*
 	// * Feature: title
 
@@ -101,10 +110,12 @@ public class Article extends Annotation {
 	 * @generated
 	 */
 	public String getTitle() {
-    if (Article_Type.featOkTst && ((Article_Type)jcasType).casFeat_title == null)
-      jcasType.jcas.throwFeatMissing("title", "org.apache.uima.mediawiki.types.Article");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((Article_Type)jcasType).casFeatCode_title);}
-    
+		if (Article_Type.featOkTst && ((Article_Type) jcasType).casFeat_title == null) {
+			jcasType.jcas.throwFeatMissing("title", "org.apache.uima.mediawiki.types.Article");
+		}
+		return jcasType.ll_cas.ll_getStringValue(addr, ((Article_Type) jcasType).casFeatCode_title);
+	}
+
 	/**
 	 * setter for title - sets The title of the article, it mostly corresponds to the address of the content
 	 * on the Wikipedia.
@@ -112,11 +123,12 @@ public class Article extends Annotation {
 	 * @generated
 	 */
 	public void setTitle(String v) {
-    if (Article_Type.featOkTst && ((Article_Type)jcasType).casFeat_title == null)
-      jcasType.jcas.throwFeatMissing("title", "org.apache.uima.mediawiki.types.Article");
-    jcasType.ll_cas.ll_setStringValue(addr, ((Article_Type)jcasType).casFeatCode_title, v);}    
-   
-    
+		if (Article_Type.featOkTst && ((Article_Type) jcasType).casFeat_title == null) {
+			jcasType.jcas.throwFeatMissing("title", "org.apache.uima.mediawiki.types.Article");
+		}
+		jcasType.ll_cas.ll_setStringValue(addr, ((Article_Type) jcasType).casFeatCode_title, v);
+	}
+
 	// *--------------*
 	// * Feature: id
 
@@ -126,21 +138,24 @@ public class Article extends Annotation {
 	 * @generated
 	 */
 	public double getId() {
-    if (Article_Type.featOkTst && ((Article_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "org.apache.uima.mediawiki.types.Article");
-    return jcasType.ll_cas.ll_getDoubleValue(addr, ((Article_Type)jcasType).casFeatCode_id);}
-    
+		if (Article_Type.featOkTst && ((Article_Type) jcasType).casFeat_id == null) {
+			jcasType.jcas.throwFeatMissing("id", "org.apache.uima.mediawiki.types.Article");
+		}
+		return jcasType.ll_cas.ll_getDoubleValue(addr, ((Article_Type) jcasType).casFeatCode_id);
+	}
+
 	/**
 	 * setter for id - sets Internal identifier of the article in the corresponding MediaWiki.
 	 * 
 	 * @generated
 	 */
 	public void setId(double v) {
-    if (Article_Type.featOkTst && ((Article_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "org.apache.uima.mediawiki.types.Article");
-    jcasType.ll_cas.ll_setDoubleValue(addr, ((Article_Type)jcasType).casFeatCode_id, v);}    
-   
-    
+		if (Article_Type.featOkTst && ((Article_Type) jcasType).casFeat_id == null) {
+			jcasType.jcas.throwFeatMissing("id", "org.apache.uima.mediawiki.types.Article");
+		}
+		jcasType.ll_cas.ll_setDoubleValue(addr, ((Article_Type) jcasType).casFeatCode_id, v);
+	}
+
 	// *--------------*
 	// * Feature: prefix
 
@@ -150,17 +165,21 @@ public class Article extends Annotation {
 	 * @generated
 	 */
 	public String getPrefix() {
-    if (Article_Type.featOkTst && ((Article_Type)jcasType).casFeat_prefix == null)
-      jcasType.jcas.throwFeatMissing("prefix", "org.apache.uima.mediawiki.types.Article");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((Article_Type)jcasType).casFeatCode_prefix);}
-    
+		if (Article_Type.featOkTst && ((Article_Type) jcasType).casFeat_prefix == null) {
+			jcasType.jcas.throwFeatMissing("prefix", "org.apache.uima.mediawiki.types.Article");
+		}
+		return jcasType.ll_cas.ll_getStringValue(addr, ((Article_Type) jcasType).casFeatCode_prefix);
+	}
+
 	/**
 	 * setter for prefix - sets
 	 * 
 	 * @generated
 	 */
 	public void setPrefix(String v) {
-    if (Article_Type.featOkTst && ((Article_Type)jcasType).casFeat_prefix == null)
-      jcasType.jcas.throwFeatMissing("prefix", "org.apache.uima.mediawiki.types.Article");
-    jcasType.ll_cas.ll_setStringValue(addr, ((Article_Type)jcasType).casFeatCode_prefix, v);}    
-  }
+		if (Article_Type.featOkTst && ((Article_Type) jcasType).casFeat_prefix == null) {
+			jcasType.jcas.throwFeatMissing("prefix", "org.apache.uima.mediawiki.types.Article");
+		}
+		jcasType.ll_cas.ll_setStringValue(addr, ((Article_Type) jcasType).casFeatCode_prefix, v);
+	}
+}

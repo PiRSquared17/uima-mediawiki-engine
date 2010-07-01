@@ -27,41 +27,47 @@ public class Revision extends Annotation {
 
 	/** @generated */
 	@Override
-	public int getTypeIndexID() {return typeIndexID;}
- 
+	public int getTypeIndexID() {
+		return typeIndexID;
+	}
+
 	/**
 	 * Never called. Disable default constructor
 	 * 
 	 * @generated
 	 */
-	protected Revision() {}
-    
+	protected Revision() {
+	}
+
 	/**
 	 * Internal - constructor used by generator
 	 * 
 	 * @generated
 	 */
 	public Revision(int addr, TOP_Type type) {
-    super(addr, type);
-    readObject();
-  }
-  
+		super(addr, type);
+		readObject();
+	}
+
 	/** @generated */
 	public Revision(JCas jcas) {
-    super(jcas);
-    readObject();   
-  } 
+		super(jcas);
+		readObject();
+	}
 
 	/** @generated */
 	public Revision(JCas jcas, int begin, int end) {
-    super(jcas);
-    setBegin(begin);
-    setEnd(end);
-    readObject();
-  }   
+		super(jcas);
+		setBegin(begin);
+		setEnd(end);
+		readObject();
+	}
 
-  /** <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
-  @generated modifiable */
+	/**
+	 * <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
+	 * 
+	 * @generated modifiable
+	 */
 	private void readObject() {
 	}
 
@@ -74,21 +80,24 @@ public class Revision extends Annotation {
 	 * @generated
 	 */
 	public String getUser() {
-    if (Revision_Type.featOkTst && ((Revision_Type)jcasType).casFeat_user == null)
-      jcasType.jcas.throwFeatMissing("user", "org.apache.uima.mediawiki.types.Revision");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((Revision_Type)jcasType).casFeatCode_user);}
-    
+		if (Revision_Type.featOkTst && ((Revision_Type) jcasType).casFeat_user == null) {
+			jcasType.jcas.throwFeatMissing("user", "org.apache.uima.mediawiki.types.Revision");
+		}
+		return jcasType.ll_cas.ll_getStringValue(addr, ((Revision_Type) jcasType).casFeatCode_user);
+	}
+
 	/**
 	 * setter for user - sets The identifier of the contributor in the MediaWiki.
 	 * 
 	 * @generated
 	 */
 	public void setUser(String v) {
-    if (Revision_Type.featOkTst && ((Revision_Type)jcasType).casFeat_user == null)
-      jcasType.jcas.throwFeatMissing("user", "org.apache.uima.mediawiki.types.Revision");
-    jcasType.ll_cas.ll_setStringValue(addr, ((Revision_Type)jcasType).casFeatCode_user, v);}    
-   
-    
+		if (Revision_Type.featOkTst && ((Revision_Type) jcasType).casFeat_user == null) {
+			jcasType.jcas.throwFeatMissing("user", "org.apache.uima.mediawiki.types.Revision");
+		}
+		jcasType.ll_cas.ll_setStringValue(addr, ((Revision_Type) jcasType).casFeatCode_user, v);
+	}
+
 	// *--------------*
 	// * Feature: comment
 
@@ -99,10 +108,12 @@ public class Revision extends Annotation {
 	 * @generated
 	 */
 	public String getComment() {
-    if (Revision_Type.featOkTst && ((Revision_Type)jcasType).casFeat_comment == null)
-      jcasType.jcas.throwFeatMissing("comment", "org.apache.uima.mediawiki.types.Revision");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((Revision_Type)jcasType).casFeatCode_comment);}
-    
+		if (Revision_Type.featOkTst && ((Revision_Type) jcasType).casFeat_comment == null) {
+			jcasType.jcas.throwFeatMissing("comment", "org.apache.uima.mediawiki.types.Revision");
+		}
+		return jcasType.ll_cas.ll_getStringValue(addr, ((Revision_Type) jcasType).casFeatCode_comment);
+	}
+
 	/**
 	 * setter for comment - sets A comment by the contributor that describes what the correspond new revision
 	 * is made of in comparison to the previous one.
@@ -110,11 +121,12 @@ public class Revision extends Annotation {
 	 * @generated
 	 */
 	public void setComment(String v) {
-    if (Revision_Type.featOkTst && ((Revision_Type)jcasType).casFeat_comment == null)
-      jcasType.jcas.throwFeatMissing("comment", "org.apache.uima.mediawiki.types.Revision");
-    jcasType.ll_cas.ll_setStringValue(addr, ((Revision_Type)jcasType).casFeatCode_comment, v);}    
-   
-    
+		if (Revision_Type.featOkTst && ((Revision_Type) jcasType).casFeat_comment == null) {
+			jcasType.jcas.throwFeatMissing("comment", "org.apache.uima.mediawiki.types.Revision");
+		}
+		jcasType.ll_cas.ll_setStringValue(addr, ((Revision_Type) jcasType).casFeatCode_comment, v);
+	}
+
 	// *--------------*
 	// * Feature: timestamp
 
@@ -124,21 +136,24 @@ public class Revision extends Annotation {
 	 * @generated
 	 */
 	public double getTimestamp() {
-    if (Revision_Type.featOkTst && ((Revision_Type)jcasType).casFeat_timestamp == null)
-      jcasType.jcas.throwFeatMissing("timestamp", "org.apache.uima.mediawiki.types.Revision");
-    return jcasType.ll_cas.ll_getDoubleValue(addr, ((Revision_Type)jcasType).casFeatCode_timestamp);}
-    
+		if (Revision_Type.featOkTst && ((Revision_Type) jcasType).casFeat_timestamp == null) {
+			jcasType.jcas.throwFeatMissing("timestamp", "org.apache.uima.mediawiki.types.Revision");
+		}
+		return jcasType.ll_cas.ll_getDoubleValue(addr, ((Revision_Type) jcasType).casFeatCode_timestamp);
+	}
+
 	/**
 	 * setter for timestamp - sets Date when the revision was made.
 	 * 
 	 * @generated
 	 */
 	public void setTimestamp(double v) {
-    if (Revision_Type.featOkTst && ((Revision_Type)jcasType).casFeat_timestamp == null)
-      jcasType.jcas.throwFeatMissing("timestamp", "org.apache.uima.mediawiki.types.Revision");
-    jcasType.ll_cas.ll_setDoubleValue(addr, ((Revision_Type)jcasType).casFeatCode_timestamp, v);}    
-   
-    
+		if (Revision_Type.featOkTst && ((Revision_Type) jcasType).casFeat_timestamp == null) {
+			jcasType.jcas.throwFeatMissing("timestamp", "org.apache.uima.mediawiki.types.Revision");
+		}
+		jcasType.ll_cas.ll_setDoubleValue(addr, ((Revision_Type) jcasType).casFeatCode_timestamp, v);
+	}
+
 	// *--------------*
 	// * Feature: isMinor
 
@@ -149,10 +164,12 @@ public class Revision extends Annotation {
 	 * @generated
 	 */
 	public boolean getIsMinor() {
-    if (Revision_Type.featOkTst && ((Revision_Type)jcasType).casFeat_isMinor == null)
-      jcasType.jcas.throwFeatMissing("isMinor", "org.apache.uima.mediawiki.types.Revision");
-    return jcasType.ll_cas.ll_getBooleanValue(addr, ((Revision_Type)jcasType).casFeatCode_isMinor);}
-    
+		if (Revision_Type.featOkTst && ((Revision_Type) jcasType).casFeat_isMinor == null) {
+			jcasType.jcas.throwFeatMissing("isMinor", "org.apache.uima.mediawiki.types.Revision");
+		}
+		return jcasType.ll_cas.ll_getBooleanValue(addr, ((Revision_Type) jcasType).casFeatCode_isMinor);
+	}
+
 	/**
 	 * setter for isMinor - sets Flag indicating if the revision is a minor one (mostly typo fixes) or
 	 * something more.
@@ -160,11 +177,12 @@ public class Revision extends Annotation {
 	 * @generated
 	 */
 	public void setIsMinor(boolean v) {
-    if (Revision_Type.featOkTst && ((Revision_Type)jcasType).casFeat_isMinor == null)
-      jcasType.jcas.throwFeatMissing("isMinor", "org.apache.uima.mediawiki.types.Revision");
-    jcasType.ll_cas.ll_setBooleanValue(addr, ((Revision_Type)jcasType).casFeatCode_isMinor, v);}    
-   
-    
+		if (Revision_Type.featOkTst && ((Revision_Type) jcasType).casFeat_isMinor == null) {
+			jcasType.jcas.throwFeatMissing("isMinor", "org.apache.uima.mediawiki.types.Revision");
+		}
+		jcasType.ll_cas.ll_setBooleanValue(addr, ((Revision_Type) jcasType).casFeatCode_isMinor, v);
+	}
+
 	// *--------------*
 	// * Feature: id
 
@@ -174,17 +192,21 @@ public class Revision extends Annotation {
 	 * @generated
 	 */
 	public int getId() {
-    if (Revision_Type.featOkTst && ((Revision_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "org.apache.uima.mediawiki.types.Revision");
-    return jcasType.ll_cas.ll_getIntValue(addr, ((Revision_Type)jcasType).casFeatCode_id);}
-    
+		if (Revision_Type.featOkTst && ((Revision_Type) jcasType).casFeat_id == null) {
+			jcasType.jcas.throwFeatMissing("id", "org.apache.uima.mediawiki.types.Revision");
+		}
+		return jcasType.ll_cas.ll_getIntValue(addr, ((Revision_Type) jcasType).casFeatCode_id);
+	}
+
 	/**
 	 * setter for id - sets Internal identifier of the revision in MediaWiki.
 	 * 
 	 * @generated
 	 */
 	public void setId(int v) {
-    if (Revision_Type.featOkTst && ((Revision_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "org.apache.uima.mediawiki.types.Revision");
-    jcasType.ll_cas.ll_setIntValue(addr, ((Revision_Type)jcasType).casFeatCode_id, v);}    
-  }
+		if (Revision_Type.featOkTst && ((Revision_Type) jcasType).casFeat_id == null) {
+			jcasType.jcas.throwFeatMissing("id", "org.apache.uima.mediawiki.types.Revision");
+		}
+		jcasType.ll_cas.ll_setIntValue(addr, ((Revision_Type) jcasType).casFeatCode_id, v);
+	}
+}

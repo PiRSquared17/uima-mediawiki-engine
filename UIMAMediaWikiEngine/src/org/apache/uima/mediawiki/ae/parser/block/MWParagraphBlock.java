@@ -55,8 +55,9 @@ public class MWParagraphBlock extends Block {
 	 */
 	@Override
 	public void setClosed(boolean closed) {
-		if (closed)
+		if (closed) {
 			builder.endBlock();
+		}
 		super.setClosed(closed);
 	}
 
@@ -66,10 +67,10 @@ public class MWParagraphBlock extends Block {
 	 */
 	@Override
 	protected int processLineContent(String line, int offset) {
-		if (blockLineCount == 0)
+		if (blockLineCount == 0) {
 			// Beginning of a paragraph
 			builder.beginBlock(BlockType.PARAGRAPH, null);
-		else if (line.trim().isEmpty()) {
+		} else if (line.trim().isEmpty()) {
 			// End of a paragraph
 			setClosed(true);
 			return 0;
@@ -85,9 +86,10 @@ public class MWParagraphBlock extends Block {
 			}
 		// If not, this block contains one more line
 		++blockLineCount;
-		if (blockLineCount != 1)
+		if (blockLineCount != 1) {
 			// New line
 			builder.characters("\n");
+		}
 		// This line is not any sort of block, process it as a phrase
 		dialect.emitMarkupLine(getParser(), state, line, offset);
 		return -1;
