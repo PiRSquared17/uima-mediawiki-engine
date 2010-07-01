@@ -37,6 +37,14 @@ import org.eclipse.mylyn.internal.wikitext.mediawiki.core.AbstractMediaWikiLangu
 import org.eclipse.mylyn.wikitext.mediawiki.core.Template;
 import org.eclipse.mylyn.wikitext.mediawiki.core.TemplateResolver;
 
+/**
+ * This class is mostly a copy paste of the original TemplateProcessor built in MyLyn. I have only modified
+ * the RegEx to allow matching of a wider set of objects. I have also made an attempt in making sure that the
+ * RegEx do not backtrack, hopefully improving the performance somewhat.
+ * 
+ * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
+ */
+
 public class MWTemplateProcessor {
 
 	private static final Pattern			templatePattern				= Pattern.compile("(?:^|(?<!\\{))(\\{\\{([^\\}\\|]++)(\\|[^\\}]*+)?+\\}\\})");	//$NON-NLS-1$
@@ -59,9 +67,8 @@ public class MWTemplateProcessor {
 	public MWTemplateProcessor(AbstractMediaWikiLanguage abstractMediaWikiLanguage) {
 		mediaWikiLanguage = abstractMediaWikiLanguage;
 
-		for (final Template template : mediaWikiLanguage.getTemplates()) {
+		for (final Template template : mediaWikiLanguage.getTemplates())
 			templateByName.put(template.getName().toLowerCase(), normalize(template));
-		}
 		final String templateExcludes = abstractMediaWikiLanguage.getTemplateExcludes();
 		if (templateExcludes != null) {
 			final String[] split = templateExcludes.split("\\s*,\\s*"); //$NON-NLS-1$
@@ -80,9 +87,8 @@ public class MWTemplateProcessor {
 		final Matcher matcher = templatePattern.matcher(markupContent);
 		while (matcher.find()) {
 			final int start = matcher.start();
-			if (lastIndex < start) {
+			if (lastIndex < start)
 				processedMarkup.append(markupContent.substring(lastIndex, start));
-			}
 			final String templateName = matcher.group(2);
 			final Template template = resolveTemplate(templateName);
 			if (template != null) {
@@ -94,9 +100,8 @@ public class MWTemplateProcessor {
 		}
 		if (lastIndex == 0)
 			return markupContent;
-		if (lastIndex < markupContent.length()) {
+		if (lastIndex < markupContent.length())
 			processedMarkup.append(markupContent.substring(lastIndex));
-		}
 		return processedMarkup.toString();
 	}
 
@@ -112,16 +117,14 @@ public class MWTemplateProcessor {
 		final Matcher matcher = templateParameterPattern.matcher(macro);
 		while (matcher.find()) {
 			final int start = matcher.start();
-			if (lastIndex < start) {
+			if (lastIndex < start)
 				processedMarkup.append(macro.substring(lastIndex, start));
-			}
 			final String parameterName = matcher.group(1);
 			String parameterValue = null;
 			try {
 				final int parameterIndex = Integer.parseInt(parameterName);
-				if (parameterIndex <= parameters.size() && parameterIndex > 0) {
+				if (parameterIndex <= parameters.size() && parameterIndex > 0)
 					parameterValue = parameters.get(parameterIndex - 1).value;
-				}
 			} catch (final NumberFormatException e) {
 				for (final Parameter param : parameters)
 					if (parameterName.equalsIgnoreCase(param.name)) {
@@ -129,17 +132,15 @@ public class MWTemplateProcessor {
 						break;
 					}
 			}
-			if (parameterValue != null) {
+			if (parameterValue != null)
 				processedMarkup.append(parameterValue);
-			}
 
 			lastIndex = matcher.end();
 		}
 		if (lastIndex == 0)
 			return macro;
-		if (lastIndex < macro.length()) {
+		if (lastIndex < macro.length())
 			processedMarkup.append(macro.substring(lastIndex));
-		}
 		return processedMarkup.toString();
 	}
 
@@ -154,9 +155,8 @@ public class MWTemplateProcessor {
 				if (value != null) {
 					parameter.name = nameOrValue;
 					parameter.value = value;
-				} else {
+				} else
 					parameter.value = nameOrValue;
-				}
 				parameters.add(parameter);
 			}
 		}
@@ -165,11 +165,10 @@ public class MWTemplateProcessor {
 
 	private Template resolveTemplate(String templateName) {
 		templateName = templateName.toLowerCase();
-		if (!excludePatterns.isEmpty()) {
+		if (!excludePatterns.isEmpty())
 			for (final Pattern p : excludePatterns)
 				if (p.matcher(templateName).matches())
 					return null;
-		}
 		Template template = templateByName.get(templateName);
 		if (template == null) {
 			for (final TemplateResolver resolver : mediaWikiLanguage.getTemplateProviders()) {
