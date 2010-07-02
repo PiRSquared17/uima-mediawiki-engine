@@ -47,16 +47,13 @@ import org.apache.uima.mediawiki.cr.types.MWSiteinfo;
  */
 public class MWDumpReader {
 	/** Parser variables */
-	private final XMLStreamReader		streamReader;
-	/** Data factories */
-	protected final MWArticleFactory	thePage;
-	protected final MWRevisionFactory	theRevision;
+	private final XMLStreamReader	streamReader;
 	/** Data */
-	protected MWSiteinfo				theInfo;
+	protected MWSiteinfo			theInfo;
 	/** Some flags */
-	protected boolean					endOfDocumentReached;
-	protected boolean					hasSiteInfo;
-	protected boolean					pageComputed;
+	protected boolean				endOfDocumentReached;
+	protected boolean				hasSiteInfo;
+	protected boolean				pageComputed;
 
 	/**
 	 * Initializes the parser. In particular, it skips a few unuseful blocks at the beginning and tries to
@@ -80,13 +77,10 @@ public class MWDumpReader {
 		// Process website info
 		// Check if the <siteinfo> tag is there (it's optional)
 		hasSiteInfo = streamReader.getLocalName().toLowerCase().equals("siteinfo");
-		if (hasSiteInfo) {
+		if (hasSiteInfo)
 			computeSiteInfo();
-		}
 		// Initialise Article and Revision factorys
-		thePage = new MWArticleFactory(theInfo);
-		theRevision = new MWRevisionFactory();
-
+		MWArticleFactory.init(theInfo);
 		// Some flags
 		endOfDocumentReached = false;
 		pageComputed = false;
@@ -101,7 +95,7 @@ public class MWDumpReader {
 	 */
 	public MWArticle getPage() {
 		pageComputed = false;
-		return thePage.newInstance();
+		return MWArticleFactory.newInstance();
 	}
 
 	/**
@@ -136,13 +130,12 @@ public class MWDumpReader {
 	 */
 	public final boolean hasPage() {
 		// Clear the page factory
-		thePage.clear();
+		MWArticleFactory.clear();
 		// Try to compute a page
 		pageComputed = false;
 		try {
-			while (!pageComputed && !endOfDocumentReached) {
+			while (!pageComputed && !endOfDocumentReached)
 				pageComputed = computePage();
-			}
 		} catch (final MWParseException e) {
 			endOfDocumentReached = true;
 			pageComputed = false;
@@ -181,10 +174,10 @@ public class MWDumpReader {
 			while (!endPage) {
 				switch (MWTag.toTag(streamReader.getLocalName())) {
 					case TITLE:
-						thePage.hasTitle(getTagText());
+						MWArticleFactory.hasTitle(getTagText());
 						break;
 					case ID:
-						thePage.hasId(getTagText());
+						MWArticleFactory.hasId(getTagText());
 						break;
 					case REVISION:
 						computeRevision();
@@ -200,9 +193,8 @@ public class MWDumpReader {
 					default: // This happens if we don't process a tag acknoledged in the MWTag enum.
 						endPage = true;
 				}
-				if (!endPage) {
+				if (!endPage)
 					nextOpeningTag(1);
-				}
 			}
 		} catch (final XMLStreamException e) {
 			// If we encounter a malformation of some sort
@@ -213,7 +205,7 @@ public class MWDumpReader {
 		}
 		// The page is considered empty when it holds no revisions.
 		// This can happen when some filters are set.
-		return !thePage.isEmpty();
+		return !MWArticleFactory.isEmpty();
 	}
 
 	/**
@@ -230,30 +222,29 @@ public class MWDumpReader {
 		StringBuilder textBuilder;
 		nextOpeningTag(1);
 		// Clear the revision factory
-		theRevision.clear();
+		MWRevisionFactory.clear();
 		while (!endRevision) {
 			switch (MWTag.toTag(streamReader.getLocalName())) {
 				case ID:
-					theRevision.hasId(getTagText());
+					MWRevisionFactory.hasId(getTagText());
 					break;
 				case TIMESTAMP:
-					theRevision.hasTimestamp(getTagText());
+					MWRevisionFactory.hasTimestamp(getTagText());
 					break;
 				case CONTRIBUTOR:
 					// This is actully a nested element. We are only interrested in the user name.
 					// The user name tag is however optional.
 					nextOpeningTag(1);
-					if (streamReader.getLocalName().equals("username")) {
-						theRevision.hasContributor(getTagText());
-					}
+					if (streamReader.getLocalName().equals("username"))
+						MWRevisionFactory.hasContributor(getTagText());
 					break;
 				case MINOR:
 					// If the tag is <minor /> then it's set to false
 					streamReader.next();
-					theRevision.isMinor(streamReader.isEndElement());
+					MWRevisionFactory.isMinor(streamReader.isEndElement());
 					break;
 				case COMMENT:
-					theRevision.hasComment(getTagText());
+					MWRevisionFactory.hasComment(getTagText());
 					break;
 				case TEXT:
 					// TODO : Tuning the size of the StringBuilder?
@@ -265,7 +256,7 @@ public class MWDumpReader {
 						streamReader.next();
 					}
 					textBuilder.trimToSize();
-					theRevision.hasText(textBuilder.toString());
+					MWRevisionFactory.hasText(textBuilder.toString());
 					endRevision = true;
 					break;
 				case INVALID_TAG:
@@ -273,12 +264,11 @@ public class MWDumpReader {
 				default:
 					endRevision = true;
 			}
-			if (!endRevision) {
+			if (!endRevision)
 				nextOpeningTag(1);
-			}
 		}
 		// Add the revision to the list
-		thePage.hasRevision(theRevision.newInstance());
+		MWArticleFactory.hasRevision(MWRevisionFactory.newInstance());
 	}
 
 	/**
@@ -333,9 +323,8 @@ public class MWDumpReader {
 					default:
 						endSiteInfo = true;
 				}
-				if (!endSiteInfo) {
+				if (!endSiteInfo)
 					nextOpeningTag(1);
-				}
 			}
 		} catch (final NoSuchElementException e) {
 			endOfDocumentReached = true;
@@ -361,9 +350,8 @@ public class MWDumpReader {
 		int i = 0;
 		while (i < n) {
 			streamReader.next();
-			if (streamReader.isStartElement() || streamReader.getEventType() == END_DOCUMENT) {
+			if (streamReader.isStartElement() || streamReader.getEventType() == END_DOCUMENT)
 				++i;
-			}
 		}
 	}
 
@@ -378,9 +366,8 @@ public class MWDumpReader {
 		boolean endOfTag = false;
 		while (!endOfTag) {
 			streamReader.next();
-			if (streamReader.isEndElement() && streamReader.getLocalName().equals(name)) {
+			if (streamReader.isEndElement() && streamReader.getLocalName().equals(name))
 				endOfTag = true;
-			}
 		}
 	}
 

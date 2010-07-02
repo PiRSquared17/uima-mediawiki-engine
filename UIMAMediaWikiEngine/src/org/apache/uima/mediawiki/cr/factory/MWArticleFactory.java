@@ -39,19 +39,19 @@ import org.apache.uima.mediawiki.cr.types.MWSiteinfo;
  */
 public class MWArticleFactory {
 	// Article variables
-	private String						m_title;
-	private int							m_namespace;
-	private int							m_id;
-	private final ArrayList<MWRevision>	m_revisions;
+	private static String					m_title;
+	private static int						m_namespace;
+	private static int						m_id;
+	private static ArrayList<MWRevision>	m_revisions;
 
 	// Website info
-	private final MWSiteinfo			m_siteinfo;
+	private static MWSiteinfo				m_siteinfo;
 
 	/**
 	 * Default initialisation of the fields. The title is set to the empty string, the namespace is set to 0
 	 * (default namespace), the id is set to -1 and the revision list is initialized (empty).
 	 */
-	public MWArticleFactory(MWSiteinfo siteinfo) {
+	public static void init(MWSiteinfo siteinfo) {
 		// Default initialisation
 		m_title = "";
 		m_namespace = 0;
@@ -66,7 +66,7 @@ public class MWArticleFactory {
 	 * 
 	 * @return a new instance of MWArticle as crafted by the factory.
 	 */
-	public final MWArticle newInstance() {
+	public static MWArticle newInstance() {
 		return new MWArticle(m_title, m_namespace, m_id, m_revisions);
 	}
 
@@ -79,7 +79,7 @@ public class MWArticleFactory {
 	 * @param prefixedTitle
 	 *            the article's title
 	 */
-	public final void hasTitle(String prefixedTitle) {
+	public static void hasTitle(String prefixedTitle) {
 		// We look for a colon
 		final int pos = prefixedTitle.indexOf(':');
 		// If we find one, we process the title and namespace
@@ -103,7 +103,7 @@ public class MWArticleFactory {
 	 * @param id
 	 *            the revision's id.
 	 */
-	public final void hasId(String id) {
+	public static void hasId(String id) {
 		try {
 			m_id = Integer.parseInt(id);
 		} catch (final NumberFormatException e) {
@@ -117,19 +117,18 @@ public class MWArticleFactory {
 	 * @param revision
 	 *            the revision to add.
 	 */
-	public final void hasRevision(MWRevision revision) {
+	public static void hasRevision(MWRevision revision) {
 		m_revisions.add(revision);
 	}
 
 	/**
 	 * Removes all the revisions but the latest from the current article's revision list.
 	 */
-	public final void latestOnly() {
+	public static void latestOnly() {
 		MWRevision latest = m_revisions.get(0);
 		for (final MWRevision rev : m_revisions)
-			if (rev.compareTo(latest) > 0) {
+			if (rev.compareTo(latest) > 0)
 				latest = rev;
-			}
 		m_revisions.clear();
 		m_revisions.add(latest);
 	}
@@ -139,14 +138,14 @@ public class MWArticleFactory {
 	 * 
 	 * @return <code>true</code> if the revision list is empty <code>false</code> otherwise
 	 */
-	public final boolean isEmpty() {
+	public static boolean isEmpty() {
 		return m_revisions.isEmpty();
 	}
 
 	/**
 	 * Reinitialize the factory's fields to start a crafting new clean article.
 	 */
-	public final void clear() {
+	public static void clear() {
 		m_title = "";
 		m_namespace = 0;
 		m_id = -1;

@@ -37,21 +37,21 @@ import org.apache.uima.mediawiki.cr.types.MWRevision;
  * @see MWArticleFactory
  * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
  */
-public final class MWRevisionFactory {
+public class MWRevisionFactory {
 	// Revision variables
-	private int			m_id;
-	private Calendar	m_timestamp;
-	private String		m_contributor;
-	private boolean		m_minor;
-	private String		m_comment;
-	private String		m_text;
+	private static int		m_id;
+	private static Calendar	m_timestamp;
+	private static String	m_contributor;
+	private static boolean	m_minor;
+	private static String	m_comment;
+	private static String	m_text;
 
 	/**
 	 * Default initialisation of the fields. The id is set to -1, the timestamp is set to <code>null</code>,
 	 * the minor flag is set to <code>false</code>, the contributor, comment and text are set to the empty
 	 * string.
 	 */
-	public MWRevisionFactory() {
+	public static void init() {
 		m_id = -1;
 		m_timestamp = null;
 		m_contributor = "";
@@ -65,7 +65,7 @@ public final class MWRevisionFactory {
 	 * 
 	 * @return A new instance of MWRevision as crafted by the factory.
 	 */
-	public final MWRevision newInstance() {
+	public static MWRevision newInstance() {
 		return new MWRevision(m_id, m_timestamp, m_contributor, m_minor, m_comment, m_text);
 	}
 
@@ -76,7 +76,7 @@ public final class MWRevisionFactory {
 	 * @param id
 	 *            The revision's id.
 	 */
-	public final void hasId(String id) {
+	public static void hasId(String id) {
 		try {
 			m_id = Integer.parseInt(id);
 		} catch (final NumberFormatException e) {
@@ -91,7 +91,7 @@ public final class MWRevisionFactory {
 	 * @param timestamp
 	 *            The revision's timestamp
 	 */
-	public final void hasTimestamp(String timestamp) {
+	public static void hasTimestamp(String timestamp) {
 		m_timestamp = Calendar.getInstance();
 		try {
 			m_timestamp.setTime(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(timestamp));
@@ -107,7 +107,7 @@ public final class MWRevisionFactory {
 	 * @param username
 	 *            The revision's contributor username
 	 */
-	public final void hasContributor(String username) {
+	public static void hasContributor(String username) {
 		m_contributor = username;
 	}
 
@@ -118,7 +118,7 @@ public final class MWRevisionFactory {
 	 * @param flag
 	 *            Tells whether the revision is a minor one.
 	 */
-	public final void isMinor(boolean flag) {
+	public static void isMinor(boolean flag) {
 		m_minor = flag;
 	}
 
@@ -129,7 +129,7 @@ public final class MWRevisionFactory {
 	 * @param comment
 	 *            The revision's comment.
 	 */
-	public final void hasComment(String comment) {
+	public static void hasComment(String comment) {
 		m_comment = comment;
 	}
 
@@ -140,14 +140,14 @@ public final class MWRevisionFactory {
 	 * @param text
 	 *            The revision's text.
 	 */
-	public final void hasText(String text) {
+	public static void hasText(String text) {
 		m_text = text;
 	}
 
 	/**
 	 * Reinitialize the factory's fields to start a crafting new clean revision.
 	 */
-	public final void clear() {
+	public static void clear() {
 		m_id = -1;
 		m_timestamp = null;
 		m_contributor = "";
