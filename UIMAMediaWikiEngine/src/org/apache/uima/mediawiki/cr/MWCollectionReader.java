@@ -8,6 +8,7 @@ import java.util.HashMap;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
@@ -53,7 +54,7 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 	/** Setting up the logger for this class */
 	private static Logger				theLogger;
 	/** Configuration parameters */
-	private static final String			PARAM_XMLDUMP				= "InputXmlDump";
+	private static final String			PARAM_XMLDUMP				= "InputFileXmlDump";
 	/** Filters parameters */
 	private static String				PARAM_FLG_IGNORETALKS		= "IgnoreTalks";
 	private static String				PARAM_INP_NAMESPACE			= "ConfigNamespacesFilter";
@@ -134,6 +135,14 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 			populateJCas(newJCas, parser.getPage());
 			// We are done with the CAS production
 			cCasProduced++;
+			if ( (cCasProduced % 100) == 0 ) {
+				Runtime r = Runtime.getRuntime();
+				UIMAFramework.getLogger().log(Level.INFO, 
+						cCasProduced + " CAS produced. " +
+						r.freeMemory() + " memory left.");
+				// Calling Garbage Collector
+				r.gc();
+			}
 		} catch (final CASException e) {
 			theLogger.log(Level.SEVERE, "Error while creating the CAS");
 			throw new CollectionException("There was an error while creating the CAS", null);

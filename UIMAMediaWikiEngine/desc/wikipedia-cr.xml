@@ -11,7 +11,7 @@ If the dump is compressed using gzip or bzip, there is no need to uncompress it,
     <vendor/>
     <configurationParameters searchStrategy="language_fallback">
       <configurationParameter>
-        <name>InputXmlDump</name>
+        <name>InputFileXmlDump</name>
         <description>The path to the XML dump of Wikipedia to load into the cpe through the collection reader.</description>
         <type>String</type>
         <multiValued>false</multiValued>
