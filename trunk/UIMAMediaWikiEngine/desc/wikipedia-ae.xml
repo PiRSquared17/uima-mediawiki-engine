@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>org.apache.uima.mediawiki.ae.AnalysisEngine</annotatorImplementationName>
+  <annotatorImplementationName>org.apache.uima.mediawiki.ae.MWParserAE</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>MWAnalysisEngine</name>
     <description>Parse la syntaxe MediaWiki et génère des annotations.</description>

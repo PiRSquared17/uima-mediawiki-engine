@@ -65,7 +65,7 @@ public class MWRevisionFactory {
 	 * 
 	 * @return A new instance of MWRevision as crafted by the factory.
 	 */
-	public static MWRevision newInstance() {
+	public static MWRevision produceRevision() {
 		return new MWRevision(m_id, m_timestamp, m_contributor, m_minor, m_comment, m_text);
 	}
 

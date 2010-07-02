@@ -66,7 +66,7 @@ public class MWArticleFactory {
 	 * 
 	 * @return a new instance of MWArticle as crafted by the factory.
 	 */
-	public static MWArticle newInstance() {
+	public static MWArticle produceArticle() {
 		return new MWArticle(m_title, m_namespace, m_id, m_revisions);
 	}
 
@@ -127,8 +127,9 @@ public class MWArticleFactory {
 	public static void latestOnly() {
 		MWRevision latest = m_revisions.get(0);
 		for (final MWRevision rev : m_revisions)
-			if (rev.compareTo(latest) > 0)
+			if (rev.compareTo(latest) > 0) {
 				latest = rev;
+			}
 		m_revisions.clear();
 		m_revisions.add(latest);
 	}
