@@ -1,3 +1,0 @@
-#summary glossary of the mainly used terms in the Uima environment.
-
-http://uima.apache.org/downloads/releaseDocs/2.2.2-incubating/docs/html/overview_and_setup/overview_and_setup.html#ugr.glossary
