@@ -110,3 +110,49 @@ However, most of these tags are optional. The following contains only the mandat
 }}}
 
 The documents passed on to this component should obviously respect this formatting. If you take them from the Wikimedia foundation website, all is well. If you provide your own wiki stuff, you might want to validate it against the XSD schema first.
+
+===Extracting information===
+The Collection Reader component is based on the Stax API for the XML parsing. Events get pulled out of the stream, and are identified by their type and name.
+
+We chose to consider only a subset of tags stored in an Enum :
+{{{
+enum MWTag {
+		// ROOT
+		MEDIAWIKI,
+		// SITE INFO
+		SITEINFO, SITENAME, BASE, GENERATOR, CASE, NAMESPACES, NAMESPACE,
+		// PAGES
+		PAGE, TITLE, ID,
+		// REVISIONS
+		REVISION, TIMESTAMP, CONTRIBUTOR, USERNAME, MINOR, COMMENT, TEXT,
+		// INVALID, WILL BE SKIPPED
+		INVALID_TAG;
+}
+}}}
+
+We use the tag's name to convert it to the corresponding constant. All the tags that are unreferenced point to one single special constant INVALID_TAG. This allows us to skip those tags whenever we encounter them. 
+
+In the table below you can see the tags and their (expected) corresponding content :
+
+|| *Tag name* || *Description* || *Example* ||
+|| <mediawiki> || The document's root tag || _N/A_ ||
+|| <siteinfo> || The siteinfo's root tag || _N/A_ ||
+|| <sitename> || The website's (Wiki project) name || <sitename>Wikinews</sitename> ||
+|| <base> || The website's base URL || <base>http://fr.wikinews.org/wiki/Accueil</base> ||
+|| <generator> || The name of the tool used to create the dump || <generator>MediaWiki 1.16wmf4</generator> ||
+|| <namespaces> || The root item for the namespaces || _N/A_ ||
+|| <namespace> || The description of a namespace || <namespace key="1" case="first-letter">Discussion</namespace> ||
+|| <page> || The root item for pages || _N/A_ ||
+|| <title> || The page's title || <title> A title </title> ||
+|| <id> || The page's or revision's id (depending on nesting) || <id>1337</id> ||
+|| <revision> || The root item for revisions || _N/A_ ||
+|| <timestamp> || The revision's timestamp ||  <timestamp>2010-12-25T12:12:12Z</timestamp>  ||
+|| <username> || The contributor's username || <username> Some name</username> ||
+|| <minor> || Indicates if the revision is minor or not || <minor /> ||
+|| <comment> || The revision's comment || <comment> Some comment </comment> ||
+|| <text> || The revision's text || <text> A whole lot of text with Wiki syntax </text> ||
+
+
+===Relevant information===
+
+For our treatment, not all information is relevant. We consider the following type system :
