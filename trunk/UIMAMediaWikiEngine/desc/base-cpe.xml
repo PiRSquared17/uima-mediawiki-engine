@@ -12,18 +12,6 @@
                         <string>/Users/Bowbaq/Downloads/frwikinews-20100420-pages-meta-history.xml</string>
                     </value>
                 </nameValuePair>
-                <nameValuePair>
-                    <name>LatestRevisionOnly</name>
-                    <value>
-                        <boolean>true</boolean>
-                    </value>
-                </nameValuePair>
-                <nameValuePair>
-                    <name>IgnoreTalks</name>
-                    <value>
-                        <boolean>true</boolean>
-                    </value>
-                </nameValuePair>
             </configurationParameterSettings>
         </collectionIterator>
     </collectionReader>
@@ -44,26 +32,6 @@
                     <name>DefinitionFilePath</name>
                     <value>
                         <string>/Users/Bowbaq/Desktop/macros.txt</string>
-                    </value>
-                </nameValuePair>
-            </configurationParameterSettings>
-        </casProcessor>
-        <casProcessor deployment="integrated" name="Xmi Writer CAS Consumer">
-            <descriptor>
-                <import location="../../../../../Downloads/apache-uima/examples/descriptors/cas_consumer/XmiWriterCasConsumer.xml"/>
-            </descriptor>
-            <deploymentParameters/>
-            <errorHandling>
-                <errorRateThreshold action="terminate" value="0/1000"/>
-                <maxConsecutiveRestarts action="terminate" value="30"/>
-                <timeout max="100000" default="-1"/>
-            </errorHandling>
-            <checkpoint batch="10000" time="1000ms"/>
-            <configurationParameterSettings>
-                <nameValuePair>
-                    <name>OutputDirectory</name>
-                    <value>
-                        <string>/Users/Bowbaq/Desktop/test</string>
                     </value>
                 </nameValuePair>
             </configurationParameterSettings>

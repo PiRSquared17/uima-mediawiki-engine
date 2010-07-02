@@ -41,20 +41,20 @@ import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType;
  */
 public class MWAnnotator {
 	/** The CAS we are working on */
-	private JCas					cas;
+	private static JCas				cas;
 	/** Lists of annotations relative to this CAS */
-	private final List<Header>		headers;
-	private final List<Link>		links;
-	private final List<Paragraph>	paragraphs;
-	private final List<Section>		sections;
-	private final List<Table>		tables;
-	private TableOfContent			toc;
-	private final Stack<Section>	currentSections;
+	private static List<Header>		headers;
+	private static List<Link>		links;
+	private static List<Paragraph>	paragraphs;
+	private static List<Section>	sections;
+	private static List<Table>		tables;
+	private static Stack<Section>	currentSections;
+	private static TableOfContent	toc;
 
 	/**
-	 * Initialize the factory with a new CAS to process.
+	 * Initialize the factory to prepare the processing of CAS.
 	 */
-	public MWAnnotator() {
+	public static void init() {
 		headers = new ArrayList<Header>();
 		links = new ArrayList<Link>();
 		paragraphs = new ArrayList<Paragraph>();
@@ -70,8 +70,8 @@ public class MWAnnotator {
 	 * 
 	 * @param cas
 	 */
-	public void reset(JCas cas) {
-		this.cas = cas;
+	public static void reset(JCas cas) {
+		MWAnnotator.cas = cas;
 		headers.clear();
 		links.clear();
 		paragraphs.clear();
@@ -90,7 +90,7 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the starting offset
 	 */
-	public void newHeader(int level, int offset) {
+	public static void newHeader(int level, int offset) {
 		final Header h = new Header(cas);
 		h.setBegin(offset);
 		h.setLevel(level);
@@ -104,7 +104,7 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the starting offset.
 	 */
-	public void newToC(int offset) {
+	public static void newToC(int offset) {
 		toc = new TableOfContent(cas);
 		toc.setBegin(offset);
 	}
@@ -118,7 +118,7 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the starting offset.
 	 */
-	public void newSection(int level, int offset) {
+	public static void newSection(int level, int offset) {
 		final Section s = new Section(cas);
 		s.setBegin(offset);
 		s.setLevel(level);
@@ -135,7 +135,7 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the starting offset.
 	 */
-	public void newBlock(BlockType type, int offset) {
+	public static void newBlock(BlockType type, int offset) {
 		switch (type) {
 			case PARAGRAPH:
 				final Paragraph p = new Paragraph(cas);
@@ -160,7 +160,7 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the starting offset
 	 */
-	public void newLink(String label, String href, int offset) {
+	public static void newLink(String label, String href, int offset) {
 		final Link l = new Link(cas);
 		l.setBegin(offset);
 		l.setLabel(label);
@@ -178,7 +178,7 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the ending offset.
 	 */
-	public void end(String type, int offset) {
+	public static void end(String type, int offset) {
 
 		if (type.equals("header")) {
 			headers.get(headers.size() - 1).setEnd(offset);
@@ -198,9 +198,8 @@ public class MWAnnotator {
 			}
 			root.setEnd(offset);
 			sections.add(root);
-		} else if (type.equals("tableofcontent")) {
+		} else if (type.equals("tableofcontent"))
 			toc.setEnd(offset);
-		}
 	}
 
 	/**
@@ -212,7 +211,7 @@ public class MWAnnotator {
 	 * @param offset
 	 *            the ending offset.
 	 */
-	public void end(BlockType type, int offset) {
+	public static void end(BlockType type, int offset) {
 		switch (type) {
 			case PARAGRAPH:
 				paragraphs.get(paragraphs.size() - 1).setEnd(offset);
@@ -228,16 +227,15 @@ public class MWAnnotator {
 	 * 
 	 * @return all the annotations gathered by this factory.
 	 */
-	public List<Annotation> getAnnotations() {
+	public static List<Annotation> getAnnotations() {
 		final List<Annotation> annotations = new ArrayList<Annotation>();
 		annotations.addAll(headers);
 		annotations.addAll(links);
 		annotations.addAll(paragraphs);
 		annotations.addAll(sections);
 		annotations.addAll(tables);
-		if (toc != null) {
+		if (toc != null)
 			annotations.add(toc);
-		}
 		return annotations;
 	}
 }
