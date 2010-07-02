@@ -47,6 +47,9 @@ public class MWArticleFactory {
 	// Website info
 	private static MWSiteinfo				m_siteinfo;
 
+	// Flag
+	private static boolean					m_latestOnly	= false;
+
 	/**
 	 * Default initialisation of the fields. The title is set to the empty string, the namespace is set to 0
 	 * (default namespace), the id is set to -1 and the revision list is initialized (empty).
@@ -118,21 +121,15 @@ public class MWArticleFactory {
 	 *            the revision to add.
 	 */
 	public static void hasRevision(MWRevision revision) {
-		m_revisions.add(revision);
-	}
-
-	/**
-	 * Removes all the revisions but the latest from the current article's revision list.
-	 */
-	public static void latestOnly() {
-		if (!m_revisions.isEmpty()) {
-			MWRevision latest = m_revisions.get(0);
-			for (final MWRevision rev : m_revisions)
-				if (rev.compareTo(latest) > 0)
-					latest = rev;
-			m_revisions.clear();
-			m_revisions.add(latest);
-		}
+		// If the latestOnly flag is set and the list isn't empty
+		if (m_latestOnly && !m_revisions.isEmpty()) {
+			// Check if the stored revision is older
+			if (m_revisions.get(0).compareTo(revision) < 0)
+				// If yes, replace it by the new one
+				m_revisions.set(0, revision);
+		} else
+			// Else the list isn't empty or the flag is not set to true
+			m_revisions.add(revision);
 	}
 
 	/**
@@ -142,6 +139,17 @@ public class MWArticleFactory {
 	 */
 	public static boolean isEmpty() {
 		return m_revisions.isEmpty();
+	}
+
+	/**
+	 * Indicate to this factory that only the latest revisions should be kept for each article.
+	 * 
+	 * @param latestOnly
+	 *            <code>true</code> if you want to keep only the latest revisions, <code>false</code>
+	 *            otherwise
+	 */
+	public static void setLatestOnly(boolean latestOnly) {
+		MWArticleFactory.m_latestOnly = latestOnly;
 	}
 
 	/**

@@ -67,31 +67,27 @@ public class MWRevisionFilter implements StreamFilter {
 	public final boolean accept(XMLStreamReader reader) {
 		if (!foundRevision) {
 			// If we encounter an opening <timestamp> tag, we set the revision flag to true.
-			if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("revision")) {
+			if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("revision"))
 				foundRevision = true;
-			}
 		} else if (foundRevision && !foundId) {
 			// If we encounter and <id> tag nested in a <revision> tag we set the id flag to true.
-			if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("id")) {
+			if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("id"))
 				foundId = true;
-			}
 		} else if (reader.getEventType() == CHARACTERS && !revisionMatch(reader.getText())) {
 			// If both flags are set true, we found a revision <id> tag on the previous call.
 			// <id> tags are NOT mandatory, but we found one. This event should be a CHARACTERS one (we
 			// check nevertheless)
 			// If the id doesn't pass the check, we iterate to the next <revision> opening tag.
 			boolean revisionSkipped = false;
-			while (!revisionSkipped) {
+			while (!revisionSkipped)
 				try {
 					reader.next();
-					if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("revision")) {
+					if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("revision"))
 						revisionSkipped = true;
-					}
 				} catch (final XMLStreamException e) {
-					// We do nothing, this should not happen.
-					// If it does, the next call to next() in the main parser will raise it again anyway.
+					// We encountered a malformation, we consider the revision skipped
+					revisionSkipped = true;
 				}
-			}
 			// We skipped the revision, we set both flags back to false.
 			foundRevision = false;
 			foundId = false;

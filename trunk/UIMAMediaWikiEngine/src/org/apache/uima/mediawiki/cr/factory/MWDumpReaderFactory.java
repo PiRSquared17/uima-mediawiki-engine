@@ -40,7 +40,6 @@ import org.apache.uima.mediawiki.cr.parser.MWRevisionFilter;
 import org.apache.uima.mediawiki.cr.parser.MWTimeStampFilter;
 import org.apache.uima.mediawiki.cr.parser.MWTitleFilter;
 import org.apache.uima.mediawiki.cr.parser.MWDumpReader.MWParseException;
-import org.apache.uima.mediawiki.cr.types.MWArticle;
 import org.apache.uima.mediawiki.cr.types.MWSiteinfo;
 import org.apache.uima.mediawiki.cr.util.Tools;
 
@@ -66,8 +65,6 @@ public class MWDumpReaderFactory {
 	private final XMLInputFactory	factory;
 	/** The XMLStreamReader that will be augmented with filters and passed on the the actual parser */
 	private XMLStreamReader			streamReader;
-	/** Some other variables */
-	private boolean					latestOnly;
 
 	/**
 	 * Initialize the factory with the provided XML input stream. You may now get a basic parser by calling
@@ -93,8 +90,6 @@ public class MWDumpReaderFactory {
 		} catch (final IOException e) {
 			throw new FactoryConfigurationError(e);
 		}
-		// Set the latesOnly flag to false by default (we keep all the revisions)
-		latestOnly = false;
 	}
 
 	/**
@@ -115,9 +110,6 @@ public class MWDumpReaderFactory {
 	 * @throws uima.wikipedia.parser.MWDumpReader.MWParseException
 	 */
 	public MWDumpReader getParser() throws MWParseException, MWDumpReader.MWParseException {
-		// If the latest only flag is set, we instantiate a particular parser that handles it.
-		if (latestOnly)
-			return new MWDumpReaderLatestOnly(streamReader);
 		return new MWDumpReader(streamReader);
 	}
 
@@ -185,9 +177,8 @@ public class MWDumpReaderFactory {
 				// Replace the underscores by spaces and trim
 				title = line.replace("_", " ").trim();
 				// Build the list
-				if (!title.isEmpty()) {
+				if (!title.isEmpty())
 					myList.add(title);
-				}
 			}
 			line = input.readLine();
 		}
@@ -257,9 +248,8 @@ public class MWDumpReaderFactory {
 		}
 		// We look for the valid keys in the set we built, and add the corresponding prefixes to the list
 		for (final int key : keyList)
-			if (theSiteInfo.namespaces.hasIndex(key)) {
+			if (theSiteInfo.namespaces.hasIndex(key))
 				myList.add(theSiteInfo.namespaces.getPrefix(key));
-			}
 		// Create the new filtered XML stream reader.
 		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(myList, exclude));
 	}
@@ -280,10 +270,9 @@ public class MWDumpReaderFactory {
 		final Map<Integer, String> namespaceMap = theSiteInfo.namespaces.getMap();
 
 		for (final int key : namespaceMap.keySet())
-			if (key > 0 && key % 2 == 1) {
+			if (key > 0 && key % 2 == 1)
 				// We add the concerned namespaces to the exclude list
 				excludedNamespace.add(namespaceMap.get(key));
-			}
 		// Create the filter with the proper list of namespaces.
 		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(excludedNamespace, true));
 	}
@@ -308,13 +297,12 @@ public class MWDumpReaderFactory {
 		// Read all the ids from the file, one per line
 		while (line != null) {
 			line = line.trim();
-			if (line.length() > 0 && !line.startsWith("#")) {
+			if (line.length() > 0 && !line.startsWith("#"))
 				try {
 					myList.add(Integer.parseInt(line));
 				} catch (final NumberFormatException e) {
 					// We just don't add it to the list if we can't parse it to a integer
 				}
-			}
 			line = input.readLine();
 		}
 		input.close();
@@ -323,11 +311,10 @@ public class MWDumpReaderFactory {
 	}
 
 	/**
-	 * This just tells the factory to instantiate a parser that will strip off all the revisions but the
-	 * latest in it's results, instead of a regular parser.
+	 * This method tells the MWArticle factory to keep only the latest revision for each article.
 	 */
 	public void addLatestOnlyFilter() {
-		latestOnly = true;
+		MWArticleFactory.setLatestOnly(true);
 	}
 
 	/**
@@ -559,30 +546,6 @@ public class MWDumpReaderFactory {
 			} catch (final ParseException e) {
 				return true;
 			}
-		}
-	}
-
-	/**
-	 * This filter allows to keep only the latest revision for each page. It works differently from all the
-	 * other filter as it doesn't operate at the XML stream level. It inherits the base parser, and overrides
-	 * the getPage() method in order to strip all the revisions but the latest from the page, before returning
-	 * it.
-	 * 
-	 * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
-	 */
-	public class MWDumpReaderLatestOnly extends MWDumpReader {
-		public MWDumpReaderLatestOnly(XMLStreamReader reader) throws MWParseException {
-			super(reader);
-		}
-
-		/**
-		 * Strips off all the revisions but the latest before returning the page.
-		 */
-		@Override
-		public MWArticle getPage() {
-			pageComputed = false;
-			MWArticleFactory.latestOnly();
-			return MWArticleFactory.produceArticle();
 		}
 	}
 }
