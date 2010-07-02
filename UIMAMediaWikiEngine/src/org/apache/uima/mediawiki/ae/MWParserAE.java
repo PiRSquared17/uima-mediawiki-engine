@@ -46,7 +46,7 @@ import org.apache.uima.resource.ResourceInitializationException;
  * @author Maxime Bury &lt;maxime.bury@gmail.com&gt;
  * @author Maxime Rihouey <maxime.rihouey@univ-nantes.fr>
  */
-public class AnalysisEngine extends JCasAnnotator_ImplBase {
+public class MWParserAE extends JCasAnnotator_ImplBase {
 	private final static String	PARAM_FLG_ENABLEMACROS		= "EnableMacros";
 	private final static String	PARAM_INP_DEFINITIONPATH	= "DefinitionFilePath";
 

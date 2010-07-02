@@ -198,8 +198,9 @@ public class MWAnnotator {
 			}
 			root.setEnd(offset);
 			sections.add(root);
-		} else if (type.equals("tableofcontent"))
+		} else if (type.equals("tableofcontent")) {
 			toc.setEnd(offset);
+		}
 	}
 
 	/**
@@ -234,8 +235,9 @@ public class MWAnnotator {
 		annotations.addAll(paragraphs);
 		annotations.addAll(sections);
 		annotations.addAll(tables);
-		if (toc != null)
+		if (toc != null) {
 			annotations.add(toc);
+		}
 		return annotations;
 	}
 }
