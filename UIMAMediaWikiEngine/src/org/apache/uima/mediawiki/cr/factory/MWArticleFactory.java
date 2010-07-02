@@ -125,13 +125,14 @@ public class MWArticleFactory {
 	 * Removes all the revisions but the latest from the current article's revision list.
 	 */
 	public static void latestOnly() {
-		MWRevision latest = m_revisions.get(0);
-		for (final MWRevision rev : m_revisions)
-			if (rev.compareTo(latest) > 0) {
-				latest = rev;
-			}
-		m_revisions.clear();
-		m_revisions.add(latest);
+		if (!m_revisions.isEmpty()) {
+			MWRevision latest = m_revisions.get(0);
+			for (final MWRevision rev : m_revisions)
+				if (rev.compareTo(latest) > 0)
+					latest = rev;
+			m_revisions.clear();
+			m_revisions.add(latest);
+		}
 	}
 
 	/**
