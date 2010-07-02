@@ -49,6 +49,12 @@ import org.apache.uima.util.Logger;
  * @author Maxime Rihouey <maxime.rihouey@univ-nantes.fr>
  */
 public class MWParserAE extends JCasAnnotator_ImplBase {
+	
+	/** Component related constants */
+	public static String COMPONENT_NAME    = "MediaWiki Parser";
+	public static String COMPONENT_VERSION = "1.0";
+	public static String COMPONENT_ID      = COMPONENT_NAME+"-"+COMPONENT_VERSION;
+	
 	private final static String	PARAM_FLG_ENABLEMACROS		= "EnableMacros";
 	private final static String	PARAM_INP_DEFINITIONPATH	= "DefinitionFilePath";
 	private static Logger		theLogger;
@@ -76,7 +82,8 @@ public class MWParserAE extends JCasAnnotator_ImplBase {
 		}
 		cCasProduced = 0;
 		theLogger = context.getLogger();
-		theLogger.log(Level.INFO, "Media Wiki analysis engine successfuly initialized");
+		// Log start
+		theLogger.log(Level.INFO, COMPONENT_ID + " initialized.");
 	}
 
 	/**
@@ -88,9 +95,15 @@ public class MWParserAE extends JCasAnnotator_ImplBase {
 	public void process(JCas cas) throws AnalysisEngineProcessException {
 		try {
 			MWCasBuilder.build(cas);
-			theLogger.log(Level.INFO, "Cas processed > " + cCasProduced++);
 		} catch (final CASException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
 	}
+
+	@Override
+	public void batchProcessComplete() throws AnalysisEngineProcessException {
+		theLogger.log(Level.INFO, "Nb. CAS parsed " + cCasProduced++);
+	}
+	
+	
 }

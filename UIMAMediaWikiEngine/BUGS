@@ -1,0 +1,3 @@
+Known bugs :
+
+ - If used with a JVM < 1.6.0_20, the CR will not stop and run forever.
