@@ -51,6 +51,12 @@ import org.apache.uima.util.ProgressImpl;
  * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
  */
 public class MWCollectionReader extends CollectionReader_ImplBase {
+	
+	/** Component related constants */
+	public static String COMPONENT_NAME    = "MediaWiki Collection Reader";
+	public static String COMPONENT_VERSION = "1.0";
+	public static String COMPONENT_ID      = COMPONENT_NAME+"-"+COMPONENT_VERSION;
+	
 	/** Setting up the logger for this class */
 	private static Logger				theLogger;
 	/** Configuration parameters */
@@ -107,7 +113,8 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 				configureFilters();
 				// Get a new parser that takes in account those filters.
 				parser = factory.getParser();
-
+				// Log start
+				theLogger.log(Level.INFO, COMPONENT_ID + " initialized.");
 			} catch (final FactoryConfigurationError e) {
 				throw new ResourceInitializationException("There was an error initializing the XML parser", null);
 			} catch (final IOException e) {
@@ -168,7 +175,7 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 	 * Attempt to close the resources cleanly.
 	 */
 	@Override
-	public void close() {
+	public void close() throws IOException {
 		factory.close();
 		parser.close();
 	}
