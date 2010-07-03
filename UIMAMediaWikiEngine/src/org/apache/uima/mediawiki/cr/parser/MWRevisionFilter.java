@@ -50,7 +50,7 @@ public class MWRevisionFilter implements StreamFilter {
 	}
 
 	/**
-	 * This method is the core of the filtering process. It's job is to tell wether a particular event passes
+	 * This method is the core of the filtering process. It's job is to tell whether a particular event passes
 	 * or not. The next() method of the XMLStreamReader calls this method on each element. Only the accepted
 	 * ones get through. In fact, this method never returns <code>false</code>, instead it skips all the
 	 * events that would have deserved a <code>false</code> return.
@@ -101,7 +101,7 @@ public class MWRevisionFilter implements StreamFilter {
 	}
 
 	/**
-	 * Checks wether the id is valid or not.
+	 * Checks whether the id is valid or not.
 	 * 
 	 * @param id
 	 *            the string representation of the id to check
