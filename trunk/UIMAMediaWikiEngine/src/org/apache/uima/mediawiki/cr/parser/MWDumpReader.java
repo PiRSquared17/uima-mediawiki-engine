@@ -64,7 +64,7 @@ public class MWDumpReader {
 	 * @param reader
 	 *            An XML stream reader from which we get the data
 	 * @throws MWParseException
-	 *             Exception is thrown if the underlying XML document is malformed.
+	 *             is thrown if the underlying XML document is malformed.
 	 */
 	public MWDumpReader(XMLStreamReader reader) throws MWParseException {
 		// Initialise parser
@@ -140,8 +140,7 @@ public class MWDumpReader {
 				pageComputed = computePage();
 			return pageComputed;
 		} catch (final MWParseException e) {
-			UIMAFramework.getLogger().log(Level.SEVERE,
-					"XML parser encountered an exception : " + e.getMessage());
+			UIMAFramework.getLogger().log(Level.SEVERE, "XML parser encountered an exception : " + e.getMessage());
 			endOfDocumentReached = true;
 			pageComputed = false;
 			return pageComputed;
@@ -159,8 +158,7 @@ public class MWDumpReader {
 			streamReader.close();
 		} catch (final XMLStreamException e) {
 			// If the closing fails, the GC will just have to deal with it.
-			UIMAFramework.getLogger().log(Level.WARNING,
-					"Cannot close the stream : " + e.getMessage());
+			UIMAFramework.getLogger().log(Level.WARNING, "Cannot close the stream : " + e.getMessage());
 		}
 	}
 
@@ -222,11 +220,11 @@ public class MWDumpReader {
 			// This can happen when some filters are set.
 			return !MWArticleFactory.isEmpty();
 		}
-// FIXME: keep or remove ?
-//		catch (final Exception e) {
-//			// We reached the end of the document, last page might me uncomplete
-//			endOfDocumentReached = true;
-//		}
+		// FIXME: keep or remove ?
+		// catch (final Exception e) {
+		// // We reached the end of the document, last page might me uncomplete
+		// endOfDocumentReached = true;
+		// }
 	}
 
 	/**

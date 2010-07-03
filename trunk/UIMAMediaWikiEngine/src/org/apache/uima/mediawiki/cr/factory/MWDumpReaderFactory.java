@@ -60,13 +60,13 @@ import org.apache.uima.util.Level;
  */
 public class MWDumpReaderFactory {
 	/** The input stream we are reading from */
-	private InputStream				inputstream;
+	private static InputStream		inputstream;
 	/** The file from which the inputstream was created */
-	private final File				theDump;
+	private static File				theDump;
 	/** The factory that will provide us with various XMLStreamReaders */
-	private final XMLInputFactory	factory;
+	private static XMLInputFactory	factory;
 	/** The XMLStreamReader that will be augmented with filters and passed on the the actual parser */
-	private XMLStreamReader			streamReader;
+	private static XMLStreamReader	streamReader;
 
 	/**
 	 * Initialize the factory with the provided XML input stream. You may now get a basic parser by calling
@@ -77,7 +77,7 @@ public class MWDumpReaderFactory {
 	 * @throws FactoryConfigurationError
 	 *             if something goes wrong.
 	 */
-	public MWDumpReaderFactory(File theXMLDump) throws FactoryConfigurationError {
+	public static void initialize(File theXMLDump) throws FactoryConfigurationError {
 		// Save a reference to the file
 		theDump = theXMLDump;
 		try {
@@ -111,7 +111,7 @@ public class MWDumpReaderFactory {
 	 *             If the parser encounters a malformation in the underlying XML document.
 	 * @throws uima.wikipedia.parser.MWDumpReader.MWParseException
 	 */
-	public MWDumpReader getParser() throws MWParseException, MWDumpReader.MWParseException {
+	public static MWDumpReader getParser() throws MWParseException {
 		return new MWDumpReader(streamReader);
 	}
 
@@ -125,7 +125,7 @@ public class MWDumpReaderFactory {
 	 * @throws IOException
 	 *             If the factory fails to open the dump file again.
 	 */
-	public void clearFilters() throws IOException, XMLStreamException {
+	public static void clearFilters() throws IOException, XMLStreamException {
 		try {
 			// Close the current resources
 			inputstream.close();
@@ -141,7 +141,7 @@ public class MWDumpReaderFactory {
 	/**
 	 * This method attempts to cleanly free the ressources used by the factory.
 	 */
-	public void close() {
+	public static void close() {
 		try {
 			inputstream.close();
 			streamReader.close();
@@ -167,7 +167,7 @@ public class MWDumpReaderFactory {
 	 * @throws XMLStreamException
 	 *             If we fail to create the new filtered XML stream reader.
 	 */
-	public void addTitleListFilter(String cfgList, boolean exact) throws IOException, XMLStreamException {
+	public static void addTitleListFilter(String cfgList, boolean exact) throws IOException, XMLStreamException {
 		String line, title;
 		final List<String> myList = new ArrayList<String>();
 		final BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(cfgList), "utf-8"));
@@ -203,7 +203,7 @@ public class MWDumpReaderFactory {
 	 * @see <a href="http://java.sun.com/javase/6/docs/api/java/util/regex/Pattern.html#sum"> RegEx sum up
 	 *      </a>
 	 */
-	public void addTitleRegexFilter(String regex) throws XMLStreamException {
+	public static void addTitleRegexFilter(String regex) throws XMLStreamException {
 		streamReader = factory.createFilteredReader(streamReader, new TitleRegexFilter(regex));
 	}
 
@@ -223,7 +223,7 @@ public class MWDumpReaderFactory {
 	 * @throws XMLStreamException
 	 *             If we fail to create the new filtered XML stream reader.
 	 */
-	public void addNamespaceFilter(MWSiteinfo theSiteInfo, String cfgNamespaces) throws XMLStreamException {
+	public static void addNamespaceFilter(MWSiteinfo theSiteInfo, String cfgNamespaces) throws XMLStreamException {
 		int nskey;
 		boolean exclude = false;
 		final List<String> myList = new ArrayList<String>();
@@ -265,7 +265,7 @@ public class MWDumpReaderFactory {
 	 * @throws XMLStreamException
 	 *             If we fail to create the new filtered XML stream reader.
 	 */
-	public void addExcludeTalkFilter(MWSiteinfo theSiteInfo) throws XMLStreamException {
+	public static void addExcludeTalkFilter(MWSiteinfo theSiteInfo) throws XMLStreamException {
 		// A list of discussion namespace to ignore
 		final ArrayList<String> excludedNamespace = new ArrayList<String>();
 		// The map containing the (key, namespace) couples.
@@ -291,7 +291,7 @@ public class MWDumpReaderFactory {
 	 * @throws XMLStreamException
 	 *             If we fail to create the new filtered XML stream reader.
 	 */
-	public void addRevisionFilter(String cfgRevisionList) throws IOException, XMLStreamException {
+	public static void addRevisionFilter(String cfgRevisionList) throws IOException, XMLStreamException {
 		final ArrayList<Integer> myList = new ArrayList<Integer>();
 		final BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(cfgRevisionList), "utf-8"));
 		String line = input.readLine();
@@ -315,7 +315,7 @@ public class MWDumpReaderFactory {
 	/**
 	 * This method tells the MWArticle factory to keep only the latest revision for each article.
 	 */
-	public void addLatestOnlyFilter() {
+	public static void addLatestOnlyFilter() {
 		MWArticleFactory.setLatestOnly(true);
 	}
 
@@ -335,7 +335,7 @@ public class MWDumpReaderFactory {
 	 * @throws XMLStreamException
 	 *             If we fail to create the new filtered XML stream reader.
 	 */
-	public void addBeforeTimestampFilter(String cfgBeforeTimestamp) throws ParseException, XMLStreamException {
+	public static void addBeforeTimestampFilter(String cfgBeforeTimestamp) throws ParseException, XMLStreamException {
 		final Calendar reference = Calendar.getInstance();
 		reference.setTime(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(cfgBeforeTimestamp));
 		streamReader = factory.createFilteredReader(streamReader, new BeforeTimestampFilter(reference));
@@ -352,7 +352,7 @@ public class MWDumpReaderFactory {
 	 * @throws XMLStreamException
 	 *             If we fail to create the new filtered XML stream reader.
 	 */
-	public void addAfterTimestampFilter(String cfgAfterTimestamp) throws ParseException, XMLStreamException {
+	public static void addAfterTimestampFilter(String cfgAfterTimestamp) throws ParseException, XMLStreamException {
 		final Calendar reference = Calendar.getInstance();
 		reference.setTime(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(cfgAfterTimestamp));
 		streamReader = factory.createFilteredReader(streamReader, new AfterTimestampFilter(reference));
@@ -363,7 +363,7 @@ public class MWDumpReaderFactory {
 	 * 
 	 * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
 	 */
-	public class TitleRegexFilter extends MWTitleFilter {
+	public static class TitleRegexFilter extends MWTitleFilter {
 		private final Pattern	myPattern;
 
 		/**
@@ -395,7 +395,7 @@ public class MWDumpReaderFactory {
 	 * 
 	 * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
 	 */
-	public class TitleListFilter extends MWTitleFilter {
+	public static class TitleListFilter extends MWTitleFilter {
 		private final List<String>	listOfTitles;
 		private final boolean		exact;
 
@@ -440,7 +440,7 @@ public class MWDumpReaderFactory {
 	 * 
 	 * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
 	 */
-	public class NamespaceFilter extends MWTitleFilter {
+	public static class NamespaceFilter extends MWTitleFilter {
 		private final List<String>	listOfNamespaces;
 		private String				namespace;
 		private final boolean		exclude;
@@ -480,7 +480,7 @@ public class MWDumpReaderFactory {
 	 * 
 	 * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
 	 */
-	public class AfterTimestampFilter extends MWTimeStampFilter {
+	public static class AfterTimestampFilter extends MWTimeStampFilter {
 		private final Calendar	reference;
 		private final Calendar	temp;
 
@@ -518,7 +518,7 @@ public class MWDumpReaderFactory {
 	 * 
 	 * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
 	 */
-	public class BeforeTimestampFilter extends MWTimeStampFilter {
+	public static class BeforeTimestampFilter extends MWTimeStampFilter {
 		private final Calendar	reference;
 		private final Calendar	temp;
 
