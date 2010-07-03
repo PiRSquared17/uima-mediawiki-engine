@@ -35,6 +35,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.uima.UIMAFramework;
 import org.apache.uima.mediawiki.cr.parser.MWDumpReader;
 import org.apache.uima.mediawiki.cr.parser.MWRevisionFilter;
 import org.apache.uima.mediawiki.cr.parser.MWTimeStampFilter;
@@ -42,6 +43,7 @@ import org.apache.uima.mediawiki.cr.parser.MWTitleFilter;
 import org.apache.uima.mediawiki.cr.parser.MWDumpReader.MWParseException;
 import org.apache.uima.mediawiki.cr.types.MWSiteinfo;
 import org.apache.uima.mediawiki.cr.util.Tools;
+import org.apache.uima.util.Level;
 
 /**
  * This class is the factory for the parser. It's designed mainly to handle smoothly the process of adding
@@ -123,13 +125,13 @@ public class MWDumpReaderFactory {
 	 * @throws IOException
 	 *             If the factory fails to open the dump file again.
 	 */
-	public void clearFilters() throws XMLStreamException, IOException {
+	public void clearFilters() throws IOException, XMLStreamException {
 		try {
-			// Close the current streams
+			// Close the current resources
 			inputstream.close();
 			streamReader.close();
 		} catch (final Exception e) {
-			// If it fails, the GC will have to handle it...
+			UIMAFramework.getLogger().log(Level.WARNING, "An exception occured while attempting to close the ressources" + e.getMessage());
 		}
 		// Initialize new ones
 		inputstream = Tools.openInputFile(theDump);
@@ -137,14 +139,14 @@ public class MWDumpReaderFactory {
 	}
 
 	/**
-	 * This method attemps to cleanly free the ressources used by the factory.
+	 * This method attempts to cleanly free the ressources used by the factory.
 	 */
 	public void close() {
 		try {
 			inputstream.close();
 			streamReader.close();
 		} catch (final Exception e) {
-			// If it fails, the GC will have to handle it...
+			UIMAFramework.getLogger().log(Level.WARNING, "An exception occured while attempting to close the ressources" + e.getMessage());
 		}
 	}
 
