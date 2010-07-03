@@ -51,36 +51,35 @@ import org.apache.uima.util.ProgressImpl;
  * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
  */
 public class MWCollectionReader extends CollectionReader_ImplBase {
-	
+
 	/** Component related constants */
-	public static String COMPONENT_NAME    = "MediaWiki Collection Reader";
-	public static String COMPONENT_VERSION = "1.0";
-	public static String COMPONENT_ID      = COMPONENT_NAME+"-"+COMPONENT_VERSION;
-	
+	public static String		COMPONENT_NAME				= "MediaWiki Collection Reader";
+	public static String		COMPONENT_VERSION			= "1.0";
+	public static String		COMPONENT_ID				= COMPONENT_NAME + "-" + COMPONENT_VERSION;
+
 	/** Setting up the logger for this class */
-	private static Logger				theLogger;
+	private static Logger		theLogger;
 	/** Configuration parameters */
-	private static final String			PARAM_XMLDUMP				= "InputFileXmlDump";
+	private static final String	PARAM_XMLDUMP				= "InputFileXmlDump";
 	/** Filters parameters */
-	private static String				PARAM_FLG_IGNORETALKS		= "IgnoreTalks";
-	private static String				PARAM_INP_NAMESPACE			= "ConfigNamespacesFilter";
-	private static String				PARAM_FLG_LATESTREVISION	= "LatestRevisionOnly";
-	private static String				PARAM_INP_TITLEMATCH		= "ConfigTitleMatch";
-	private static String				PARAM_INP_LIST				= "ConfigListFilter";
-	private static String				PARAM_INP_EXACTLIST			= "ConfigExactListFilter";
-	private static String				PARAM_INP_REVISIONLIST		= "ConfigRevisionListFilter";
-	private static String				PARAM_INP_BEFORETM			= "ConfigBeforeTimestampFilter";
-	private static String				PARAM_INP_AFTERTM			= "ConfigAfterTimestampFilter";
+	private static String		PARAM_FLG_IGNORETALKS		= "IgnoreTalks";
+	private static String		PARAM_INP_NAMESPACE			= "ConfigNamespacesFilter";
+	private static String		PARAM_FLG_LATESTREVISION	= "LatestRevisionOnly";
+	private static String		PARAM_INP_TITLEMATCH		= "ConfigTitleMatch";
+	private static String		PARAM_INP_LIST				= "ConfigListFilter";
+	private static String		PARAM_INP_EXACTLIST			= "ConfigExactListFilter";
+	private static String		PARAM_INP_REVISIONLIST		= "ConfigRevisionListFilter";
+	private static String		PARAM_INP_BEFORETM			= "ConfigBeforeTimestampFilter";
+	private static String		PARAM_INP_AFTERTM			= "ConfigAfterTimestampFilter";
 	/** Configuration values */
-	private static File					theXMLDump;
+	private static File			theXMLDump;
 	/** Progress counter */
-	private int							cCasProduced;
+	private int					cCasProduced;
 	/** XML processing */
-	private static MWDumpReaderFactory	factory;
-	private static MWDumpReader			parser;
+	private static MWDumpReader	parser;
 
 	/** Website info, useful to recover the namespaces */
-	private static MWSiteinfo			theSiteInfo;
+	private static MWSiteinfo	theSiteInfo;
 
 	/**
 	 * In this method we initialize a first parser to try to gather the website info. We then clear the
@@ -98,21 +97,21 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 		if (theXMLDump.exists() && theXMLDump.isFile()) {
 			try {
 				// Initialize the factory
-				factory = new MWDumpReaderFactory(theXMLDump);
+				MWDumpReaderFactory.initialize(theXMLDump);
 				// Get a first parser to compute the website info, in particular the namespaces.
-				parser = factory.getParser();
-				if (parser.hasSiteInfo()) {
+				parser = MWDumpReaderFactory.getParser();
+				if (parser.hasSiteInfo())
 					theSiteInfo = parser.getSiteInfo();
-				} else {
+				else {
 					// Default empty website info.
 					theSiteInfo = new MWSiteinfo("", "", "", "", new HashMap<Integer, String>());
 					theLogger.log(Level.INFO, "The website info is unavailable, we know nothing about the namespaces.");
 				}
-				factory.clearFilters();
+				MWDumpReaderFactory.clearFilters();
 				// Configure the various filters that may have been specified by the user.
 				configureFilters();
 				// Get a new parser that takes in account those filters.
-				parser = factory.getParser();
+				parser = MWDumpReaderFactory.getParser();
 				// Log start
 				theLogger.log(Level.INFO, COMPONENT_ID + " initialized.");
 			} catch (final FactoryConfigurationError e) {
@@ -142,11 +141,9 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 			populateJCas(newJCas, parser.getPage());
 			// We are done with the CAS production
 			cCasProduced++;
-			if ( (cCasProduced % 100) == 0 ) {
+			if (cCasProduced % 100 == 0) {
 				Runtime r = Runtime.getRuntime();
-				UIMAFramework.getLogger().log(Level.INFO, 
-						cCasProduced + " CAS produced. " +
-						r.freeMemory() + " memory left.");
+				UIMAFramework.getLogger().log(Level.INFO, cCasProduced + " CAS produced. " + r.freeMemory() + " memory left.");
 				// Calling Garbage Collector
 				r.gc();
 			}
@@ -176,7 +173,7 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 	 */
 	@Override
 	public void close() throws IOException {
-		factory.close();
+		MWDumpReaderFactory.close();
 		parser.close();
 	}
 
@@ -185,54 +182,54 @@ public class MWCollectionReader extends CollectionReader_ImplBase {
 			// Filter to ignore the talks pages
 			final Boolean enIgnoreTalks = (Boolean) getConfigParameterValue(PARAM_FLG_IGNORETALKS);
 			if (enIgnoreTalks != null && enIgnoreTalks) {
-				factory.addExcludeTalkFilter(theSiteInfo);
+				MWDumpReaderFactory.addExcludeTalkFilter(theSiteInfo);
 				theLogger.log(Level.INFO, "Added 'notalk' filter");
 			}
 			// Filter to consider only some namespaces
 			final String cfgNamespaces = (String) getConfigParameterValue(PARAM_INP_NAMESPACE);
 			if (cfgNamespaces != null) {
-				factory.addNamespaceFilter(theSiteInfo, cfgNamespaces);
+				MWDumpReaderFactory.addNamespaceFilter(theSiteInfo, cfgNamespaces);
 				theLogger.log(Level.INFO, "Added 'namespace' filter with configuration : '" + cfgNamespaces + "'");
 			}
 			// Select only latest revisions
 			final Boolean enLastRevision = (Boolean) getConfigParameterValue(PARAM_FLG_LATESTREVISION);
 			if (enLastRevision != null && enLastRevision) {
-				factory.addLatestOnlyFilter();
+				MWDumpReaderFactory.addLatestOnlyFilter();
 				theLogger.log(Level.INFO, "Added 'latest' filter");
 			}
 			// Select only some pages depending on a regexp on name
 			final String cfgTitleMatch = (String) getConfigParameterValue(PARAM_INP_TITLEMATCH);
 			if (cfgTitleMatch != null) {
-				factory.addTitleRegexFilter(cfgTitleMatch);
+				MWDumpReaderFactory.addTitleRegexFilter(cfgTitleMatch);
 				theLogger.log(Level.INFO, "Added 'titlematch' filter with configuration : '" + cfgTitleMatch + "'");
 			}
 			// Select only some pages specified in a list in a file
 			final String cfgList = (String) getConfigParameterValue(PARAM_INP_LIST);
 			if (cfgList != null) {
-				factory.addTitleListFilter(cfgList, false);
+				MWDumpReaderFactory.addTitleListFilter(cfgList, false);
 				theLogger.log(Level.INFO, "Added 'list' filter with configuration : '" + cfgList + "'");
 			}
 			final String cfgExactList = (String) getConfigParameterValue(PARAM_INP_EXACTLIST);
 			if (cfgExactList != null) {
-				factory.addTitleListFilter(cfgExactList, true);
+				MWDumpReaderFactory.addTitleListFilter(cfgExactList, true);
 				theLogger.log(Level.INFO, "Added 'exactlist' filter with configuration : '" + cfgList + "'");
 			}
 			// Select only some revisions specified in a file
 			final String cfgRevisionList = (String) getConfigParameterValue(PARAM_INP_REVISIONLIST);
 			if (cfgRevisionList != null) {
-				factory.addRevisionFilter(cfgRevisionList);
+				MWDumpReaderFactory.addRevisionFilter(cfgRevisionList);
 				theLogger.log(Level.INFO, "Added 'revlist' filter with configuration : '" + cfgList + "'");
 			}
 			// Select only some data that have been produced before some time
 			final String cfgBeforeTimestamp = (String) getConfigParameterValue(PARAM_INP_BEFORETM);
 			if (cfgBeforeTimestamp != null) {
-				factory.addBeforeTimestampFilter(cfgBeforeTimestamp);
+				MWDumpReaderFactory.addBeforeTimestampFilter(cfgBeforeTimestamp);
 				theLogger.log(Level.INFO, "Added 'before' filter with configuration : '" + cfgList + "'");
 			}
 			// Select only some data that have been produced after some time
 			final String cfgAfterTimestamp = (String) getConfigParameterValue(PARAM_INP_AFTERTM);
 			if (cfgAfterTimestamp != null) {
-				factory.addAfterTimestampFilter(cfgAfterTimestamp);
+				MWDumpReaderFactory.addAfterTimestampFilter(cfgAfterTimestamp);
 				theLogger.log(Level.INFO, "Added 'after' filter with configuration : '" + cfgList + "'");
 			}
 		} catch (final Exception e) {
