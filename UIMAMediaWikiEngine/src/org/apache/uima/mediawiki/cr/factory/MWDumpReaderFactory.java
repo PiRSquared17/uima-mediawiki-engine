@@ -22,10 +22,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -169,7 +167,7 @@ public class MWDumpReaderFactory {
 	 */
 	public static void addTitleListFilter(String cfgList, boolean exact) throws IOException, XMLStreamException {
 		String line, title;
-		final List<String> myList = new ArrayList<String>();
+		final Set<String> filter = new HashSet<String>();
 		final BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(cfgList), "utf-8"));
 
 		line = input.readLine();
@@ -178,16 +176,15 @@ public class MWDumpReaderFactory {
 			if (!line.startsWith("#")) {
 				// Replace the underscores by spaces and trim
 				title = line.replace("_", " ").trim();
-				// Build the list
-				if (!title.isEmpty()) {
-					myList.add(title);
-				}
+				// Build the set
+				if (!title.isEmpty())
+					filter.add(title);
 			}
 			line = input.readLine();
 		}
 		input.close();
 		// Create a new filtered stream
-		streamReader = factory.createFilteredReader(streamReader, new TitleListFilter(myList, exact));
+		streamReader = factory.createFilteredReader(streamReader, new TitleListFilter(filter, exact));
 	}
 
 	/**
@@ -227,15 +224,15 @@ public class MWDumpReaderFactory {
 	public static void addNamespaceFilter(MWSiteinfo theSiteInfo, String cfgNamespaces) throws XMLStreamException {
 		int nskey;
 		boolean exclude = false;
-		final List<String> myList = new ArrayList<String>();
+		final Set<String> filter = new HashSet<String>();
 		final Set<Integer> keyList = new HashSet<Integer>();
 
-		// If the string starts with a '!' we set the exclude flag to true
+		// If the string starts with a '!', strip it and set the exclude flag to true
 		if (cfgNamespaces.startsWith("!")) {
 			cfgNamespaces = cfgNamespaces.substring(1);
 			exclude = true;
 		}
-		// We separate the key values
+		// Separate the key values
 		final String[] namespaces = cfgNamespaces.trim().split(",");
 
 		for (final String ns : namespaces) {
@@ -251,11 +248,10 @@ public class MWDumpReaderFactory {
 		}
 		// We look for the valid keys in the set we built, and add the corresponding prefixes to the list
 		for (final int key : keyList)
-			if (theSiteInfo.namespaces.hasIndex(key)) {
-				myList.add(theSiteInfo.namespaces.getPrefix(key));
-			}
+			if (theSiteInfo.namespaces.hasIndex(key))
+				filter.add(theSiteInfo.namespaces.getPrefix(key));
 		// Create the new filtered XML stream reader.
-		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(myList, exclude));
+		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(filter, exclude));
 	}
 
 	/**
@@ -268,16 +264,15 @@ public class MWDumpReaderFactory {
 	 *             If we fail to create the new filtered XML stream reader.
 	 */
 	public static void addExcludeTalkFilter(MWSiteinfo theSiteInfo) throws XMLStreamException {
-		// A list of discussion namespace to ignore
-		final ArrayList<String> excludedNamespace = new ArrayList<String>();
+		// A set of discussion namespace to ignore
+		final Set<String> excludedNamespace = new HashSet<String>();
 		// The map containing the (key, namespace) couples.
 		final Map<Integer, String> namespaceMap = theSiteInfo.namespaces.getMap();
 
 		for (final int key : namespaceMap.keySet())
-			if (key > 0 && key % 2 == 1) {
+			if (key > 0 && key % 2 == 1)
 				// We add the concerned namespaces to the exclude list
 				excludedNamespace.add(namespaceMap.get(key));
-			}
 		// Create the filter with the proper list of namespaces.
 		streamReader = factory.createFilteredReader(streamReader, new NamespaceFilter(excludedNamespace, true));
 	}
@@ -295,25 +290,24 @@ public class MWDumpReaderFactory {
 	 *             If we fail to create the new filtered XML stream reader.
 	 */
 	public static void addRevisionFilter(String cfgRevisionList) throws IOException, XMLStreamException {
-		final ArrayList<Integer> myList = new ArrayList<Integer>();
+		final Set<Integer> filter = new HashSet<Integer>();
 		final BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(cfgRevisionList), "utf-8"));
 		String line = input.readLine();
 
 		// Read all the ids from the file, one per line
 		while (line != null) {
 			line = line.trim();
-			if (line.length() > 0 && !line.startsWith("#")) {
+			if (line.length() > 0 && !line.startsWith("#"))
 				try {
-					myList.add(Integer.parseInt(line));
+					filter.add(Integer.parseInt(line));
 				} catch (final NumberFormatException e) {
 					// We just don't add it to the list if we can't parse it to a integer
 				}
-			}
 			line = input.readLine();
 		}
 		input.close();
 		// Create the filtered XML stream reader with the proper id list.
-		streamReader = factory.createFilteredReader(streamReader, new MWRevisionFilter(myList));
+		streamReader = factory.createFilteredReader(streamReader, new MWRevisionFilter(filter));
 	}
 
 	/**
@@ -400,19 +394,19 @@ public class MWDumpReaderFactory {
 	 * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
 	 */
 	public static class TitleListFilter extends MWTitleFilter {
-		private final List<String>	listOfTitles;
+		private final Set<String>	filter;
 		private final boolean		exact;
 
 		/**
 		 * Initialize the filter's parameters.
 		 * 
-		 * @param myList
+		 * @param filter
 		 *            The list of titles to match against.
 		 * @param exact
 		 *            Flag that tells if should only consider the default namespace.
 		 */
-		public TitleListFilter(List<String> myList, boolean exact) {
-			listOfTitles = myList;
+		public TitleListFilter(Set<String> filter, boolean exact) {
+			this.filter = filter;
 			this.exact = exact;
 		}
 
@@ -426,7 +420,7 @@ public class MWDumpReaderFactory {
 		protected final boolean titleMatch(String title) {
 			final int pos = title.indexOf(':');
 			title = pos == -1 ? title : title.substring(pos).trim();
-			final boolean found = listOfTitles.contains(title);
+			final boolean found = filter.contains(title);
 			if (pos == -1)
 				// If the page is in the default namespace.
 				return found;
@@ -445,20 +439,20 @@ public class MWDumpReaderFactory {
 	 * @author Maxime Bury &lt;Maxime.bury@gmail.com&gt;
 	 */
 	public static class NamespaceFilter extends MWTitleFilter {
-		private final List<String>	listOfNamespaces;
+		private final Set<String>	filter;
 		private String				namespace;
 		private final boolean		exclude;
 
 		/**
 		 * Initialize the filter's parameters.
 		 * 
-		 * @param myList
+		 * @param filter
 		 *            The list of namespaces to match against.
 		 * @param exclude
 		 *            Flag indicating whether we should include only or exclude the namespaces in the list.
 		 */
-		public NamespaceFilter(List<String> myList, boolean exclude) {
-			listOfNamespaces = myList;
+		public NamespaceFilter(Set<String> filter, boolean exclude) {
+			this.filter = filter;
 			this.exclude = exclude;
 		}
 
@@ -472,7 +466,7 @@ public class MWDumpReaderFactory {
 		protected boolean titleMatch(String title) {
 			final int pos = title.indexOf(':');
 			namespace = pos != -1 ? title.substring(0, pos).trim() : "";
-			final boolean found = listOfNamespaces.contains(namespace);
+			final boolean found = filter.contains(namespace);
 			if (exclude)
 				return !found;
 			return found;

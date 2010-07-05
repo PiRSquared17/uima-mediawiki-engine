@@ -18,7 +18,7 @@ import static javax.xml.stream.XMLStreamConstants.CHARACTERS;
 import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.xml.stream.StreamFilter;
 import javax.xml.stream.XMLStreamException;
@@ -42,12 +42,12 @@ import javax.xml.stream.XMLStreamReader;
  */
 // TODO : Allow also the exclusion of certain ids
 public class MWRevisionFilter implements StreamFilter {
-	private final List<Integer>	matchList;
+	private final Set<Integer>	matchingSet;
 	private boolean				foundRevision	= false;
 	private boolean				foundId			= false;
 
-	public MWRevisionFilter(List<Integer> myList) {
-		matchList = myList;
+	public MWRevisionFilter(Set<Integer> filter) {
+		matchingSet = filter;
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class MWRevisionFilter implements StreamFilter {
 	protected boolean revisionMatch(String id) {
 		try {
 			final int intId = Integer.parseInt(id);
-			return matchList.contains(intId);
+			return matchingSet.contains(intId);
 		} catch (final NumberFormatException e) {
 			// If we fail to convert the string to a valid integer, then it can't be in the list.
 			return true;
