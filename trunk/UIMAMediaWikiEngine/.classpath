@@ -13,12 +13,12 @@
 			<attribute name="javadoc_location" value="file:/Users/Bowbaq/Downloads/mylyn-wikitext-standalone-3.5.0.I20100626-2300/apidoc/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/commons-compress-1.0.jar"/>
 	<classpathentry kind="var" path="UIMA_HOME/lib/uima-core.jar"/>
 	<classpathentry kind="var" path="UIMA_HOME/lib/uima-cpe.jar"/>
 	<classpathentry kind="var" path="UIMA_HOME/lib/uima-document-annotation.jar"/>
 	<classpathentry kind="var" path="UIMA_HOME/lib/uima-examples.jar"/>
 	<classpathentry kind="var" path="UIMA_HOME/lib/uima-tools.jar"/>
 	<classpathentry kind="var" path="UIMA_HOME/lib/uimaj-bootstrap.jar"/>
+	<classpathentry kind="lib" path="lib/commons-compress-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
