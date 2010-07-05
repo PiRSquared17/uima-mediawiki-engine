@@ -124,12 +124,14 @@ public class MWArticleFactory {
 		// If the latestOnly flag is set and the list isn't empty
 		if (m_latestOnly && !m_revisions.isEmpty()) {
 			// Check if the stored revision is older
-			if (m_revisions.get(0).compareTo(revision) < 0)
+			if (m_revisions.get(0).compareTo(revision) < 0) {
 				// If yes, replace it by the new one
 				m_revisions.set(0, revision);
-		} else
+			}
+		} else {
 			// Else the list isn't empty or the flag is not set to true
 			m_revisions.add(revision);
+		}
 	}
 
 	/**

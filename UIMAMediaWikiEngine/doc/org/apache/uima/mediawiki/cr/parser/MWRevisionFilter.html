@@ -164,7 +164,7 @@ This abstract class provides the basic revision filtering mechanism.
 <TD><CODE><B><A HREF="../../../../../../org/apache/uima/mediawiki/cr/parser/MWRevisionFilter.html#revisionMatch(java.lang.String)">revisionMatch</A></B>(java.lang.String&nbsp;id)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Checks wether the id is valid or not.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Checks whether the id is valid or not.</TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
@@ -211,7 +211,7 @@ accept</H3>
 <PRE>
 public final boolean <B>accept</B>(javax.xml.stream.XMLStreamReader&nbsp;reader)</PRE>
 <DL>
-<DD>This method is the core of the filtering process. It's job is to tell wether a particular event passes
+<DD>This method is the core of the filtering process. It's job is to tell whether a particular event passes
  or not. The next() method of the XMLStreamReader calls this method on each element. Only the accepted
  ones get through. In fact, this method never returns <code>false</code>, instead it skips all the
  events that would have deserved a <code>false</code> return.
@@ -238,7 +238,7 @@ revisionMatch</H3>
 <PRE>
 protected boolean <B>revisionMatch</B>(java.lang.String&nbsp;id)</PRE>
 <DL>
-<DD>Checks wether the id is valid or not.
+<DD>Checks whether the id is valid or not.
 <P>
 <DD><DL>
 </DL>
