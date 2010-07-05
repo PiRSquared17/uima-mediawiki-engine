@@ -214,7 +214,7 @@ accept</H3>
 <PRE>
 public final boolean <B>accept</B>(<A HREF="http://java.sun.com/javase/6/docs/api/javax/xml/stream/XMLStreamReader.html?is-external=true" title="class or interface in javax.xml.stream">XMLStreamReader</A>&nbsp;reader)</PRE>
 <DL>
-<DD>This method is the core of the filtering process. It's job is to tell wether a particular event passes
+<DD>This method is the core of the filtering process. It's job is to tell whether a particular event passes
  or not. The next() method of the XMLStreamReader calls this method on each element. Only the accepted
  ones get through. In fact, this method never returns <code>false</code>, instead it skips all the
  events that would have deserved a <code>false</code> return.

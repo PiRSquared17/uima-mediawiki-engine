@@ -15,6 +15,7 @@
 package org.apache.uima.mediawiki.cr.parser;
 
 import static javax.xml.stream.XMLStreamConstants.CHARACTERS;
+import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 import javax.xml.stream.StreamFilter;
@@ -62,17 +63,18 @@ public abstract class MWTimeStampFilter implements StreamFilter {
 			// check nevertheless)
 			// If the timestamp doesn't pass the check, we iterate to the next <revision> opening tag.
 			boolean revisionSkipped = false;
-			while (!revisionSkipped)
-				try {
+			try {
+				while (!revisionSkipped) {
 					reader.next();
-					if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("revision"))
+					if (reader.getEventType() == END_ELEMENT && reader.getLocalName().equals("revision"))
 						revisionSkipped = true;
-				} catch (final XMLStreamException e) {
-					// We encountered a malformation, we consider the revision skipped
-					revisionSkipped = true;
 				}
-			// We skipped the revision, we set the flag back to false.
-			foundTimestamp = false;
+			} catch (final XMLStreamException e) {
+				// We encountered a malformation, we consider the revision skipped
+			} finally {
+				// We skipped the revision, we set the flag back to false.
+				foundTimestamp = false;
+			}
 		} else
 			// The timestamp passed the check, we set the flag to false until the next revision.
 			foundTimestamp = false;

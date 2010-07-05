@@ -15,6 +15,7 @@
 package org.apache.uima.mediawiki.cr.parser;
 
 import static javax.xml.stream.XMLStreamConstants.CHARACTERS;
+import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 import java.util.List;
@@ -79,20 +80,21 @@ public class MWRevisionFilter implements StreamFilter {
 			// check nevertheless)
 			// If the id doesn't pass the check, we iterate to the next <revision> opening tag.
 			boolean revisionSkipped = false;
-			while (!revisionSkipped)
-				try {
+			try {
+				while (!revisionSkipped) {
 					reader.next();
-					if (reader.getEventType() == START_ELEMENT && reader.getLocalName().equals("revision"))
+					if (reader.getEventType() == END_ELEMENT && reader.getLocalName().equals("revision"))
 						revisionSkipped = true;
-				} catch (final XMLStreamException e) {
-					// We encountered a malformation, we consider the revision skipped
-					revisionSkipped = true;
 				}
-			// We skipped the revision, we set both flags back to false.
-			foundRevision = false;
-			foundId = false;
+			} catch (final XMLStreamException e) {
+				// We encountered a malformation, we consider the revision skipped
+			} finally {
+				// We skipped the revision, we set both flags back to false.
+				foundRevision = false;
+				foundId = false;
+			}
 		} else {
-			// Either the id check succeeded or the revision didn't have an id. Either way it passes.
+			// The id check succeeded or the revision didn't have an id. Either way it passes.
 			foundRevision = false;
 			foundId = false;
 		}

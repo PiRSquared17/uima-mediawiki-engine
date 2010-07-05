@@ -49,12 +49,12 @@ import org.apache.uima.util.Logger;
  * @author Maxime Rihouey <maxime.rihouey@univ-nantes.fr>
  */
 public class MWParserAE extends JCasAnnotator_ImplBase {
-	
+
 	/** Component related constants */
-	public static String COMPONENT_NAME    = "MediaWiki Parser";
-	public static String COMPONENT_VERSION = "1.0";
-	public static String COMPONENT_ID      = COMPONENT_NAME+"-"+COMPONENT_VERSION;
-	
+	public static String		COMPONENT_NAME				= "MediaWiki Parser";
+	public static String		COMPONENT_VERSION			= "1.0";
+	public static String		COMPONENT_ID				= COMPONENT_NAME + "-" + COMPONENT_VERSION;
+
 	private final static String	PARAM_FLG_ENABLEMACROS		= "EnableMacros";
 	private final static String	PARAM_INP_DEFINITIONPATH	= "DefinitionFilePath";
 	private static Logger		theLogger;
@@ -72,8 +72,9 @@ public class MWParserAE extends JCasAnnotator_ImplBase {
 		// Get the path of the definition file for the macros
 		File definition = null;
 		final String path = (String) context.getConfigParameterValue(PARAM_INP_DEFINITIONPATH);
-		if (path != null && !path.isEmpty())
+		if (path != null && !path.isEmpty()) {
 			definition = new File(path);
+		}
 		// Initialize the factory
 		try {
 			MWCasBuilder.initialize("RawWikiText", enableMacros, definition);
@@ -104,6 +105,5 @@ public class MWParserAE extends JCasAnnotator_ImplBase {
 	public void batchProcessComplete() throws AnalysisEngineProcessException {
 		theLogger.log(Level.INFO, "Nb. CAS parsed " + cCasProduced++);
 	}
-	
-	
+
 }
