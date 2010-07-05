@@ -1,20 +1,18 @@
 /*
- *  Copyright [2010] [Fabien Poulard <fabien.poulard@univ-nantes.fr>, Maxime Bury, Maxime Rihouey] 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at 
- *  
- *  http://www.apache.org/licenses/LICENSE-2.0 
- *  
- *  Unless required by applicable law or agreed to in writing, software 
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License. 
+ * Copyright [2010] [Fabien Poulard <fabien.poulard@univ-nantes.fr>, Maxime
+ * Bury, Maxime Rihouey] Licensed under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package org.apache.uima.mediawiki.cr.parser;
-
-import static javax.xml.stream.XMLStreamConstants.END_DOCUMENT;
 
 import java.util.HashMap;
 import java.util.NoSuchElementException;
@@ -30,17 +28,19 @@ import org.apache.uima.mediawiki.cr.types.MWSiteinfo;
 import org.apache.uima.util.Level;
 
 /**
- * This class is the core of the Collection reader component. It's dedicated to extract the relevant data from
- * the XML stream. I tried to keep things as simple and robust as possible.
+ * This class is the core of the Collection reader component. It's dedicated to
+ * extract the relevant data from the XML stream. I tried to keep things as
+ * simple and robust as possible.
  * <p>
- * I make use of the StAX API to provide a pull-parsing style parser. The basic unit you can get from that
- * parser is a page, also known as an article. You can also get the Siteinfo information (especially the
- * namespaces) if it's present.
+ * I make use of the StAX API to provide a pull-parsing style parser. The basic
+ * unit you can get from that parser is a page, also known as an article. You
+ * can also get the Siteinfo information (especially the namespaces) if it's
+ * present.
  * <p>
  * You can get an instance of this parser with the
- * {@link org.apache.uima.mediawiki.cr.factory.MWDumpReaderFactory MWDumpReaderFactory}. This factory also
- * allows you to place various filters on the XML stream to exclude or include only certain pages or
- * revisions.
+ * {@link org.apache.uima.mediawiki.cr.factory.MWDumpReaderFactory
+ * MWDumpReaderFactory}. This factory also allows you to place various filters
+ * on the XML stream to exclude or include only certain pages or revisions.
  * 
  * @see org.apache.uima.mediawiki.cr.types.MWSiteinfo
  * @see org.apache.uima.mediawiki.cr.types.MWArticle
@@ -49,7 +49,7 @@ import org.apache.uima.util.Level;
  */
 public class MWDumpReader {
 	/** Parser variables */
-	private final XMLStreamReader	streamReader;
+	private final XMLStreamReader	reader;
 	/** Data */
 	protected MWSiteinfo			theInfo;
 	/** Some flags */
@@ -58,8 +58,9 @@ public class MWDumpReader {
 	protected boolean				pageComputed;
 
 	/**
-	 * Initializes the parser. In particular, it skips a few unuseful blocks at the beginning and tries to
-	 * compute the Siteinfo right away. It also initializes the data factories.
+	 * Initializes the parser. In particular, it skips a few unuseful blocks at
+	 * the beginning and tries to compute the Siteinfo right away. It also
+	 * initializes the data factories.
 	 * 
 	 * @param reader
 	 *            An XML stream reader from which we get the data
@@ -69,7 +70,7 @@ public class MWDumpReader {
 	public MWDumpReader(XMLStreamReader reader) throws MWParseException {
 		// Initialise parser
 		try {
-			streamReader = reader;
+			this.reader = reader;
 			// Skip the <mediawiki> tag
 			nextOpeningTag(2);
 		} catch (final XMLStreamException e) {
@@ -78,9 +79,8 @@ public class MWDumpReader {
 		// Initialise data factories
 		// Process website info
 		// Check if the <siteinfo> tag is there (it's optional)
-		hasSiteInfo = streamReader.getLocalName().toLowerCase().equals("siteinfo");
-		if (hasSiteInfo)
-			computeSiteInfo();
+		hasSiteInfo = reader.getLocalName().equals("siteinfo");
+		if (hasSiteInfo) computeSiteInfo();
 		// Initialise Article and Revision factorys
 		MWArticleFactory.init(theInfo);
 		// Some flags
@@ -89,8 +89,8 @@ public class MWDumpReader {
 	}
 
 	/**
-	 * This method returns the last computed page. It should only be used after a successful call to the
-	 * {@link #hasPage()} method.
+	 * This method returns the last computed page. It should only be used after
+	 * a successful call to the {@link #hasPage()} method.
 	 * 
 	 * @return the last computed page
 	 * @see org.apache.uima.mediawiki.cr.types.MWArticle
@@ -101,9 +101,9 @@ public class MWDumpReader {
 	}
 
 	/**
-	 * This method return the site info (containing namespaces in particular). It should only be used after a
-	 * successful call to {@link #hasSiteInfo()}. Otherwise, the fields of the returned object will have a
-	 * default value.
+	 * This method return the site info (containing namespaces in particular).
+	 * It should only be used after a successful call to {@link #hasSiteInfo()}.
+	 * Otherwise, the fields of the returned object will have a default value.
 	 * 
 	 * @return the site info
 	 * @see org.apache.uima.mediawiki.cr.types.MWSiteinfo
@@ -113,22 +113,24 @@ public class MWDumpReader {
 	}
 
 	/**
-	 * A successful call to this method ensures you that a call to {@link #getSiteInfo()} will return relevant
-	 * information.
+	 * A successful call to this method ensures you that a call to
+	 * {@link #getSiteInfo()} will return relevant information.
 	 * 
-	 * @return <code>true</code> if the parser has managed to compute the site info; <code>false</code>
-	 *         otherwise.
+	 * @return <code>true</code> if the parser has managed to compute the site
+	 *         info; <code>false</code> otherwise.
 	 */
 	public final boolean hasSiteInfo() {
 		return hasSiteInfo;
 	}
 
 	/**
-	 * A successful call to this method ensures you that a call to {@link #getPage()} will succeed as well.
-	 * The parser tries to compute a page, taking in account the filters, until it succeeds to compute one or
+	 * A successful call to this method ensures you that a call to
+	 * {@link #getPage()} will succeed as well. The parser tries to compute a
+	 * page, taking in account the filters, until it succeeds to compute one or
 	 * reaches the end of the document.
 	 * 
-	 * @return <code>true</code> if the parser has managed to compute a page; <code>false</code> otherwise.
+	 * @return <code>true</code> if the parser has managed to compute a page;
+	 *         <code>false</code> otherwise.
 	 */
 	public final boolean hasPage() {
 		// Clear the page factory
@@ -140,7 +142,8 @@ public class MWDumpReader {
 				pageComputed = computePage();
 			return pageComputed;
 		} catch (final MWParseException e) {
-			UIMAFramework.getLogger().log(Level.SEVERE, "XML parser encountered an exception : " + e.getMessage());
+			UIMAFramework.getLogger().log(Level.SEVERE,
+					"XML parser encountered an exception : " + e.getMessage());
 			endOfDocumentReached = true;
 			pageComputed = false;
 			return pageComputed;
@@ -148,14 +151,15 @@ public class MWDumpReader {
 	}
 
 	/**
-	 * Use this method to free the ressources the parser was using (meaning the XML stream) in a clean way.
+	 * Use this method to free the ressources the parser was using (meaning the
+	 * XML stream) in a clean way.
 	 * 
 	 * @throws XMLStreamException
 	 *             If the XML stream fails to be closed.
 	 */
 	public final void close() {
 		try {
-			streamReader.close();
+			reader.close();
 		} catch (final XMLStreamException e) {
 			// If the closing fails, the GC will just have to deal with it.
 			UIMAFramework.getLogger().log(Level.WARNING, "Cannot close the stream : " + e.getMessage());
@@ -163,21 +167,27 @@ public class MWDumpReader {
 	}
 
 	/**
-	 * This method is normally called only if a call to hasPage() succeeded. It returns true when the parsing
-	 * of the page is successful, meaning no malformation were encountered and at least one revision was kept.
-	 * It returns false otherwise.
+	 * This method is normally called only if a call to hasPage() succeeded. It
+	 * returns true when the parsing of the page is successful, meaning no
+	 * malformation were encountered and at least one revision was kept. It
+	 * returns false otherwise.
 	 * 
-	 * @return <code>true</code> on the successful parsing of a page, <code>false</code> otherwise.
+	 * @return <code>true</code> on the successful parsing of a page,
+	 *         <code>false</code> otherwise.
 	 * @throws MWParseException
 	 *             If a malformation is encountered in the underlying XML stream
 	 */
 	private final boolean computePage() throws MWParseException {
 		boolean endPage = false;
 		try {
+			// Make sure we start on a <page> tag
+			nextTag("page");
+			// Move to the first nested tag
 			nextOpeningTag(1);
-			// While we don't reach the end of the page, we compute the data we find.
+			// While we don't reach the end of the page, we compute the data we
+			// find.
 			while (!endPage) {
-				switch (MWTag.toTag(streamReader.getLocalName())) {
+				switch (MWTag.toTag(reader.getLocalName())) {
 					case TITLE:
 						MWArticleFactory.hasTitle(getTagText());
 						break;
@@ -191,45 +201,39 @@ public class MWDumpReader {
 						// If we find an unrelevant tag, we skip it.
 						skipThisTag();
 						break;
-					// When we hit a page tag again, we know we are done with this one.
 					case PAGE:
+						// When we hit a page tag again, we know we are done
+						// with this one.
 						endPage = true;
 						break;
-					default: // This happens if we don't process a tag acknoledged in the MWTag enum.
+					default:
+						// This happens if we don't process a tag acknoledged in
+						// the MWTag enum.
 						endPage = true;
 				}
-				if (!endPage)
-					nextOpeningTag(1);
+				if (!endPage) nextOpeningTag(1);
 			}
-			// The page is considered empty when it holds no revisions.
-			// This can happen when some filters are set.
-			return !MWArticleFactory.isEmpty();
 		} catch (final XMLStreamException e) {
 			// If we encounter a malformation of some sort
-			throw new MWParseException("The parser encountered a malformation in the input file. " + e.getMessage());
+			throw new MWParseException("The parser encountered a malformation in the input file. "
+					+ e.getMessage());
 		} catch (final NoSuchElementException e) {
 			// We reached the end of the document, last page might me uncomplete
 			endOfDocumentReached = true;
-			// The page is considered empty when it holds no revisions.
-			// This can happen when some filters are set.
-			return !MWArticleFactory.isEmpty();
 		} catch (final IllegalStateException e) {
 			// We reached the end of the document, last page might me uncomplete
 			endOfDocumentReached = true;
-			// The page is considered empty when it holds no revisions.
-			// This can happen when some filters are set.
-			return !MWArticleFactory.isEmpty();
 		}
-		// FIXME: keep or remove ?
-		// catch (final Exception e) {
-		// // We reached the end of the document, last page might me uncomplete
-		// endOfDocumentReached = true;
-		// }
+
+		// The page is considered empty when it holds no revisions.
+		// This can happen when some filters are set.
+		return !MWArticleFactory.isEmpty();
 	}
 
 	/**
-	 * This is where we get the actually interresting data. The revisions hold the text data. It functions in
-	 * a very similar fashion as the computePage() method. Each successfuly parsed revision is added to the
+	 * This is where we get the actually interresting data. The revisions hold
+	 * the text data. It functions in a very similar fashion as the
+	 * computePage() method. Each successfuly parsed revision is added to the
 	 * article's list of revisions.
 	 * 
 	 * @throws NoSuchElementException
@@ -239,11 +243,14 @@ public class MWDumpReader {
 	private final void computeRevision() throws NoSuchElementException, XMLStreamException {
 		boolean endRevision = false;
 		StringBuilder textBuilder;
+		// Make sure we start on a revision
+		nextTag("revision");
+		// Move to the first nested tag
 		nextOpeningTag(1);
 		// Clear the revision factory
 		MWRevisionFactory.clear();
 		while (!endRevision) {
-			switch (MWTag.toTag(streamReader.getLocalName())) {
+			switch (MWTag.toTag(reader.getLocalName())) {
 				case ID:
 					MWRevisionFactory.hasId(getTagText());
 					break;
@@ -251,16 +258,17 @@ public class MWDumpReader {
 					MWRevisionFactory.hasTimestamp(getTagText());
 					break;
 				case CONTRIBUTOR:
-					// This is actully a nested element. We are only interrested in the user name.
+					// We are only interrested in the user name. This is a
+					// nested element of this tag.
 					// The user name tag is however optional.
 					nextOpeningTag(1);
-					if (streamReader.getLocalName().equals("username"))
-						MWRevisionFactory.hasContributor(getTagText());
+					if (reader.getLocalName().equals("username")) MWRevisionFactory
+							.hasContributor(getTagText());
 					break;
 				case MINOR:
 					// If the tag is <minor /> then it's set to false
-					streamReader.next();
-					MWRevisionFactory.isMinor(streamReader.isEndElement());
+					reader.next();
+					MWRevisionFactory.isMinor(reader.isEndElement());
 					break;
 				case COMMENT:
 					MWRevisionFactory.hasComment(getTagText());
@@ -268,11 +276,12 @@ public class MWDumpReader {
 				case TEXT:
 					// TODO : Tuning the size of the StringBuilder?
 					textBuilder = new StringBuilder();
-					// While we get characters events, we add the text to the builder.
-					streamReader.next();
-					while (streamReader.isCharacters()) {
-						textBuilder.append(streamReader.getText());
-						streamReader.next();
+					// While we get characters events, we add the text to the
+					// builder.
+					reader.next();
+					while (reader.isCharacters()) {
+						textBuilder.append(reader.getText());
+						reader.next();
 					}
 					textBuilder.trimToSize();
 					MWRevisionFactory.hasText(textBuilder.toString());
@@ -283,15 +292,15 @@ public class MWDumpReader {
 				default:
 					endRevision = true;
 			}
-			if (!endRevision)
-				nextOpeningTag(1);
+			if (!endRevision) nextOpeningTag(1);
 		}
 		// Add the revision to the list
 		MWArticleFactory.hasRevision(MWRevisionFactory.produceRevision());
 	}
 
 	/**
-	 * Process the site info. In particular we gather the namespaces and the associated indexes.
+	 * Process the site info. In particular we gather the namespaces and the
+	 * associated indexes.
 	 * 
 	 * @throws MWParseException
 	 */
@@ -311,7 +320,7 @@ public class MWDumpReader {
 			// Iterate through the elements nested in <siteinfo>
 			while (!endSiteInfo) {
 				// Depending on the tag encountered, process data
-				switch (MWTag.toTag(streamReader.getLocalName())) {
+				switch (MWTag.toTag(reader.getLocalName())) {
 					case SITENAME:
 						sitename = getTagText();
 						break;
@@ -330,10 +339,10 @@ public class MWDumpReader {
 						String nsName;
 						nextOpeningTag(1);
 						// Compute all the available namespaces
-						while (MWTag.toTag(streamReader.getLocalName()) == MWTag.NAMESPACE) {
-							nsIndex = Integer.parseInt(streamReader.getAttributeValue(0));
-							streamReader.next();
-							nsName = nsIndex == 0 ? "" : streamReader.getText();
+						while (MWTag.toTag(reader.getLocalName()) == MWTag.NAMESPACE) {
+							nsIndex = Integer.parseInt(reader.getAttributeValue(0));
+							reader.next();
+							nsName = nsIndex == 0 ? "" : reader.getText();
 							namespaces.put(nsIndex, nsName);
 							nextOpeningTag(1);
 						}
@@ -342,79 +351,107 @@ public class MWDumpReader {
 					default:
 						endSiteInfo = true;
 				}
-				if (!endSiteInfo)
-					nextOpeningTag(1);
+				if (!endSiteInfo) nextOpeningTag(1);
 			}
 		} catch (final NoSuchElementException e) {
 			endOfDocumentReached = true;
-			throw new MWParseException("The parser unexpectedly reached end of document. " + e.getMessage());
 		} catch (final XMLStreamException e) {
 			endOfDocumentReached = true;
-			throw new MWParseException("The parser encountered a malformation in the input file. " + e.getMessage());
+			throw new MWParseException("The parser encountered a malformation in the input file. "
+					+ e.getMessage());
 		}
 		theInfo = new MWSiteinfo(sitename, base, generator, thecase, namespaces);
 	}
 
 	/**
-	 * Places the cursor on the nth opening tag following the current cursor position.
+	 *  Searches for the next opening tag with the given name.
+	 * @param name
+	 *            the name of the tag we are looking for
+	 * @throws XMLStreamException
+	 *             If encountering a malformation in the underlying XML
+	 *             document.
+	 * @throws NoSuchElementException
+	 *             If the parser reaches the end of the document unexpectedly
+	 */
+	private void nextTag(String name) throws XMLStreamException, NoSuchElementException {
+		while (!reader.isStartElement() && !reader.getLocalName().equals(name))
+			if (reader.hasNext()) reader.next();
+			else throw new NoSuchElementException("End of document reached");
+	}
+
+	/**
+	 * Places the cursor on the nth opening tag following the current cursor
+	 * position.
 	 * 
 	 * @param n
 	 *            the number of tags to skip
 	 * @throws XMLStreamException
-	 *             If encountering a malformation in the underlying XML document.
+	 *             If encountering a malformation in the underlying XML
+	 *             document.
 	 * @throws NoSuchElementException
 	 *             If the parser reaches the end of the document unexpectedly
 	 */
-	private final void nextOpeningTag(int n) throws XMLStreamException, NoSuchElementException {
+	private final void nextOpeningTag(int n) throws XMLStreamException {
 		int i = 0;
 		while (i < n) {
-			streamReader.next();
-			if (streamReader.isStartElement() || streamReader.getEventType() == END_DOCUMENT)
-				++i;
+			if (reader.hasNext()) {
+				reader.next();
+				if (reader.isStartElement()) ++i;
+			} else {
+				throw new NoSuchElementException("End of document reached");
+			}
 		}
 	}
 
 	/**
-	 * Places the cursor on the ending tag corresponding to the current opening tag.
+	 * Places the cursor on the ending tag corresponding to the current opening
+	 * tag.
 	 * 
 	 * @throws XMLStreamException
-	 *             If encountering a malformation in the underlying XML document.
+	 *             If encountering a malformation in the underlying XML
+	 *             document.
 	 */
 	private final void skipThisTag() throws XMLStreamException {
-		final String name = streamReader.getLocalName();
+		// We get the name of the current tag, so we know where to stop
+		final String name = reader.getLocalName();
 		boolean endOfTag = false;
 		while (!endOfTag) {
-			streamReader.next();
-			if (streamReader.isEndElement() && streamReader.getLocalName().equals(name))
-				endOfTag = true;
+			if (reader.hasNext()) {
+				reader.next();
+				if (reader.isEndElement() && reader.getLocalName().equals(name)) endOfTag = true;
+			} else {
+				throw new NoSuchElementException("End of document reached");
+			}
 		}
 	}
 
 	/**
 	 * <p>
-	 * Returns the text following the current XML opening tag. This method can be called only when the cursor
-	 * is on an opening tag.
+	 * Returns the text following the current XML opening tag. This method can
+	 * be called only when the cursor is on an opening tag.
 	 * <p>
-	 * If the current tag is immediately closed (contains no text), the empty string is returned. Throws an
-	 * exception if the document ends unexpectedly (this should not happen if the document is well formed)
+	 * If the current tag is immediately closed (contains no text), the empty
+	 * string is returned. Throws an exception if the document ends unexpectedly
+	 * (this should not happen if the document is well formed)
 	 * <p>
-	 * Example : &lt;myOpeningTag&gt; Will return this text &lt;/myOpeningTag&gt;
+	 * Example : &lt;myOpeningTag&gt; Will return this text
+	 * &lt;/myOpeningTag&gt;
 	 * 
 	 * @return the text following the current opening tag
 	 * @throws XMLStreamException
-	 *             If encountering a malformation in the underlying XML document.
+	 *             If encountering a malformation in the underlying XML
+	 *             document.
 	 */
 	private final String getTagText() throws XMLStreamException {
-		streamReader.next();
-		if (streamReader.isCharacters())
-			return streamReader.getText();
-		return "";
+		reader.next();
+		return (reader.isCharacters()) ? reader.getText() : "";
 	}
 
 	/**
-	 * This enumeration holds all the tags that we consider in the parsing process. It's mainly a trick to
-	 * allow usage of a switch structure. All the tags that are not recognized, are converted to the single
-	 * INVALID_TAG value. This tells the parser that the block must be skipped.
+	 * This enumeration holds all the tags that we consider in the parsing
+	 * process. It's mainly a trick to allow usage of a switch structure. All
+	 * the tags that are not recognized, are converted to the single INVALID_TAG
+	 * value. This tells the parser that the block must be skipped.
 	 */
 	enum MWTag {
 		// ROOT
@@ -429,8 +466,9 @@ public class MWDumpReader {
 		INVALID_TAG;
 
 		/**
-		 * This little method allows the conversion from the String value of the name to the Integer constant
-		 * value. All the unknown tags are returned under as single INVALID_TAG constant.
+		 * This little method allows the conversion from the String value of the
+		 * name to the Integer constant value. All the unknown tags are returned
+		 * under as single INVALID_TAG constant.
 		 * 
 		 * @param tagname
 		 *            the name of the tag
@@ -446,8 +484,9 @@ public class MWDumpReader {
 	}
 
 	/**
-	 * A dedicated exception class for the parser. Exceptions of this type are thrown when the parser
-	 * encounter a severe failure. The message should then help the user figure out what happend.
+	 * A dedicated exception class for the parser. Exceptions of this type are
+	 * thrown when the parser encounter a severe failure. The message should
+	 * then help the user figure out what happend.
 	 */
 	public class MWParseException extends Exception {
 		private static final long	serialVersionUID	= 1L;
@@ -460,5 +499,4 @@ public class MWDumpReader {
 			super(message);
 		}
 	}
-
 }
