@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <jardesc>
-    <jar path="/home/grdscarabe/TOOLS/TDDTS/mwuima-v0.1.jar"/>
+    <jar path="/home/grdscarabe/TOOLS/TDDTS/mwuima-v0.2.jar"/>
     <options buildIfNeeded="true" compress="true" descriptionLocation="/UIMAMediaWikiEngine (svn google)/packaging-mwuima.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
