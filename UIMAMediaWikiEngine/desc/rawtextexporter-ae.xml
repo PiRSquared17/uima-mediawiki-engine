@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>true</primitive>
+  <annotatorImplementationName>org.apache.uima.mediawiki.utils.MWRawTextExporter</annotatorImplementationName>
+  <analysisEngineMetaData>
+    <name>MediaWiki Raw Text Exporter</name>
+    <description>This component aims at exporting parsed wikimedia articles as raw text files.
+It creates one directory per page and one text file per revision.</description>
+    <version>1.0</version>
+    <vendor/>
+    <configurationParameters>
+      <configurationParameter>
+        <name>OutputDirectoryText</name>
+        <description>Path to the directory where the raw text files should be exported.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>MinNumberOfRevisions</name>
+        <description>Minimal number of revisions for the page to be exported.</description>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>OutputDirectoryWiki</name>
+        <description>Path to the directory where the files in wiki format should be exported.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>MinNumberOfRevisions</name>
+        <value>
+          <integer>10</integer>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>OutputDirectoryText</name>
+        <value>
+          <string>/tmp/mediawiki-export/rawtext</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>OutputDirectoryWiki</name>
+        <value>
+          <string>/tmp/mediawiki-export/wiki</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <typeSystemDescription>
+      <imports>
+        <import name="wikipedia-ts"/>
+      </imports>
+    </typeSystemDescription>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs/>
+        <languagesSupported/>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>false</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>
